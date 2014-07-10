@@ -1,8 +1,7 @@
 #!/usr/bin/env python
-
+"""Script to add a genre to all members of a group. Unfished as the POMS Rest service does not support this yet"""
 import sys
 import getopt
-
 import poms
 
 def usage():
