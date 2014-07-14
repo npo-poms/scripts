@@ -4,19 +4,20 @@ import sys
 import base64
 from xml.dom import minidom
 from pprint import pprint
-
+import getopt
 
 target='https://api-test.poms.omroep.nl/media/'
 """The currently configured target. I.e. the URL of the POMS rest api"""
 
 
 
-def init(opts = []):
-    """username/password and target are stored in a database. If no username/password is known for a target, it is asked"""
+def init(opts = None):
+    """username/password and target are stored in a database.
+    If no username/password is known for a target, it is asked"""
 
     global target
     global _opts
-    _opts = opts
+    _opts = [] if opts is None else opts
     d = shelve.open('creds.db')
 
     if not 'target' in d:
@@ -46,6 +47,26 @@ def init(opts = []):
     target=d['target']
     d.close()
 
+def opts(args = "t:e:srh", usage = None):
+    try:
+        opts, args = getopt.getopt(sys.argv[1:],args)
+    except getopt.GetoptError as err:
+        print(err)
+        if usage is not None:
+            usage()
+        generic_usage();
+        sys.exit(2)
+
+    for o, a in opts:
+        if o == '-h':
+            if usage is not None:
+                usage()
+            generic_usage()
+            sys.exit(0)
+
+    init(opts)
+    return opts,args
+
 def _creds():
     d = shelve.open('creds.db')
     usernamekey = d['target'] + ':username'
@@ -67,24 +88,31 @@ def _creds():
     global email
     if 'email' in d:
         email = d['email']
-
+    else:
+        email = None
     d.close()
 
-def usage():
+def generic_usage():
     print "-s       show stored credentials"
-    print "-t <url> change target. 'test', 'dev' and 'prod' are possible abbreviations for https://api[-test|-dev].poms.omroep.nl/media/"
+    print "-t <url> change target. 'test', 'dev' and 'prod' are " + \
+          "possible abbreviations for https://api[-test|-dev].poms.omroep.nl/media/"
     print "-r       reset and ask username/password again"
     print "-e <email> sets email-adress to mail errors to"
 
-def _membersOrEpisodes(mid, what):
+def _members_or_episodes(mid, what):
     _creds()
     print "loading members of " + mid
     result = []
     offset = 0
     batch = 20
     while True:
-        url = target + 'group/' + mid + "/" + what + "?max=" + str(batch) + "&offset=" + str(offset)
-        response = urllib2.urlopen(urllib2.Request(url))
+        url = (target + 'group/' + mid + "/" + what + "?max=" + str(batch) +
+               "&offset=" + str(offset))
+        try:
+            response = urllib2.urlopen(urllib2.Request(url))
+        except Exception as e:
+            print url + " " + str(e)
+            sys.exit(1)
         xml = minidom.parseString(response.read())
 
         items = xml.getElementsByTagName('item')
@@ -99,30 +127,42 @@ def _membersOrEpisodes(mid, what):
 
     return result
 
-
 def members(mid):
-    """return a list of all members of a group. As XML objects, wrapped in 'items', do you can see the position"""
-    return _membersOrEpisodes(mid, "members")
+    """return a list of all members of a group. As XML objects, wrapped
+    in 'items', do you can see the position"""
+    return _members_or_episodes(mid, "members")
 
 def episodes(mid):
-    """return a list of all episodes of a group. As XML objects, wrapped in 'items', do you can see the position"""
-    return _membersOrEpisodes(mid, "episodes")
+    """return a list of all episodes of a group. As XML objects, wrapped
+    in 'items', do you can see the position"""
+    return _members_or_episodes(mid, "episodes")
 
-def getMemberOfXml(groupMid, position=0, highlighted="false"):
-    return '<memberOf position="' + str(position) + '" highlighted="' + highlighted + '">' + groupMid + '</memberOf>'
+def get_memberOf_xml(groupMid, position=0, highlighted="false"):
+    return ('<memberOf position="' + str(position) + '" highlighted="' +
+            highlighted + '">' + groupMid + '</memberOf>')
 
-def addMember(groupMid, memberMid, position=0, highlighted="false"):
+def add_member(groupMid, memberMid, position=0, highlighted="false"):
     url = target + "media/" + memberMid + "/memberOf"
     xml = getMemberOfXml(groupMid, position, highlighted)
     response = urllib2.urlopen(urllib2.Post(url, data=xml))
 
+def post_str(xml):
+    return post(minidom.parseString(xml).childNodes[0])
+
 def post(xml):
-    # it seems mindoc sucks a bit, since it should have added these attributes automaticly of course. The xml is simply not valid otherwise
+    _creds()
+    # it seems mindoc sucks a bit, since it should have added these attributes
+    # automaticly of course. The xml is simply not valid otherwise
     xml.setAttribute("xmlns", "urn:vpro:media:update:2009")
-    xml.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
-    url = target + "media?errors=" + email
+    xml.setAttribute("xmlns:xsi",
+                     "http://www.w3.org/2001/XMLSchema-instance")
+    url = target + "media"
+    if email:
+        url += "?errors=" + email
+
     print "posting " + xml.getAttribute("mid") + " to " + url
     req = urllib2.Request(url, data=xml.toxml('utf-8'))
     req.add_header("Authorization", authorizationHeader);
     req.add_header("Content-Type", "application/xml")
     response = urllib2.urlopen(req)
+    return response.read()

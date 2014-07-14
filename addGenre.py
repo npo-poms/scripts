@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-"""Script to add a genre to all members of a group. Unfished as the POMS Rest service does not support this yet"""
+"""Script to add a genre to all members of a group. Unfished as the POMS
+   Rest service does not support this yet"""
 import sys
 import getopt
 import poms
@@ -35,7 +36,7 @@ def main():
 
         print update.toxml()
 
-    print "\n\nSadly we wan't edit genres by poms rest yet"
+    print "\n\nSadly we can't edit genres by poms' rest api  yet"
     sys.exit(1)
 
 

@@ -2,8 +2,6 @@
 __pycache__/
 *.py[cod]
 
-# C extensions
-*.so
 
 # Distribution / packaging
 .Python
@@ -45,10 +43,9 @@ coverage.xml
 # Rope
 .ropeproject
 
-# Django stuff:
-*.log
-*.pot
 
 # Sphinx documentation
 docs/_build/
 
+
+creds.db
