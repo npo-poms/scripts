@@ -149,9 +149,57 @@ def add_member(groupMid, memberMid, position=0, highlighted="false"):
 def post_str(xml):
     return post(minidom.parseString(xml).childNodes[0])
 
+def add_genre(xml, genreId):
+    """Adds a genre to the minidom object"""
+
+    genreEl = xml.ownerDocument.createElement("genre")
+    genreEl.appendChild(xml.ownerDocument.createTextNode(genreId))
+    _append_element(xml, genreEl)
+
+
+def _find_or_create_element(xml, node_name):
+    for child in xml.childNodes:
+        if child.nodeName == node_name:
+            return child;
+
+    el = xml.ownerDocument.createElement(node_name)
+    _append_element(xml, el)
+    return el
+
+
+def _append_element(xml, element, path = ("crid",
+                                          "broadcaster",
+                                          "portal",
+                                          "exclusive",
+                                          "region",
+                                          "title",
+                                          "description",
+                                          "tag",
+                                          "genre",
+                                          "avAttributes",
+                                          "releaseYear",
+                                          "duration",
+                                          "credits",
+                                          "memberOf",
+                                          "ageRating",
+                                          "contentRating",
+                                          "email",
+                                          "website",
+                                          "location",
+                                          "scheduleEvents",
+                                          "relation",
+                                          "images",
+                                          "asset")):
+    index =  path.index(element.nodeName)
+    for child in xml.childNodes:
+        if path.index(child.nodeName) > index:
+            xml.insertBefore(element, child)
+            return
+    xml.appendChild(element)
+
 def post(xml):
     _creds()
-    # it seems mindoc sucks a bit, since it should have added these attributes
+    # it seems minidom sucks a bit, since it should have added these attributes
     # automaticly of course. The xml is simply not valid otherwise
     xml.setAttribute("xmlns", "urn:vpro:media:update:2009")
     xml.setAttribute("xmlns:xsi",
@@ -160,10 +208,17 @@ def post(xml):
     if email:
         url += "?errors=" + email
 
+    #print xml.toxml()
     print "posting " + xml.getAttribute("mid") + " to " + url
     req = urllib2.Request(url, data=xml.toxml('utf-8'))
     req.add_header("Authorization", authorizationHeader);
     req.add_header("Content-Type", "application/xml")
-    req.add_header("Accept", "application/json")
-    response = urllib2.urlopen(req)
-    return response.read()
+    req.add_header("Accept", "text/plain")
+    #req.add_header("Accept", "application/json")
+    try:
+        response = urllib2.urlopen(req)
+        return response.read()
+    except urllib2.HTTPError as e:
+        error_message = e.read()
+        print error_message
+        return None

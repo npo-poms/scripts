@@ -6,38 +6,28 @@ import getopt
 import poms
 
 def usage():
-    print sys.argv[0] + " [-r] [-h] [-s] [-t <target>] <MID>"
+    print sys.argv[0] + " [-r] [-h] [-s] [-t <target>] <MID> <genreId>"
 
 def main():
-    try:
-        opts, args = getopt.getopt(sys.argv[1:],"t:srh")
-    except getopt.GetoptError as err:
-        print(err)
-        usage()
-        sys.exit(2)
 
-    for o, a in opts:
-        if o == '-h':
-            usage()
-            sys.exit(0)
+    opt, args = poms.opts(usage = usage)
 
-    poms.credentials(opts)
-
-    if len(args) == 0:
+    if len(args) < 2:
         usage()
         sys.exit(1)
 
     mid = args[0]
+    genreId = args[1]
 
     for s in poms.members(mid):
-        print s.attributes['position'].value
+        #print s.attributes['position'].value
         update = s.getElementsByTagName('mediaUpdate')[0];
-        print update.attributes['mid'].value
+        mid = update.attributes['mid'].value
 
-        print update.toxml()
+        print("Adding genre " + genreId + " to " + mid);
+        poms.add_genre(update, genreId)
+        poms.post(update)
 
-    print "\n\nSadly we can't edit genres by poms' rest api  yet"
-    sys.exit(1)
 
 
 if __name__ == "__main__":
