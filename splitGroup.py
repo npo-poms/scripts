@@ -30,7 +30,7 @@ def move_to_group(item, group_mid, dest, position):
         poms.post(mediaobject)
 
 def main():
-    opt, args = poms.opts(usage = usage)
+    opt, args = poms.opts(usage = usage, minargs = 2)
 
     group_mid       = args[0]
     group_members   = poms.members(group_mid)
@@ -38,6 +38,7 @@ def main():
 
     if len(group_members) == 0:
         print "The group " + group_mid + " has no members"
+
     # some math to distribute the objects as evenly as possible over the groups
     group_size = len(group_members) / len(dest_group_mids)
     remainder = len(group_members) % len(dest_group_mids)

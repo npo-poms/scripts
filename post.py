@@ -10,13 +10,7 @@ def usage():
           " [-r] [-h] [-s] [-t <target>] <xml file>")
 
 def main():
-    opts,args = poms.opts()
-
-    print args
-    if len(args) < 1:
-        usage()
-        sys.exit(1)
-
+    opts,args = poms.opts(usage = usage, minargs = 1)
     xml_file  = args[0]
     with open (xml_file, "r") as myfile:
         print poms.post_str(myfile.read())

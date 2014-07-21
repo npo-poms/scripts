@@ -47,7 +47,7 @@ def init(opts = None):
     target=d['target']
     d.close()
 
-def opts(args = "t:e:srh", usage = None):
+def opts(args = "t:e:srh", usage = None, minargs = 0):
     try:
         opts, args = getopt.getopt(sys.argv[1:],args)
     except getopt.GetoptError as err:
@@ -63,6 +63,11 @@ def opts(args = "t:e:srh", usage = None):
                 usage()
             generic_usage()
             sys.exit(0)
+    if len(args) < minargs:
+        if usage is not None:
+            usage()
+        generic_usage()
+        sys.exit(1)
 
     init(opts)
     return opts,args
@@ -93,11 +98,14 @@ def _creds():
     d.close()
 
 def generic_usage():
-    print "-s       show stored credentials"
-    print "-t <url> change target. 'test', 'dev' and 'prod' are " + \
-          "possible abbreviations for https://api[-test|-dev].poms.omroep.nl/media/"
-    print "-r       reset and ask username/password again"
-    print "-e <email> sets email-adress to mail errors to"
+    print "-s       Show stored credentials (in creds.db). If none stored, username/password " + \
+        "will be asked interactively."
+    print "-t <url> Change target. 'test', 'dev' and 'prod' are " + \
+          "possible abbreviations for https://api[-test|-dev].poms.omroep.nl/media/. " + \
+          "Defaults to previously used version (stored in creds.db)"
+    print "-r       Reset and ask username/password again"
+    print "-e <email> Set email address to mail errors to. " + \
+          "Defaults to previously used value (stored in creds.db)."
 
 def _members_or_episodes(mid, what):
     _creds()
@@ -113,7 +121,12 @@ def _members_or_episodes(mid, what):
         except Exception as e:
             print url + " " + str(e)
             sys.exit(1)
-        xml = minidom.parseString(response.read())
+
+        xmlStr = response.read();
+        try:
+            xml = minidom.parseString(xmlStr)
+        except Exception as e:
+            print "Could not parse \n" + xmlStr
 
         items = xml.getElementsByTagName('item')
         result.extend(items)
@@ -157,16 +170,6 @@ def add_genre(xml, genreId):
     _append_element(xml, genreEl)
 
 
-def _find_or_create_element(xml, node_name):
-    for child in xml.childNodes:
-        if child.nodeName == node_name:
-            return child;
-
-    el = xml.ownerDocument.createElement(node_name)
-    _append_element(xml, el)
-    return el
-
-
 def _append_element(xml, element, path = ("crid",
                                           "broadcaster",
                                           "portal",
@@ -190,6 +193,7 @@ def _append_element(xml, element, path = ("crid",
                                           "relation",
                                           "images",
                                           "asset")):
+    """Appends an element in the correct location in the given (minidom) xml"""
     index =  path.index(element.nodeName)
     for child in xml.childNodes:
         if path.index(child.nodeName) > index:

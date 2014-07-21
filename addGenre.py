@@ -1,8 +1,6 @@
 #!/usr/bin/env python
-"""Script to add a genre to all members of a group. Unfished as the POMS
-   Rest service does not support this yet"""
+"""Script to add a genre to all members of a group. Supported in poms >= 3.2 only"""
 import sys
-import getopt
 import poms
 
 def usage():
@@ -10,22 +8,16 @@ def usage():
 
 def main():
 
-    opt, args = poms.opts(usage = usage)
-
-    if len(args) < 2:
-        usage()
-        sys.exit(1)
-
-    mid = args[0]
-    genreId = args[1]
+    opt, args = poms.opts(usage = usage, minargs = 2)
+    mid, genre_id = args
 
     for s in poms.members(mid):
         #print s.attributes['position'].value
-        update = s.getElementsByTagName('mediaUpdate')[0];
-        mid = update.attributes['mid'].value
+        update     = s.getElementsByTagName('mediaUpdate')[0];
+        member_mid = update.attributes['mid'].value
 
-        print("Adding genre " + genreId + " to " + mid);
-        poms.add_genre(update, genreId)
+        print("Adding genre " + genre_id + " to " + member_mid);
+        poms.add_genre(update, genre_id)
         poms.post(update)
 
 
