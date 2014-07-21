@@ -117,7 +117,7 @@ def addMember(groupMid, memberMid, position=0, highlighted="false"):
     response = urllib2.urlopen(urllib2.Post(url, data=xml))
 
 def post(xml):
-    # it seems mindoc sucks a bit, since it should have added these attributes automaticly of course. The xml is simply not valid otherwise
+    # it seems minidoc sucks a bit, since it should have added these attributes automaticly of course. The xml is simply not valid otherwise
     xml.setAttribute("xmlns", "urn:vpro:media:update:2009")
     xml.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
     url = target + "media?errors=" + email
@@ -125,4 +125,5 @@ def post(xml):
     req = urllib2.Request(url, data=xml.toxml('utf-8'))
     req.add_header("Authorization", authorizationHeader);
     req.add_header("Content-Type", "application/xml")
+    req.add_header("Accept", "application/json")
     response = urllib2.urlopen(req)
