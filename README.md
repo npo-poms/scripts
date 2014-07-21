@@ -11,5 +11,4 @@ For python we maintain a 'poms.py' which is imported in the other python scripts
 
 Groovy/Java
 -----------
-Since POMS is written in Java, it is actually feasable to use it's domain-objects in your scripts. A Rest-client in java is available and is in use at VPRO. 
-
+Since POMS is written in Java, it is actually feasible to use its domain objects in your scripts. A rest client in java is available and is in use at VPRO.
