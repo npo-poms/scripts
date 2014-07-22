@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+    Er bestaan een aantal basis elementen:
+
+        "program"   - losse uitzending, web-only materiaal of een individuele track
+        "group"     - een verzameling van programma's en groepen, bijvoorbeeld een serie, playlist of album
+
+    (** Naast program en group bestaat er een derde basis element: "segment". Een segment is een deel van de tijdlijn
+    van een programma. Omdat een segment zonder programma niet kan bestaan worden segmenten bij import aangeboden als
+    onderdeel  van een programma (zie onder). Via REST/SOAP api's kan men segmenten los aanbieden, mits daarbij apart
+    een referentie naar het bijbehorende programma wordt meegeleverd. **)
+
+    Programma's kunnen een onderdeel zijn van een groep via het memberOf element (generiek) of via episodeOf als het en
+    aflevring betreft. Voor het laatste geval geldt dat het programma van het type BROADCAST of CLIP moet zijn, en dat
+    de groep van het type SERIES of SEASON moet zijn. Bij import scenario's dienen de groepen geimporteerd te zijn voor
+    de programma's.
+
+    Programma en groep hebben beiden een vereist type attribuut. Geldige waardes zijn:
+
+        Programma   - BROADCAST, MOVIE, TRAILER, CLIP, TRACK, STRAND
+        Group       - SERIES, SEASON, ARCHIVE, PLAYLIST, ALBUM, STRAND
+
+    Overige attributen zijn optioneel en spreken voor zich.
+-->
+<program type="BROADCAST" avType="VIDEO" publishStop="2012-01-11T18:16:01.287+01:00"
+    publishStart="2012-01-11T16:16:01.287+01:00" embeddable="true"
+    xmlns="urn:vpro:media:update:2009">
+
+    <!--
+        Crids worden gebruikt in TVAnytime om unieke id's voor content te genereren.
+
+        Omroepen kunnen hier eigen crids toevoegen en dit veld gebruiken als koppeltabel naar hun eigen system. Bij imports of updates
+        zal POMS proberen om het originele document te vinden en dit te verreiken. Als dat niet lukt wordt een nieuwe entiteit aangemaakt.
+
+        Regels:
+            - crids zijn optioneel
+            - crid moet uniek zijn
+            - moet een geldige URL bevatten (bij voorkeur zonder parameters)
+            - protocol moet "crid" zijn
+
+        (Voor de Teleview crids geldt dat ze niet 100% betrouwbaar zijn. Teleview gebruikte regelmatig hetzelfde crid voor
+        verschillende uitzendingen.)
+    -->
+    <crid>crid://bds.tv/9876</crid>
+    <crid>crid://tmp.fragment.mmbase.vpro.nl/1234</crid>
+    <!--
+        Omroep naam zoals gedistribueerd door MIS/Teleview. Is nog een vrij tekst veld maart het is niet verstandig om dit vrij te
+        in te vullen. Bij afwijkende inhoud kan de media na invoer niet bewerkt worden door de redacteuren van de bijbewhorende omroep.
+
+        Binnen afzienbare termijn wordt dit veld vervangen door een enum met een gelimiteerd aantal waardes.
+
+        Regels:
+        - Hoofletters, geen spaties
+    -->
+    <broadcaster>BNN</broadcaster>
+    <broadcaster>VPRO</broadcaster>
+    <!--
+        Optionele portal id waaraan deze media gerelateerd moet worden. De portal moet bestaan in POMS. Als dat
+        niet het geval is zal
+
+        Regels:
+        - [A-Z0-9_-]{4,}
+    -->
+    <portal>3VOOR12</portal>
+    <portal>STERREN24</portal>
+    <!--
+        Titel van programma. Iedere titel krijgt een type waarvoor een beperkt aantal waardes mogelijk zijn:
+
+         - MAIN, SHORT, SUB, ORIGINAL, EPISODE, WORK
+
+        Meerdere organisaties kunnen titels toevoegen bij een programa. Deze titels worden parallel opgeslagen zodat ze elkaar niet
+        overschijven. Bij levering wordt automatisch de koppeling gemaakt naar de bijbehorende organisatie. In de terugkoppeling en
+        publicaties worden alle titels vermeld.
+
+        Regels:
+            - Een titel van type MAIN is verplicht
+            - Type attribuut is verplicht
+            - Ieder type kan slechts één keer voor komen. Bij doublures wordt alleen de eerste waarde verwerkt
+    -->
+    <title type="MAIN">Main title</title>
+    <title type="SHORT">Short title</title>
+    <title type="EPISODE">Episode title MIS</title>
+    <!--
+        Beschrijving van het programma. Analoog aan titel met dit verschil dat een beschrijving optioneel is.
+    -->
+    <description type="MAIN">Main description</description>
+    <description type="SHORT">Short description</description>
+    <description type="EPISODE">Episode description MIS</description>
+    <tag>Kabouters</tag>
+    <tag>2011</tag>
+    <!--
+        Speelduur van een programma of groep. Bij radio/tv uitzendingen zal dit veld initieel de duur volgens de gids bevatten. Wat niet noodzakelijk
+        de echte speelduur is.
+
+        Hoewel optioneel, is het zonder deze waarde niet mogelijk om bij een programma of segment een correcte tijdlijn in de speler te plaatsen.
+        Invullen is dus aan te raden.
+    -->
+    <duration>P0DT2H0M0.000S</duration>
+    <!--
+        Als dit programma onderdeel is van een ander programma of groep wordt hier met een mediaRef verwezen naar de verzameling. Een geldige
+        media referentie is een urn, een crid of een poProgID.
+
+        Position is een optioneel attribuut voor de positie van dit programma in de (geordende) verzameling. Als het attribuut wordt weggelaten
+        worden dit programma onderaan de verzameling bijgevoegd.
+
+        Regels:
+            - Referentie waarde is verplicht
+            - Entiteit waarnaar de referentie verwijst moet al bestaan.
+            - Optioneel meegestuurde positie moet vrij zijn.
+    -->
+    <memberOf position="34">urn:vpro:media:program:456543</memberOf>
+    <memberOf>VPROWON_374927</memberOf>
+    <!--
+        Meervoudig geldig email adres bij een programma of groep
+    -->
+    <email>info@npo.nl</email>
+    <email>programma@avro.nl</email>
+    <!--
+        Meervoudig geldige URL naar een webadres adres bij een programma of groep
+    -->
+    <website>http://tegenlicht.vpro.nl/</website>
+    <website>http://tegenlicht.vpro.nl/afleveringen/222555</website>
+    <!--
+        Optionele lijst met locaties waar dit programma is op te vragen.
+    -->
+    <locations>
+        <!--
+            Een locatie waar dit programma is op te vragen. Locaties kunnen onafhankelijk van een programma een publicatie start en stop krijgen.
+            Bij passeren van een publicatie datum wordt het hele programma opnieuw gepubliceerd, met daarin alleen de beschikbare locaties.
+        -->
+        <location publishStart="2012-06-28T14:00:06" publishStop="2012-11-16T14:00:06">
+            <!--
+                Verplichte URL naar programma speler of stream. Ove rhet algemeen zal dit een URL naar naar cgi redirect of content platform zijn.
+                Historisch wordt nog veel verwezen naar UG speler pagina's die in een speker pop-up werden geladen. Dergelijke speler URL's hebben
+                avFileFormat "HTML".
+
+                ODI/Geo-IP scenario's worden opgenomen onder speciaal protocol:
+                    - Voor ODI: odi+http://odi.omroep.nl/video/h264_std/BNN_12345
+                    - Voor Geo-IP: odis+http://content.omroep.nl/vpro/protected/luisterpaal/albums/world/urn:vpro:media:group:12705637/track02.mp3
+
+                Verwerking van deze URL's is nog niet geimplementeerd in centrale speler oplossingen. Implementaite is daarom aan de omroepen.
+                Op lange termijn wordt dit mogelijk ook gerealiseerd in centrale spelers, uitgaande van de getoonde voorbeeld URL's.
+
+                Regels:
+                    - Verplicht veld
+                    - Moet geldige URL bevatten
+            -->
+            <programUrl>http://cgi.omroep.nl/legacy/nebo?/Ceres/1/vpro/rest/2009/VPRO_1132492/bb.20090317.m4v</programUrl>
+            <avAttributes>
+                <!-- Bitrate bij de gehele stream in bits/seconde -->
+                <bitrate>-832461398</bitrate>
+                <!-- Verplicht file fomaat. Geldige waardes zijn: MPEG2, MP3, MP4, WM, WVC1, HTML, H264 -->
+                <avFileFormat>MP4</avFileFormat>
+                <!-- Verplichte hoogte en breedte in pixels als locatie video bevat -->
+                <videoAttributes height="180" width="320"/>
+            </avAttributes>
+            <!-- Optionele offset als een speler deze locatie niet vanaf het begin moet afspelen -->
+            <offset>P2Y2M7DT1H10M0S</offset>
+            <!-- Optionele speelduur van deze locatie als de speelduur afwijkt van de speelduur van het programma hierboven -->
+            <duration>P3Y7M3DT1H10M0S</duration>
+        </location>
+        <location>
+            <programUrl>http://player.omroep.nl/aflevering/898</programUrl>
+            <avAttributes>
+                <avFileFormat>HTML</avFileFormat>
+                <videoAttributes height="180" width="320"/>
+            </avAttributes>
+        </location>
+    </locations>
+    <!--
+        Optioneel kan een omroep een lijst uitzendata meesturen waarme het mogelijk moet zijn een uitzending te identificeren. Dit is een fallback scenario
+        voor situaties waar geen crid of poProdID gebruikt kan worden. Matches worden met een kleine marge gezocht op de combinatie van kanaal, start
+        en duur.
+
+        In de praktijk is dit een niet erg betrouwbare oplossing, zeker als tijdstippen door willekeurige redactueren zijn ingevoerd. Matching op een geldige
+        mediaRef heeft de voorkeur.
+    -->
+    <scheduleEvents>
+        <!-- Een vertoning op een kanaal. Alle velden, kanaal, start en duur zijn verplicht. -->
+        <scheduleEvent channel="NED3">
+            <start>1970-01-01T01:00:00.100+01:00</start>
+            <duration>P0DT0H0M0.200S</duration>
+        </scheduleEvent>
+        <scheduleEvent channel="NED3">
+            <start>1970-01-01T01:00:00.300+01:00</start>
+            <duration>P0DT0H0M0.050S</duration>
+        </scheduleEvent>
+    </scheduleEvents>
+    <!--
+        Omroepen kunnen zelf relaties definieren waarmee ze inhoud uit POMS kunnen koppelen aan informatie die niet in POMS beschikbaar is. Dit is een
+        eenvoudig mechanisme waarmee geavanceerde functionaliteit kan worden toegevoegd aan het POMS data model, zonder dat het datamodel hier zelf op.
+        in hoeft te voorzien. Het middels is vooral geschikt in scenario's waar verschillende services en CMS-en met elkaar communuceren.
+
+        De genoemde voorbeelden zijn illustratief voor het gebruik. De Gezond24 portal van de AVRO houdt een thesaurus bij met ziektebeelden en
+        hun beschijving. De 3voor12 portal bevat een eigen atiesten database. Bovendien moet de redactie soms de platenlabel vermelden bij een CLIP.
+        Door de informatie hier op te slaan is het via de pubglieke API mogelijk om hierop te zoeken. Zo kan de AVRO alle media opvragen bij een
+        ziektebeeld, en kan 3voor12 een link in de speler plaatsen naar een artiesten pagina of zoeken naar alle media voor een artiest of platenlabel.
+
+        Omroepen zijn zelf verantwoordelijk voor definitie en gebruik van de relaties
+
+        Regels:
+            - Broadcaster en type zijn verplicht
+            - De combinatie van broadcaster en type moet eerder aangemeld zijn in POMS
+            - UriRef is optioneel en bedoeld voor identificerende informatie
+            - UriRef mag alleen geldige URI's bevatten
+            - Inhoud is optioneel en bedoeld voor meer beschrijvende informatie
+    -->
+    <relation broadcaster="AVRO" type="THESAURUS" uriRef="urn:avro:g24:thesaurus:34749"/>
+    <relation broadcaster="VPRO" type="ARTIST" uriRef="http://3voor12.vpro.nl/artist/63439">Radiohead</relation>
+    <relation broadcaster="VPRO" type="LABEL">Sony Music Entertainment</relation>
+    <!--
+        Optionele lijst met afbeeldingen bij een programma. Deze afbeeldingen worden lokaal opgeslagen op de image sercvice en gebupliceerd met het
+        programma. Het is de bedoeling dat hier verschillende afbeeldingen worden meegestuurd met een voldoende hoge resolutie, en niet meerder
+        formaten van dezelfde afbeeldingen.
+
+        Afbeeldingen worden toegevoegd aan de image service en worden daar op verzoek van de eindgebruiker dynamisch geschaald naar een specifiek
+        formaat.
+    -->
+    <images>
+        <!--
+            Een afbeelding met optionele publicatie start en stop. Bij passeren van een publicatie datum wordt het hele programma opnieuw gepubliceerd,
+            met daarin alleen de beschikbare afbeeldingen.
+
+            Het type attribuut is verplicht en kan de volgende waardes bevatten: PICTURE, PORTRAIT, STILL, LOGO, ICON, BACKGROUND.
+
+            Regels:
+                - Type is verplicht
+                - Titel is verplicht
+                - Beschrijving is verplicht
+        -->
+        <image type="PICTURE" publishStart="2012-06-28T14:00:06" publishStop="2012-11-16T14:00:06">
+            <title>Title van de afbeelding</title>
+            <description>Inhoudelijke beschrijving van de afbeelding</description>
+            <!-- Optionele breedte in pixels -->
+            <width>320</width>
+            <!-- Optionele hoogte in pixels -->
+            <height>180</height>
+            <!-- De binaire afbeelding. Hoe deze wordt aangeleverd verschilt per gebruik. -->
+            <!--
+                Bij imports scenario's kan de leverancier een locatie van een plaatje bijvoegen. Dit kan een locatie op het web zijn waarvandaan de
+                afbeelding gedownload wordt, of een locatie op het filesyteem relatief t.o.v de locatie van de te importeren file:
+
+                - http://beeldbank.omroep.nl/375492
+                - file://afbeeldingen/plaatje.jpg
+
+                (* Bij imports via SOAP wordt de afbeelding via XOP/MTOM als binary attachment meegestuurd met het SOAP bericht. In dat geval wordt
+                het location element vervangen door een data element met daarin de benodigde informatie. Base64 geencodeerd in de XML zal ook mogelijk
+                zijn, maar op deze functie wordt bij problemen niet niet ondersteund. *)
+
+                Regels:
+                - Locatie of data element is verplicht
+                - Locatie moet een geldige URL zijn die door de de applicatie die deze import verwerkt benaderbaar moet zijn
+            -->
+            <imageLocation>
+                <url>http://beeldbank.omroep.nl/375492</url>
+            </imageLocation>
+        </image>
+    </images>
+
+    <!--
+        De tot hier beschreven elementen komen voor bij alle media types: program, group en segment elementen. Hieronder volgen de
+        elementen die allen bij een programma voorkomen.
+    -->
+
+    <!--
+        EpisodeOf werkt analoog aan memberOf hierboven. Belangrijk verschil is dat alleen programma's een aflevering van een groep
+        kunnen worden, dat de groep van het type SERIES of SEASON moet zijn, en dat het programma van het type CLIP of BROADCAST moet.
+    -->
+    <episodeOf position="1">urn:vpro:media:group:4</episodeOf>
+    <!-- Optionele lijst met segmenten van een programma. -->
+    <segments>
+        <!--
+            Een segment is een deel van een programma dat gevisualiseerd kan worden op de tijdlijn in de speler. Een segment heeft
+            altijd een start tijdstip dat het begin van het segment t.o.v het bijheborende programma. Voor zijn overige velden is een
+            segment identiek aan alle media types (). Een segment kan dus alles bevatten wat hierboven boven episodeOf wordt getoond, d.w.z. titels,
+            beschijvingen, afbeeldingen, locaties, etc..
+
+            In het standaard gebruikscenario zal een speler bij het afspelen van een segment de locatie van het omhullende programma aanroepen met
+            een start offset om op de tijdlijn naar het gevraagde segment te springen. Het is echter ook mogelijk om locaties direct aan een segment
+            te koppelen. Hierdoor is het mogelijk om een MP3 podcast te maken van een vast wekelijks terugkerend programma item, of om een deel van
+            een programma al online beschikbaar te maken, zonder het hele programma aan te bieden.
+
+            Regels:
+                - Start is vereist
+                - Als duration niet is ingevuld loopt het segment door tot het einde van het programma
+                - Als het programma wordt verwijderd verdwijnen ook de bijbehorende segmenten.
+        -->
+        <segment avType="VIDEO" publishStop="2012-01-11T18:16:01.271+01:00" publishStart="2012-01-11T16:16:01.271+01:00" embeddable="true">
+            <broadcaster>VPRO</broadcaster>
+            <title type="MAIN">Main title</title>
+            <duration>P0DT0H1M40.000S</duration>
+            <start>P0DT2H23M0.000S</start>
+        </segment>
+    </segments>
+    <!--
+        Centrale programma id van de Publieke Omroep, ook bekend als What's-On id of Product Id (prid). Dit id is nodig om via ODI inhoud af te spelen.
+        Naast urn en crid is is dit het derde veld dat gebruikt mag worden om programma's te identificeren.
+
+        Regels:
+            - Veld moet uniek zijn
+            - Waarde moet bestaan in de andere systemen (Teleview, Nebo en Ceres)
+    -->
+    <poProgID>VPROWON_12345</poProgID>
+</program>
