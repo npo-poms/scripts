@@ -89,6 +89,14 @@
     <tag>Kabouters</tag>
     <tag>2011</tag>
     <!--
+        Optionele lijst met genre term id's volgens http://poms.omroep.nl/schema/classification/ebu_ContentGenreCS.xml
+        
+        Wijzigen van dit veld is bij media van type BROADCAST niet toegestaan. Omdat het een gidsveld is. Updates moeten 
+        dan de originele waarde bevatten. 
+    -->
+    <genre>3.0.1.8.23</genre>
+    <genre>3.0.1.8.29</genre>
+    <!--
         Speelduur van een programma of groep. Bij radio/tv uitzendingen zal dit veld initieel de duur volgens de gids bevatten. Wat niet noodzakelijk
         de echte speelduur is.
 
@@ -292,13 +300,4 @@
             <start>P0DT2H23M0.000S</start>
         </segment>
     </segments>
-    <!--
-        Centrale programma id van de Publieke Omroep, ook bekend als What's-On id of Product Id (prid). Dit id is nodig om via ODI inhoud af te spelen.
-        Naast urn en crid is is dit het derde veld dat gebruikt mag worden om programma's te identificeren.
-
-        Regels:
-            - Veld moet uniek zijn
-            - Waarde moet bestaan in de andere systemen (Teleview, Nebo en Ceres)
-    -->
-    <poProgID>VPROWON_12345</poProgID>
 </program>
