@@ -5,6 +5,7 @@ import base64
 from xml.dom import minidom
 from pprint import pprint
 import getopt
+import getpass
 
 target='https://api-test.poms.omroep.nl/media/'
 """The currently configured target. I.e. the URL of the POMS rest api"""
@@ -79,7 +80,7 @@ def _creds():
 
     if not usernamekey in d  or ('-r','') in _opts :
         d[usernamekey] = raw_input('Username for ' + target + ': ')
-        d[passwordkey]  = raw_input('Password: ')
+        d[passwordkey]  = getpass.getpass()
         print "Username/password stored in file creds.db. Use -r to set it."
 
 
@@ -160,7 +161,7 @@ def add_member(groupMid, memberMid, position=0, highlighted="false"):
     response = urllib2.urlopen(urllib2.Post(url, data=xml))
 
 def post_str(xml):
-    return post(minidom.parseString(xml).childNodes[0])
+    return post(minidom.parseString(xml).documentElement)
 
 def add_genre(xml, genreId):
     """Adds a genre to the minidom object"""
