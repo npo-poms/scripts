@@ -22,7 +22,7 @@
 
     Overige attributen zijn optioneel en spreken voor zich.
 -->
-<program type="BROADCAST" avType="VIDEO" publishStop="2012-01-11T18:16:01.287+01:00"
+<program type="CLIP" avType="VIDEO" publishStop="2012-01-11T18:16:01.287+01:00"
     publishStart="2012-01-11T16:16:01.287+01:00" embeddable="true"
     xmlns="urn:vpro:media:update:2009">
 
@@ -90,9 +90,9 @@
     <tag>2011</tag>
     <!--
         Optionele lijst met genre term id's volgens http://poms.omroep.nl/schema/classification/ebu_ContentGenreCS.xml
-        
-        Wijzigen van dit veld is bij media van type BROADCAST niet toegestaan. Omdat het een gidsveld is. Updates moeten 
-        dan de originele waarde bevatten. 
+
+        Wijzigen van dit veld is bij media van type BROADCAST niet toegestaan. Omdat het een gidsveld is. Updates moeten
+        dan de originele waarde bevatten.
     -->
     <genre>3.0.1.8.23</genre>
     <genre>3.0.1.8.29</genre>
@@ -116,8 +116,9 @@
             - Entiteit waarnaar de referentie verwijst moet al bestaan.
             - Optioneel meegestuurde positie moet vrij zijn.
     -->
-    <memberOf position="34">urn:vpro:media:program:456543</memberOf>
-    <memberOf>VPROWON_374927</memberOf>
+    <memberOf position="34">urn:vpro:media:group:2981744</memberOf>
+    <memberOf>POMS_S_VPRO_159096</memberOf>
+
     <!--
         Meervoudig geldig email adres bij een programma of groep
     -->
@@ -183,8 +184,11 @@
         In de praktijk is dit een niet erg betrouwbare oplossing, zeker als tijdstippen door willekeurige redactueren zijn ingevoerd. Matching op een geldige
         mediaRef heeft de voorkeur.
     -->
-    <scheduleEvents>
         <!-- Een vertoning op een kanaal. Alle velden, kanaal, start en duur zijn verplicht. -->
+
+<!--
+    <scheduleEvents>
+
         <scheduleEvent channel="NED3">
             <start>1970-01-01T01:00:00.100+01:00</start>
             <duration>P0DT0H0M0.200S</duration>
@@ -194,6 +198,7 @@
             <duration>P0DT0H0M0.050S</duration>
         </scheduleEvent>
     </scheduleEvents>
+-->
     <!--
         Omroepen kunnen zelf relaties definieren waarmee ze inhoud uit POMS kunnen koppelen aan informatie die niet in POMS beschikbaar is. Dit is een
         eenvoudig mechanisme waarmee geavanceerde functionaliteit kan worden toegevoegd aan het POMS data model, zonder dat het datamodel hier zelf op.
@@ -213,7 +218,7 @@
             - UriRef mag alleen geldige URI's bevatten
             - Inhoud is optioneel en bedoeld voor meer beschrijvende informatie
     -->
-    <relation broadcaster="AVRO" type="THESAURUS" uriRef="urn:avro:g24:thesaurus:34749"/>
+    <relation broadcaster="TROS" type="CITY" uriRef="urn:avro:g24:thesaurus:34749">Amsterdam</relation>
     <relation broadcaster="VPRO" type="ARTIST" uriRef="http://3voor12.vpro.nl/artist/63439">Radiohead</relation>
     <relation broadcaster="VPRO" type="LABEL">Sony Music Entertainment</relation>
     <!--
@@ -260,7 +265,7 @@
                 - Locatie moet een geldige URL zijn die door de de applicatie die deze import verwerkt benaderbaar moet zijn
             -->
             <imageLocation>
-                <url>http://beeldbank.omroep.nl/375492</url>
+              <url>http://images.poms.omroep.nl/image/494930.jpg</url> <!-- zomaar een plaatje, toevallig ook op poms -->
             </imageLocation>
         </image>
     </images>

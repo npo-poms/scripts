@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""a"""
+"""Posts a POMS media update XML"""
 import sys
 import poms
 from xml.dom import minidom
