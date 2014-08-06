@@ -117,18 +117,7 @@ def _members_or_episodes(mid, what):
     while True:
         url = (target + 'api/group/' + mid + "/" + what + "?max=" + str(batch) +
                "&offset=" + str(offset))
-        try:
-            response = urllib2.urlopen(urllib2.Request(url))
-        except Exception as e:
-            print url + " " + str(e)
-            sys.exit(1)
-
-        xmlStr = response.read();
-        try:
-            xml = minidom.parseString(xmlStr)
-        except Exception as e:
-            print "Could not parse \n" + xmlStr
-
+        xml = _get_xml(url)
         items = xml.getElementsByTagName('item')
         result.extend(items)
         if len(items) == 0:
@@ -165,6 +154,29 @@ def post_str(xml):
 
 def parkpost_str(xml):
     return parkpost(minidom.parseString(xml).documentElement)
+
+
+def get(mid):
+    _creds()
+    url = target + "media/media/" + mid
+    return _get_xml(url)
+
+
+def _get_xml(url):
+    try:
+        response = urllib2.urlopen(urllib2.Request(url))
+    except Exception as e:
+        print url + " " + str(e)
+        sys.exit(1)
+
+    xmlStr = response.read();
+    try:
+        xml = minidom.parseString(xmlStr)
+    except Exception as e:
+        print "Could not parse \n" + xmlStr
+    return xml
+
+
 
 def add_genre(xml, genreId):
     """Adds a genre to the minidom object"""
