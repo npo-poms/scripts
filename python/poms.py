@@ -7,7 +7,7 @@ from pprint import pprint
 import getopt
 import getpass
 
-target='https://api-test.poms.omroep.nl/media/'
+target='https://api-test.poms.omroep.nl/'
 """The currently configured target. I.e. the URL of the POMS rest api"""
 
 
@@ -27,13 +27,13 @@ def init(opts = None):
     for o,a in opts:
         if o == '-t':
             if a == 'test':
-                a = 'https://api-test.poms.omroep.nl/media/'
+                a = 'https://api-test.poms.omroep.nl/'
             if a == 'dev':
-                a = 'https://api-dev.poms.omroep.nl/media/'
+                a = 'https://api-dev.poms.omroep.nl/'
             if a == 'prod':
-                a = 'https://api.poms.omroep.nl/media/'
+                a = 'https://api.poms.omroep.nl/'
             if a == 'localhost':
-                a = 'http://localhost:8071/rs/media/'
+                a = 'http://localhost:8071/rs/'
             if a != d['target']:
                 print "Setting target to " + a
                 d['target'] = a
@@ -50,7 +50,7 @@ def init(opts = None):
 
 def opts(args = "t:e:srh", usage = None, minargs = 0):
     try:
-        opts, args = getopt.getopt(sys.argv[1:],args)
+        opts, args = getopt.getopt(sys.argv[1:], args)
     except getopt.GetoptError as err:
         print(err)
         if usage is not None:
@@ -115,7 +115,7 @@ def _members_or_episodes(mid, what):
     offset = 0
     batch = 20
     while True:
-        url = (target + 'group/' + mid + "/" + what + "?max=" + str(batch) +
+        url = (target + 'api/group/' + mid + "/" + what + "?max=" + str(batch) +
                "&offset=" + str(offset))
         try:
             response = urllib2.urlopen(urllib2.Request(url))
@@ -156,12 +156,15 @@ def get_memberOf_xml(groupMid, position=0, highlighted="false"):
             highlighted + '">' + groupMid + '</memberOf>')
 
 def add_member(groupMid, memberMid, position=0, highlighted="false"):
-    url = target + "media/" + memberMid + "/memberOf"
+    url = target + "api/media/" + memberMid + "/memberOf"
     xml = getMemberOfXml(groupMid, position, highlighted)
     response = urllib2.urlopen(urllib2.Post(url, data=xml))
 
 def post_str(xml):
     return post(minidom.parseString(xml).documentElement)
+
+def parkpost_str(xml):
+    return parkpost(minidom.parseString(xml).documentElement)
 
 def add_genre(xml, genreId):
     """Adds a genre to the minidom object"""
@@ -202,20 +205,37 @@ def _append_element(xml, element, path = ("crid",
             return
     xml.appendChild(element)
 
-def post(xml):
+
+def post(xml, lookupcrid=False):
     _creds()
     # it seems minidom sucks a bit, since it should have added these attributes
     # automaticly of course. The xml is simply not valid otherwise
     xml.setAttribute("xmlns", "urn:vpro:media:update:2009")
     xml.setAttribute("xmlns:xsi",
                      "http://www.w3.org/2001/XMLSchema-instance")
-    url = target + "media"
+    url = target + "api/media?lookupcrid=" + str(lookupcrid)
+
     if email:
-        url += "?errors=" + email
+        url += "&errors=" + email
+
 
     #print xml.toxml()
     print "posting " + xml.getAttribute("mid") + " to " + url
     req = urllib2.Request(url, data=xml.toxml('utf-8'))
+    _post(xml, req)
+
+
+
+def parkpost(xml):
+    _creds()
+    url = target + "parkpost/promo"
+
+    print "posting to " + url
+    req = urllib2.Request(url, data=xml.toxml('utf-8'))
+    _post(xml, req)
+
+
+def _post(xml, req):
     req.add_header("Authorization", authorizationHeader);
     req.add_header("Content-Type", "application/xml")
     req.add_header("Accept", "text/plain")
