@@ -73,10 +73,10 @@ def opts(args = "t:e:srh", usage = None, minargs = 0):
     init(opts)
     return opts,args
 
-def _creds():
+def _creds(pref = ""):
     d = shelve.open('creds.db')
-    usernamekey = d['target'] + ':username'
-    passwordkey = d['target'] + ':password'
+    usernamekey = pref + d['target'] + ':username'
+    passwordkey = pref + d['target'] + ':password'
 
     if not usernamekey in d  or ('-r','') in _opts :
         d[usernamekey] = raw_input('Username for ' + target + ': ')
@@ -239,7 +239,7 @@ def post(xml, lookupcrid=False):
 
 
 def parkpost(xml):
-    _creds()
+    _creds("parkpost:")
     url = target + "parkpost/promo"
 
     print "posting to " + url
