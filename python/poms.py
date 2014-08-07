@@ -244,7 +244,7 @@ def parkpost(xml):
 
     print "posting to " + url
     req = urllib2.Request(url, data=xml.toxml('utf-8'))
-    return x_post(xml, req)
+    return _post(xml, req)
 
 
 def _post(xml, req):

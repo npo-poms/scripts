@@ -30,11 +30,11 @@ class POMSRSTest(unittest.TestCase):
         <program xmlns:media="urn:vpro:media:2009" xmlns:shared="urn:vpro:shared:2009" xmlns="urn:vpro:media:update:2009" type="CLIP" avType="VIDEO" embeddable="true">
            <broadcaster>VPRO</broadcaster>
            <title type="MAIN">Holland Doc</title>
-           <title type="SUB">Zwart ijs</title>
-           <title type="ORIGINAL">Holland Doc: Zwart IJs</title>
+           <title type="SUB">Sub title</title>
+           <title type="ORIGINAL">Original title</title>
            <description type="MAIN">Main title</description>
            <description type="SHORT">Short title</description>
-           <description type="EPISODE"> Documentaire over de band tussen het schaatsen op natuurijs en orthodox-christelijk Nederland. Zwart IJs volgt een aantal schaatsers in een jaar dat er bijna een Elfstedentocht kwam, op zondag.</description>
+           <description type="EPISODE">Episode title</description>
            <tag>schaatsen</tag>
         </program>
         """);
@@ -49,6 +49,8 @@ class POMSRSTest(unittest.TestCase):
         print "getting xml"
         xml = self.to_et(poms.get("POMS_VPRO_1250889"))
         self.assertEqual(xml.findall(pref + "title[@type='MAIN']")[0].text, "Holland Doc")
+
+    def test_parkpost(self):
 
 
 
