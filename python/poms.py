@@ -225,7 +225,7 @@ def post(xml, lookupcrid=False):
     xml.setAttribute("xmlns", "urn:vpro:media:update:2009")
     xml.setAttribute("xmlns:xsi",
                      "http://www.w3.org/2001/XMLSchema-instance")
-    url = target + "api/media?lookupcrid=" + str(lookupcrid)
+    url = target + "media/media?lookupcrid=" + str(lookupcrid)
 
     if email:
         url += "&errors=" + email
@@ -234,7 +234,7 @@ def post(xml, lookupcrid=False):
     #print xml.toxml()
     print "posting " + xml.getAttribute("mid") + " to " + url
     req = urllib2.Request(url, data=xml.toxml('utf-8'))
-    _post(xml, req)
+    return _post(xml, req)
 
 
 
@@ -244,7 +244,7 @@ def parkpost(xml):
 
     print "posting to " + url
     req = urllib2.Request(url, data=xml.toxml('utf-8'))
-    _post(xml, req)
+    return x_post(xml, req)
 
 
 def _post(xml, req):
