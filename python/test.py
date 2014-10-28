@@ -12,7 +12,6 @@ import xml.etree.ElementTree as ET
 
 class POMSRSTest(unittest.TestCase):
     def setUp(self):
-        poms.opts()
         global xmlns, pref
         xmlns = "urn:vpro:media:update:2009"
         pref = "{" + xmlns + "}"
@@ -51,8 +50,35 @@ class POMSRSTest(unittest.TestCase):
         self.assertEqual(xml.findall(pref + "title[@type='MAIN']")[0].text, "Holland Doc")
 
     def test_parkpost(self):
+        xml = """<?xml version="1.0"?>
+<NPO_gfxwrp>
+  <ProductCode>2P0108MO_BLAUWBLOTEST3</ProductCode>
+  <OrderCode>2P140801_EO___BLAUW_BL_MORTEST3</OrderCode>
+  <Broadcaster>VPRO</Broadcaster>
+  <PromotedProgramProductCode>POMS_VPRO_216214</PromotedProgramProductCode>
+  <Referrer/>
+  <MXF_Name>91345392</MXF_Name>
+  <ProgramTitle>Blauw Bloed Extra: Prinses Irene - 75 jaar</ProgramTitle>
+  <EpisodeTitle>Blauw Bloed Extra: Prinses Irene - 75 jaar</EpisodeTitle>
+  <PromoType>P</PromoType>
+  <TrailerTitle>Blauw Bloed Extra: Prinses Irene - 75 jaar</TrailerTitle>
+  <SerieTitle>Blauw Bloed Extra: Prinses Irene - 75 jaar</SerieTitle>
+  <FrameCount>750</FrameCount>
+  <VideoFormat>HD</VideoFormat>
+  <FirstTransmissionDate>2014-08-01T16:59:04+00:00</FirstTransmissionDate>
+  <PlacingWindowStart>2014-07-31T06:00:00+02:00</PlacingWindowStart>
+  <PlacingWindowEnd>2014-08-01T06:00:00+02:00</PlacingWindowEnd>
+  <Files>
+    <File Filename="2P0108MO_BLAUWBLO.ismv"/>
+    <File Filename="2P0108MO_BLAUWBLO.ismc"/>
+    <File Filename="2P0108MO_BLAUWBLO.ism"/>
+  </Files>
+</NPO_gfxwrp>"""
+
 
 
 
 if __name__ == "__main__":
+    poms.opts()
+    del sys.argv[1:]
     unittest.main()

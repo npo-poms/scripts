@@ -64,6 +64,7 @@ def opts(args = "t:e:srh", usage = None, minargs = 0):
                 usage()
             generic_usage()
             sys.exit(0)
+        del sys.argv[0]
     if len(args) < minargs:
         if usage is not None:
             usage()
@@ -115,7 +116,7 @@ def _members_or_episodes(mid, what):
     offset = 0
     batch = 20
     while True:
-        url = (target + 'api/group/' + mid + "/" + what + "?max=" + str(batch) +
+        url = (target + 'media/group/' + mid + "/" + what + "?max=" + str(batch) +
                "&offset=" + str(offset))
         xml = _get_xml(url)
         items = xml.getElementsByTagName('item')
