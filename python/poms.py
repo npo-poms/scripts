@@ -109,6 +109,7 @@ def generic_usage():
     print "-e <email> Set email address to mail errors to. " + \
           "Defaults to previously used value (stored in creds.db)."
 
+# private method to implement both members and episodes calls.
 def _members_or_episodes(mid, what):
     _creds()
     print "loading members of " + mid
@@ -133,19 +134,21 @@ def _members_or_episodes(mid, what):
 
 def members(mid):
     """return a list of all members of a group. As XML objects, wrapped
-    in 'items', do you can see the position"""
+    in 'items', so you can see the position"""
     return _members_or_episodes(mid, "members")
 
 def episodes(mid):
     """return a list of all episodes of a group. As XML objects, wrapped
-    in 'items', do you can see the position"""
+    in 'items', so you can see the position"""
     return _members_or_episodes(mid, "episodes")
 
 def get_memberOf_xml(groupMid, position=0, highlighted="false"):
+    """create an xml sniplet representing a memberOf"""
     return ('<memberOf position="' + str(position) + '" highlighted="' +
             highlighted + '">' + groupMid + '</memberOf>')
 
 def add_member(groupMid, memberMid, position=0, highlighted="false"):
+    """Adds a a member to a group"""
     url = target + "api/media/" + memberMid + "/memberOf"
     xml = getMemberOfXml(groupMid, position, highlighted)
     response = urllib2.urlopen(urllib2.Post(url, data=xml))
@@ -158,6 +161,7 @@ def parkpost_str(xml):
 
 
 def get(mid):
+    """Returns XML-representation of a mediaobject"""
     _creds()
     url = target + "media/media/" + mid
     return _get_xml(url)
@@ -181,7 +185,6 @@ def _get_xml(url):
 
 def add_genre(xml, genreId):
     """Adds a genre to the minidom object"""
-
     genreEl = xml.ownerDocument.createElement("genre")
     genreEl.appendChild(xml.ownerDocument.createTextNode(genreId))
     _append_element(xml, genreEl)
