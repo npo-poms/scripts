@@ -9,5 +9,4 @@ source creds.sh
 
 target=$rs/media/$1/location/$2?errors=michiel.meeuwissen@gmail.com
 
-curl -i -s --insecure --user $user --header "Content-Type: application/xml" -X DELETE --data "$xml"  \
-    ${target}
+curl -i -s --insecure --user $user -X DELETE ${target}
