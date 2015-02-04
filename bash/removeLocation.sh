@@ -1,4 +1,6 @@
 #!/bin/bash
+#set -x
+
 if [ -z "$1" -o -z "$2" ] ; then
     echo use "$0 <mid> <location id>"
     exit
@@ -9,4 +11,4 @@ source creds.sh
 
 target=$rs/media/$1/location/$2?errors=michiel.meeuwissen@gmail.com
 
-curl -i -s --insecure --user $user -X DELETE ${target}
+curl -s --insecure --user $user -X DELETE ${target}
