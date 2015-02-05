@@ -37,6 +37,8 @@ client.set(group);
 
 ```
 
-Bash
-----
-Simply calling 'curl' in shell script is of course possible too sometimes.
+Bash/XSLT
+---------
+Simply calling 'curl' in shell script is of course possible too. These scripts include a 'creds.sh'. A template 'copy.to.creds.sh' is available. Do that and provide your own credentials in it. 
+
+Sometimes operations involve modifying XML, which is done using xsltproc/XSLT in these scripts.
