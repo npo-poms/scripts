@@ -1,12 +1,15 @@
 #!/bin/bash
-source creds.sh
-
 if [ -z "$1" ] ; then
     echo use "$0 <source mid>"
     exit
 fi
 
-source functions.sh
+SOURCE=$(readlink  $BASH_SOURCE)
+if [[ -z "$SOURCE" ]] ; then
+    SOURCE=$BASH_SOURCE
+fi
+source $(dirname ${SOURCE[0]})/creds.sh
+source $(dirname ${SOURCE[0]})/functions.sh
 
 
 if [ -z "$2" ] ; then

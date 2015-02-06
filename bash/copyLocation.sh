@@ -5,14 +5,18 @@ if [ -z "$1" -o -z "$2" ] ; then
     exit
 fi
 
-
-source creds.sh
+SOURCE=$(readlink  $BASH_SOURCE)
+if [[ -z "$SOURCE" ]] ; then
+    SOURCE=$BASH_SOURCE
+fi
+source $(dirname ${SOURCE[0]})/creds.sh
+source $(dirname ${SOURCE[0]})/functions.sh
 
 tempdir=`mktemp -d copylocations.XXXX`
 
-curl -s --insecure --user $user --header "Content-Type: application/xml" -X GET  $rs/media/$1/locations | xsltproc  --stringparam tempDir $tempdir locations_split.xslt - > /dev/null
+curl -s --insecure --user $user --header "Content-Type: application/xml" -X GET  $(getUrl /media/$1/locations) | xsltproc  --stringparam tempDir $tempdir locations_split.xslt - > /dev/null
 
-target=$rs/media/$2/location?errors=michiel.meeuwissen@gmail.com
+target=$(getUrl media/$2/location?errors=$errors)
 
 for i in `ls $tempdir`; do
     cat $tempdir/$i | xmllint -format - | grep programUrl
