@@ -8,7 +8,8 @@ fi
 
 
 source creds.sh
+source functions.sh
 
-target=$rs/media/$1/location/$2?errors=michiel.meeuwissen@gmail.com
+target=$(getUrl media/$1/location/$2?errors=$errors)
 
 curl -s --insecure --user $user -X DELETE ${target}

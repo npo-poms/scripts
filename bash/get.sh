@@ -10,7 +10,7 @@ fi
 source creds.sh
 source functions.sh
 
-target=$rs/program/$( rawurlencode "$1" )
+target=$(getUrl program/$(rawurlencode "$1"))
 
 echo $target >&2
 

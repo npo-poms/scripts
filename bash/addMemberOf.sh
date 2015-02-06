@@ -5,7 +5,7 @@ if [ -z "$1" ] ; then
 fi
 
 source ./creds.sh
-
+source ./functions.sh
 
 highlighted=false
 if [ "$3" != "" ] ; then

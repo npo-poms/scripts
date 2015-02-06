@@ -1,13 +1,14 @@
 #!/bin/bash
+source creds.sh
+
 if [ -z "$1" ] ; then
     echo use "$0 <mid> [<location>]"
     exit
 fi
 
+source functions.sh
 
-source creds.sh
-
-target=$rs/media/$1/location?errors=michiel.meeuwissen@gmail.com
+target=$(getUrl rs/media/$1/location?errors=$errors)
 
 
 if [ -e $2 ] ; then

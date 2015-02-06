@@ -12,8 +12,9 @@ fi
 
 
 source ./creds.sh
+source ./functions.sh
 
-target=$rs/media/$1/image?errors=michiel.meeuwissen@gmail.com
+target=$(getUrl media/$1/image?errors=$errors)
 
 echo posting $imagexml
 

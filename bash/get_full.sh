@@ -5,11 +5,10 @@ if [ -z "$1" ] ; then
     exit
 fi
 
-
-
 source creds.sh
+source functions.sh
 
-target=$rs/program/$1/full
+target=$(getUrl program/$1/full)
 
 echo $target >&2
 curl -s --insecure --user $user --header "Content-Type: application/xml" -X GET \

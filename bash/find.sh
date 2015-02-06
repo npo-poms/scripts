@@ -5,7 +5,7 @@ if [ -z "$1" ] ; then
 fi
 
 source ./creds.sh
+source ./functions.sh
 
 curl -s --insecure --user $user --header "Content-Type: application/xml" -X POST --data @$1 \
-    ${target}/find \
-    | xmllint -format -
+    $(getUrl find)  | xmllint -format -

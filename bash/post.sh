@@ -6,8 +6,9 @@ fi
 
 
 source ./creds.sh
+source ./functions.sh
 
-target="$rs/media?errors=michiel.meeuwissen@gmail.com&lookupcrid=true"
+target=$(getUrl media?errors=$errors&lookupcrid=true)
 
 echo $target >&2
 

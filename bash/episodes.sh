@@ -6,14 +6,14 @@ if [ -z "$1" ] ; then
 fi
 
 
-
 source creds.sh
+source functions.sh
 
 offset=$2
 max=$3
 order=$4
 
-target="$rs/group/$1/episodes?"
+target=$(getUrl group/$1/episodes?)
 if [ ! -z "$offset" ] ; then
     target="$target&offset=$offset"
 fi
