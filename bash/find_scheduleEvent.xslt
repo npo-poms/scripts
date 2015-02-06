@@ -10,8 +10,7 @@
       <xsl:value-of select="update:start" />
       <xsl:text> </xsl:text>
       <xsl:value-of select="../../@mid" />
-      <xsl:text>
-</xsl:text>
+      <xsl:text>&#xa;</xsl:text>
     </xsl:for-each>
   </xsl:template>
 </xsl:stylesheet>
