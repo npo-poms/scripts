@@ -10,9 +10,13 @@ source creds.sh
 target=$rs/media/$1/location?errors=michiel.meeuwissen@gmail.com
 
 
-xml="<location xmlns='urn:vpro:media:update:2009'>
+if [ -e $2 ] ; then
+    xml=@$2
+else
+    xml="<location xmlns='urn:vpro:media:update:2009'>
  <programUrl>$2</programUrl>
 </location>"
+fi
 
 
 
