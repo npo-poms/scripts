@@ -13,11 +13,13 @@ if [ -z "$2" ] ; then
 else
     publishStop=$2
 fi
-echo $publishStop
 
 curl -s --insecure --user $user --header "Content-Type: application/xml" -X GET  $rs/media/$1 | xsltproc  --stringparam publishStop $publishStop media_set_publishStop.xslt - > /tmp/media.xml
 
-cat /tmp/media.xml
+echo posting:
+xmllint --format /tmp/media.xml
 
 target=$rs/media?errors=michiel.meeuwissen@gmail.com
+echo result:
 curl -s --insecure --user $user --header "Content-Type: application/xml" -X POST --data @/tmp/media.xml  ${target}
+echo

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
-                xmlns:update="urn:vpro:media:update:2009"
+                xmlns="urn:vpro:media:update:2009"
                 >
   <xsl:param name="publishStop" />
-
   <xsl:output method="xml"/>
   <xsl:template match="/*">
-    <xsl:element name="update:{name()}">
+    <xsl:element name="{name()}" namespace="urn:vpro:media:update:2009">
       <xsl:for-each select="@*">
         <xsl:attribute name="{name()}">
           <xsl:value-of select="."/>
