@@ -39,6 +39,21 @@ client.set(group);
 
 Bash/XSLT
 ---------
-Simply calling 'curl' in shell script is of course possible too. These scripts include a 'creds.sh'. A template 'copy.to.creds.sh' is available. Do that and provide your own credentials in it. 
+Simply calling 'curl' in shell script is of course possible too. These scripts include a 'creds.sh'. A template 'copy.to.creds.sh' is available. Do that and provide your own credentials in it. Most scripts can be prefixed with the environment:
+```shell
+michiel@belono:~/github/npo-poms/scripts/bash$ ENV=prod ./unpublish.sh WO_VPRO_717563
+posting:
+<?xml version="1.0"?>
+<program xmlns="urn:vpro:media:update:2009" type="CLIP" avType="VIDEO" embeddable="true" mid="WO_VPRO_717563" publishStop="2015-02-07T11:28:05Z" urn="urn:vpro:media:program:48270798">
+  <broadcaster xmlns:media="urn:vpro:media:2009" xmlns:shared="urn:vpro:shared:2009">VPRO</broadcaster>
+  <title xmlns:media="urn:vpro:media:2009" xmlns:shared="urn:vpro:shared:2009" type="MAIN">test</title>
+  <locations xmlns:media="urn:vpro:media:2009" xmlns:shared="urn:vpro:shared:2009"/>
+  <scheduleEvents xmlns:media="urn:vpro:media:2009" xmlns:shared="urn:vpro:shared:2009"/>
+  <images xmlns:media="urn:vpro:media:2009" xmlns:shared="urn:vpro:shared:2009"/>
+  <segments xmlns:media="urn:vpro:media:2009" xmlns:shared="urn:vpro:shared:2009"/>
+</program>
+result:
+WO_VPRO_717563
+```
 
 Sometimes operations involve modifying XML, which is done using xsltproc/XSLT in these scripts.
