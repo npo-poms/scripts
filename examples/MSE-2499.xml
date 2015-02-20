@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<program type="CLIP" avType="VIDEO" publishStop="2012-01-11T18:16:01.287+01:00" publishStart="2012-01-11T16:16:01.287+01:00" embeddable="true"
+    xmlns="urn:vpro:media:update:2009">
+  <broadcaster>VPRO</broadcaster>
+  <title type="MAIN">Main title</title>
+  <!--
+      Als dit programma onderdeel is van een ander programma of groep wordt hier met een mediaRef verwezen naar de verzameling. Een geldige
+        media referentie is een urn, een crid of een poProgID.
+
+        Position is een optioneel attribuut voor de positie van dit programma in de (geordende) verzameling. Als het attribuut wordt weggelaten
+        worden dit programma onderaan de verzameling bijgevoegd.
+
+        Regels:
+            - Referentie waarde is verplicht
+            - Entiteit waarnaar de referentie verwijst moet al bestaan.
+            - Optioneel meegestuurde positie moet vrij zijn.
+    -->
+    <memberOf position="34">urn:vpro:media:group:2981744</memberOf>
+    <memberOf>POMS_S_VPRO_159096</memberOf>
+</program>
