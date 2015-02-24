@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<program xmlns="urn:vpro:media:update:2009" xmlns:shared="urn:vpro:shared:2009" type="CLIP" avType="VIDEO" embeddable="true" publishStart="2015-02-16T19:45:00+02:00" publishStop="2015-02-19T10:08:19+02:00">
+  <broadcaster><![CDATA[VARA]]></broadcaster>
+  <title type="MAIN"><![CDATA[Muziek: Kovacs - Diggin']]></title>
+  <description type="MAIN"><![CDATA[Sharon Kovacs en haar diepe, mysterieuze stem staan op de bühne in de
+DWDD-studio! Ze speelt haar nieuwe single Diggin’, de opvolger van haar
+eerste single My Love. Beide nummers staan op het debuutalbum Shades Of
+Black dat op 3 april 2015 z...]]></description>
+  <duration><![CDATA[P0DT0H2M11.000S]]></duration>
+  <credits>
+    <person role="UNDEFINED">
+      <givenName><![CDATA[Matthijs]]></givenName>
+      <familyName><![CDATA[van Nieuwkerk]]></familyName>
+    </person>
+    <person role="UNDEFINED">
+      <givenName><![CDATA[Kovacs]]></givenName>
+      <familyName><![CDATA[]]></familyName>
+    </person>
+  </credits>
+  <memberOf highlighted="false" position="2">POMS_S_VARA_1282848</memberOf>
+  <memberOf highlighted="false" position="1">VARA_101192869</memberOf>
+  <website><![CDATA[http://dewerelddraaitdoor.vara.nl]]></website>
+  <locations>
+    <location>
+      <programUrl><![CDATA[http://download.omroep.nl/vara/2015/02/16/20150216-dwdd-publiekje.mp4]]></programUrl>
+      <avAttributes>
+        <avFileFormat><![CDATA[MP4]]></avFileFormat>
+      </avAttributes>
+    </location>
+  </locations>
+  <scheduleEvents/>
+  <images>
+    <image type="STILL" highlighted="false">
+      <title><![CDATA[Muziek: Kovacs - Diggin']]></title>
+      <description><![CDATA[Sharon Kovacs en haar diepe, mysterieuze stem staan op de bühne in de
+DWDD-studio! Ze speelt haar nieuwe single Diggin’, de opvolger van haar
+eerste single My Love. Beide nummers staan op het debuutalbum Shades Of
+Black dat op 3 april 2015 z...]]></description>
+      <imageLocation>
+        <url><![CDATA[http://download.omroep.nl/vara/2015/02/16/20150216-dwdd-publiekje_2.jpg]]></url>
+      </imageLocation>
+    </image>
+  </images>
+</program>
