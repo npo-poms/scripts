@@ -1,0 +1,12 @@
+<mediaForm xmlns="urn:vpro:media:search:2012">
+  <pager>
+    <offset>0</offset>
+    <max>50</max>
+    <sort>sortDate</sort>
+    <order>DESC</order>
+  </pager>
+  <broadcaster>AVROTROS</broadcaster>
+  <broadcaster>AVRO</broadcaster>
+  <broadcaster>TROS</broadcaster>
+  <text>radar</text>
+</mediaForm>
