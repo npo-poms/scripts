@@ -14,12 +14,12 @@ source $(dirname ${SOURCE[0]})/functions.sh
 tag=$2
 
 
-curl -s --insecure --user $user --header "Content-Type: application/xml" -X GET  $(getUrl media/$1) | xsltproc  --stringparam tag $tag media_add_tag.xslt - > /tmp/media.xml
+curl -s --insecure --user $user --header "Content-Type: application/xml" -X GET  $(getUrl media/$1)?followMerges=false | xsltproc  --stringparam tag $tag media_add_tag.xslt - > /tmp/media.xml
 
 echo posting:
 xmllint --format /tmp/media.xml
 
-target=$(getUrl "media?errors=$errors")
-echo result:
+target=$(getUrl "media?errors=$errors&followMerges=false")
+echo $target result:
 curl -s --insecure --user $user --header "Content-Type: application/xml" -X POST --data @/tmp/media.xml  ${target}
 echo

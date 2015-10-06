@@ -22,5 +22,7 @@ xml="<memberRef xmlns='urn:vpro:media:update:2009'  highlighted='$highlighted'>$
 
 echo -e "Posting \n $xml"
 
-echo curl -i -s --insecure --user $user --header "Content-Type: application/xml" -X POST --data "$xml"  \
-    ${target}
+target=$(getUrl media/$1/memberOf?errors=$errors)\&followMerges=true
+
+
+curl -i -s --insecure --user $user --header "Content-Type: application/xml" -X POST --data "$xml"  $target

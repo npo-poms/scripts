@@ -13,7 +13,9 @@ source $(dirname ${SOURCE[0]})/creds.sh
 source $(dirname ${SOURCE[0]})/functions.sh
 
 
-target=$(getUrl program/$(rawurlencode "$1"))
+target=$(getUrl media/$(rawurlencode "$1"))?followMerges=false
+
+echo $user >&2
 
 echo $target >&2
 

@@ -11,7 +11,7 @@ fi
 source $(dirname ${SOURCE[0]})/creds.sh
 source $(dirname ${SOURCE[0]})/functions.sh
 
-target=$(getUrl rs/media/$1/location?errors=$errors)
+target=$(getUrl media/$1/location?errors=$errors)\&followMerges=false
 
 
 if [ -e $2 ] ; then
@@ -24,7 +24,7 @@ fi
 
 
 
-echo -e "Posting \n $xml"
+echo -e "Posting \n $xml to ${target}"
 
 curl -i -s --insecure --user $user --header "Content-Type: application/xml" -X POST --data "$xml"  \
     ${target}
