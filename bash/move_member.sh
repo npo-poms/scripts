@@ -18,6 +18,6 @@ target=$(getUrl group/$1/members?errors=$errors)
 echo $target >&2
 curl -s --insecure --user $user --header "Content-Type: application/xml" -X PUT  ${target} -d"
 <move xmlns='urn:vpro:media:update:2009'>
-      <from>$2</from>
-      <to>$3</to>
+    <from>$2</from>
+    <to>$3</to>
 </move>"
