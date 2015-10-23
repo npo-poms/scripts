@@ -13,7 +13,12 @@ source $(dirname ${SOURCE[0]})/creds.sh
 source $(dirname ${SOURCE[0]})/functions.sh
 
 
-target=$(getUrl media/$(rawurlencode "$1"))?followMerges=false
+if [[ -z "$FOLLOW_MERGES" ]] ; then
+    FOLLOW_MERGES=true
+fi
+
+
+target=$(getUrl media/$(rawurlencode "$1"))?followMerges=$FOLLOW_MERGES
 
 echo $user >&2
 
