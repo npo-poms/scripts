@@ -1,5 +1,6 @@
 import shelve
 import urllib2
+import urllib
 import sys
 import base64
 from xml.dom import minidom
@@ -117,7 +118,7 @@ def _members_or_episodes(mid, what):
     offset = 0
     batch = 20
     while True:
-        url = (target + 'media/group/' + mid + "/" + what + "?max=" + str(batch) +
+        url = (target + 'media/group/' +  urllib.quote(mid, '') + "/" + what + "?max=" + str(batch) +
                "&offset=" + str(offset))
         xml = _get_xml(url)
         items = xml.getElementsByTagName('item')
@@ -163,7 +164,7 @@ def parkpost_str(xml):
 def get(mid):
     """Returns XML-representation of a mediaobject"""
     _creds()
-    url = target + "media/media/" + mid
+    url = target + "media/media/" + urllib.quote(mid, '')
     return _get_xml(url)
 
 
@@ -254,8 +255,9 @@ def parkpost(xml):
 def _post(xml, req):
     req.add_header("Authorization", authorizationHeader);
     req.add_header("Content-Type", "application/xml")
-    req.add_header("Accept", "text/plain")
+    req.add_header("Accept", "application/xml")
     #req.add_header("Accept", "application/json")
+    #req.add_header("Accept", "text/plain")
     try:
         response = urllib2.urlopen(req)
         return response.read()
