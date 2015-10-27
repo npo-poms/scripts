@@ -11,7 +11,7 @@ def main():
     opt, args = poms.opts(usage = usage, minargs = 2)
     mid, program_url = args
 
-    poms.add_location(mid, program_url)
+    poms.post_location(mid, program_url)
 
 
 

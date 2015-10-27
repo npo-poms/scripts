@@ -8,6 +8,7 @@ import getopt
 import getpass
 import os
 import logging
+import pytz
 
 
 target='https://api-test.poms.omroep.nl/'
@@ -18,7 +19,8 @@ environments = {
     'test': 'https://api-test.poms.omroep.nl/',
     'dev' : 'https://api-dev.poms.omroep.nl/',
     'prod' : 'https://api.poms.omroep.nl/',
-    'localhost': 'http://localhost:8071/rs/' }
+    'localhost': 'http://localhost:8071/rs/'
+}
 
 
 
@@ -34,28 +36,30 @@ def init(opts = None):
     if not 'target' in d:
         d['target'] = target
 
-    t = None
+    env = None
     if 'ENV' in os.environ:
-        t = os.environ['ENV']
+        env = os.environ['ENV']
+
     if 'DEBUG' in os.environ and os.environ['DEBUG']:
         logging.basicConfig(level=logging.DEBUG)
 
     for o,a in opts:
         if o == '-t':
-            t = a
+            env = a
         if o == '-e':
             d['email'] = a
         if o == '-s':
             for k in d.keys():
                 print k + "=" + d[k]
 
-    if t:
-        d['target'] = environments[t]
+    if env:
+        d['target'] = environments[env]
 
     target = d['target']
     d.close()
 
-def opts(args = "t:e:srh", usage = None, minargs = 0):
+
+def opts(args = "t:e:srh", usage = None, minargs = 0, login = False):
     try:
         opts, args = getopt.getopt(sys.argv[1:], args)
     except getopt.GetoptError as err:
@@ -79,17 +83,21 @@ def opts(args = "t:e:srh", usage = None, minargs = 0):
         sys.exit(1)
 
     init(opts)
+    if login:
+        creds()
     return opts,args
 
-def _creds(pref = ""):
+def creds(pref = ""):
     d = shelve.open('creds.db')
     usernamekey = pref + d['target'] + ':username'
     passwordkey = pref + d['target'] + ':password'
 
+    result = False
     if not usernamekey in d  or ('-r','') in _opts :
         d[usernamekey] = raw_input('Username for ' + target + ': ')
-        d[passwordkey]  = getpass.getpass()
+        d[passwordkey] = getpass.getpass()
         print "Username/password stored in file creds.db. Use -r to set it."
+        result = True
 
 
     passman = urllib2.HTTPPasswordMgrWithDefaultRealm()
@@ -105,6 +113,7 @@ def _creds(pref = ""):
     else:
         email = None
     d.close()
+    return result
 
 def generic_usage():
     print "-s       Show stored credentials (in creds.db). If none stored, username/password " + \
@@ -118,7 +127,7 @@ def generic_usage():
 
 # private method to implement both members and episodes calls.
 def _members_or_episodes(mid, what):
-    _creds()
+    creds()
     print "loading members of " + mid
     result = []
     offset = 0
@@ -160,12 +169,22 @@ def add_member(groupMid, memberMid, position=0, highlighted="false"):
     xml = get_memberOf_xml(groupMid, position, highlighted)
     response = urllib2.urlopen(urllib2.Post(url, data=xml))
 
-def add_location(mid, programUrl):
-    xml = ("<location xmlns='urn:vpro:media:update:2009'>" +
+def post_location(mid, programUrl, publishStart = None, publishStop = None):
+
+    xml = ("<location xmlns='urn:vpro:media:update:2009'" + date_attr("publishStart", publishStart) + date_attr("publishStop", publishStop) + ">" +
            "  <programUrl>" + programUrl + "</programUrl>" +
            "</location >")
     path = "media/media/" + mid + "/location"
+    logging.debug(xml)
     return post_to(path, xml, accept = "text/plain")
+
+def date_attr(name, datetime):
+    if datetime:
+        aware = datetime.replace(tzinfo=pytz.UTC)
+        return " " + name + "='" + aware.strftime("%Y-%m-%dT%H:%M:%SZ") + "'"
+    else:
+        return ""
+
 
 def post_str(xml):
     return post(minidom.parseString(xml).documentElement)
@@ -176,7 +195,7 @@ def parkpost_str(xml):
 
 def get(mid):
     """Returns XML-representation of a mediaobject"""
-    _creds()
+    creds()
     url = target + "media/media/" + urllib.quote(mid, '')
     return _get_xml(url)
 
@@ -237,47 +256,48 @@ def _append_element(xml, element, path = ("crid",
     xml.appendChild(element)
 
 
-def post(xml, lookupcrid=False):
-    _creds()
+def post(xml, lookupcrid=False, followMerges=True):
+    creds()
     # it seems minidom sucks a bit, since it should have added these attributes
     # automaticly of course. The xml is simply not valid otherwise
     xml.setAttribute("xmlns", "urn:vpro:media:update:2009")
     xml.setAttribute("xmlns:xsi",
                      "http://www.w3.org/2001/XMLSchema-instance")
-    url = target + "media/media?lookupcrid=" + str(lookupcrid)
+    url = target + "media/media?lookupcrid=" + str(lookupcrid) + "&followMerges=" + str(followMerges)
 
     if email:
-        url += "?errors=" + email
+        url += "&errors=" + email
 
 
     #print xml.toxml()
     logging.debug("posting " + xml.getAttribute("mid") + " to " + url)
     req = urllib2.Request(url, data=xml.toxml('utf-8'))
-    return _post(xml, req)
+    return _post(req)
 
 
 
 def parkpost(xml):
-    _creds("parkpost:")
+    creds("parkpost:")
     url = target + "parkpost/promo"
 
     print "posting to " + url
     req = urllib2.Request(url, data=xml.toxml('utf-8'))
-    return _post(xml, req)
+    return _post(req)
 
 def post_to(path, xml, accept="application/xml"):
-    _creds()
+    creds()
     url = target + path
     if type(xml) != str:
         xml = xml.toxml('utf-8')
+
     if email:
         url += "?errors=" + email
     req = urllib2.Request(url, data=xml)
     logging.debug("Posting to " + url)
-    return _post(xml, req, accept)
+    return _post(req, accept)
 
 
-def _post(xml, req, accept="application/xml"):
+def _post(req, accept="application/xml"):
     req.add_header("Authorization", authorizationHeader);
     req.add_header("Content-Type", "application/xml")
     req.add_header("Accept", accept)
