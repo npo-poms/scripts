@@ -9,10 +9,8 @@ import getpass
 import os
 import logging
 import pytz
-
-
-target='https://api-test.poms.omroep.nl/'
-"""The currently configured target. I.e. the URL of the POMS rest api"""
+import subprocess
+import inspect
 
 
 environments = {
@@ -22,16 +20,18 @@ environments = {
     'localhost': 'http://localhost:8071/rs/'
 }
 
+target = 'https://api-test.poms.omroep.nl/'
+"""The currently configured target. I.e. the URL of the POMS rest api"""
 
 
 def init(opts = None):
-    """username/password and target are stored in a database.
+    """username/password and target can be stored in a database.
     If no username/password is known for a target, it is asked"""
 
     global target
     global _opts
     _opts = [] if opts is None else opts
-    d = shelve.open('creds.db')
+    d = open_db()
 
     if not 'target' in d:
         d['target'] = target
@@ -58,8 +58,12 @@ def init(opts = None):
     target = d['target']
     d.close()
 
+def init_target(env):
+
+
 
 def opts(args = "t:e:srh", usage = None, minargs = 0, login = False):
+    """Some argument handling"""
     try:
         opts, args = getopt.getopt(sys.argv[1:], args)
     except getopt.GetoptError as err:
@@ -76,6 +80,7 @@ def opts(args = "t:e:srh", usage = None, minargs = 0, login = False):
             generic_usage()
             sys.exit(0)
         del sys.argv[0]
+
     if len(args) < minargs:
         if usage is not None:
             usage()
@@ -87,33 +92,45 @@ def opts(args = "t:e:srh", usage = None, minargs = 0, login = False):
         creds()
     return opts,args
 
+
+
 def creds(pref = ""):
-    d = shelve.open('creds.db')
+    if "authorizationHeader" in vars():
+        logging.debug("Already authorized")
+        return
+
+    d = open_db()
     usernamekey = pref + d['target'] + ':username'
     passwordkey = pref + d['target'] + ':password'
 
-    result = False
     if not usernamekey in d  or ('-r','') in _opts :
         d[usernamekey] = raw_input('Username for ' + target + ': ')
         d[passwordkey] = getpass.getpass()
         print "Username/password stored in file creds.db. Use -r to set it."
-        result = True
+
+    login(d[usernamekey], d[passwordkey], d.get("email"))
+
+    d.close()
 
 
+def login(username, password, errors = None):
+    logging.info("Logging in " + username)
     passman = urllib2.HTTPPasswordMgrWithDefaultRealm()
-    passman.add_password(None, target, d[usernamekey], d[passwordkey])
+    passman.add_password(None, target, username, password)
     urllib2.install_opener(urllib2.build_opener(urllib2.HTTPBasicAuthHandler(passman)))
 
     global authorizationHeader
-    base64string = base64.encodestring('%s:%s' % (d[usernamekey], d[passwordkey]))[:-1]
+    base64string = base64.encodestring('%s:%s' % (username, password))[:-1]
     authorizationHeader = "Basic %s" % base64string
     global email
-    if 'email' in d:
-        email = d['email']
+    if errors:
+        email = errors
     else:
         email = None
-    d.close()
-    return result
+
+
+def open_db():
+    return shelve.open(get_poms_dir() + os.pathsep + "creds")
 
 def generic_usage():
     print "-s       Show stored credentials (in creds.db). If none stored, username/password " + \
@@ -169,14 +186,39 @@ def add_member(groupMid, memberMid, position=0, highlighted="false"):
     xml = get_memberOf_xml(groupMid, position, highlighted)
     response = urllib2.urlopen(urllib2.Post(url, data=xml))
 
-def post_location(mid, programUrl, publishStart = None, publishStop = None):
+def post_location(mid, programUrl, format = None, publishStart = None, publishStop = None):
+    if not format:
+        format = guess_format(programUrl)
 
-    xml = ("<location xmlns='urn:vpro:media:update:2009'" + date_attr("publishStart", publishStart) + date_attr("publishStop", publishStop) + ">" +
+    xml = ("<location xmlns='urn:vpro:media:update:2009' format='" + format + "'" + date_attr("publishStart", publishStart) + date_attr("publishStop", publishStop) + ">" +
            "  <programUrl>" + programUrl + "</programUrl>" +
+             "<avAttributes>< avFileFormat>" + format + "</avFileFormat></avAttributes>" +
            "</location >")
     path = "media/media/" + mid + "/location"
     logging.debug(xml)
     return post_to(path, xml, accept = "text/plain")
+
+def get_location(mid, programUrl):
+    xml = get_locations(mid)
+
+
+def set_location(mid, programUrl):
+    xml = get
+    print get_xslt("location_set_publishStop.xslt")
+    sys.exit(1)
+
+def get_xslt(name):
+    return get_poms_dir() + os.pathsep + ".." + os.pathsep + "xslt" + os.pathsep + name
+
+def get_poms_dir():
+    return os.path.dirname(__file__)
+
+
+def guess_format(url):
+    if url.endswith(".mp4"):
+        return "MP4"
+    else:
+        return "UNKNOWN"
 
 def date_attr(name, datetime):
     if datetime:
@@ -200,10 +242,22 @@ def get(mid):
     return _get_xml(url)
 
 
+def get_locations(mid):
+    creds()
+    url = target + "media/media/" + urllib.quote(mid, '') + "/locations"
+    return _get_xml(url)
+
+def xslt(xml, xslt_file, params = None):
+    p = subprocess.Popen(["xsltproc", xslt_file], stdin=subprocess.PIPE)
+    p.stdin.write(xml)
+    return p.communicate()[0]
+
 def _get_xml(url):
     try:
         logging.info("getting " + url)
-        response = urllib2.urlopen(urllib2.Request(url))
+        req = urllib2.Request(url)
+        req.add_header("Accept", "application/xml")
+        response = urllib2.urlopen(req)
     except Exception as e:
         print url + " " + str(e)
         sys.exit(1)
