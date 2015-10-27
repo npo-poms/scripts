@@ -164,8 +164,8 @@ def add_location(mid, programUrl):
     xml = ("<location xmlns='urn:vpro:media:update:2009'>" +
            "  <programUrl>" + programUrl + "</programUrl>" +
            "</location >")
-    path = "api/media/media/" + mid + "/location"
-    return post_to(path, xml)
+    path = "media/media/" + mid + "/location"
+    return post_to(path, xml, accept = "text/plain")
 
 def post_str(xml):
     return post(minidom.parseString(xml).documentElement)
@@ -183,6 +183,7 @@ def get(mid):
 
 def _get_xml(url):
     try:
+        logging.info("getting " + url)
         response = urllib2.urlopen(urllib2.Request(url))
     except Exception as e:
         print url + " " + str(e)
@@ -246,11 +247,11 @@ def post(xml, lookupcrid=False):
     url = target + "media/media?lookupcrid=" + str(lookupcrid)
 
     if email:
-        url += "&errors=" + email
+        url += "?errors=" + email
 
 
     #print xml.toxml()
-    logging.info("posting " + xml.getAttribute("mid") + " to " + url)
+    logging.debug("posting " + xml.getAttribute("mid") + " to " + url)
     req = urllib2.Request(url, data=xml.toxml('utf-8'))
     return _post(xml, req)
 
@@ -264,22 +265,22 @@ def parkpost(xml):
     req = urllib2.Request(url, data=xml.toxml('utf-8'))
     return _post(xml, req)
 
-def post_to(path, xml):
+def post_to(path, xml, accept="application/xml"):
     _creds()
     url = target + path
     if type(xml) != str:
         xml = xml.toxml('utf-8')
     if email:
-        url += "&errors=" + email
+        url += "?errors=" + email
     req = urllib2.Request(url, data=xml)
     logging.debug("Posting to " + url)
-    return _post(xml, req)
+    return _post(xml, req, accept)
 
 
-def _post(xml, req):
+def _post(xml, req, accept="application/xml"):
     req.add_header("Authorization", authorizationHeader);
     req.add_header("Content-Type", "application/xml")
-    req.add_header("Accept", "application/xml")
+    req.add_header("Accept", accept)
     #req.add_header("Accept", "application/json")
     #req.add_header("Accept", "text/plain")
     try:
