@@ -4,12 +4,21 @@ import urllib
 import sys
 import base64
 from xml.dom import minidom
-from pprint import pprint
 import getopt
 import getpass
+import os
+import logging
+
 
 target='https://api-test.poms.omroep.nl/'
 """The currently configured target. I.e. the URL of the POMS rest api"""
+
+
+environments = {
+    'test': 'https://api-test.poms.omroep.nl/',
+    'dev' : 'https://api-dev.poms.omroep.nl/',
+    'prod' : 'https://api.poms.omroep.nl/',
+    'localhost': 'http://localhost:8071/rs/' }
 
 
 
@@ -25,28 +34,25 @@ def init(opts = None):
     if not 'target' in d:
         d['target'] = target
 
+    t = None
+    if 'ENV' in os.environ:
+        t = os.environ['ENV']
+    if 'DEBUG' in os.environ and os.environ['DEBUG']:
+        logging.basicConfig(level=logging.DEBUG)
+
     for o,a in opts:
         if o == '-t':
-            if a == 'test':
-                a = 'https://api-test.poms.omroep.nl/'
-            if a == 'dev':
-                a = 'https://api-dev.poms.omroep.nl/'
-            if a == 'prod':
-                a = 'https://api.poms.omroep.nl/'
-            if a == 'localhost':
-                a = 'http://localhost:8071/rs/'
-            if a != d['target']:
-                print "Setting target to " + a
-                d['target'] = a
+            t = a
         if o == '-e':
             d['email'] = a
-
         if o == '-s':
             for k in d.keys():
                 print k + "=" + d[k]
 
+    if t:
+        d['target'] = environments[t]
 
-    target=d['target']
+    target = d['target']
     d.close()
 
 def opts(args = "t:e:srh", usage = None, minargs = 0):
@@ -56,7 +62,7 @@ def opts(args = "t:e:srh", usage = None, minargs = 0):
         print(err)
         if usage is not None:
             usage()
-        generic_usage();
+        generic_usage()
         sys.exit(2)
 
     for o, a in opts:
@@ -105,7 +111,7 @@ def generic_usage():
         "will be asked interactively."
     print "-t <url> Change target. 'test', 'dev' and 'prod' are " + \
           "possible abbreviations for https://api[-test|-dev].poms.omroep.nl/media/. " + \
-          "Defaults to previously used version (stored in creds.db)"
+          "Defaults to previously used version (stored in creds.db) or the environment variable 'ENV"
     print "-r       Reset and ask username/password again"
     print "-e <email> Set email address to mail errors to. " + \
           "Defaults to previously used value (stored in creds.db)."
@@ -151,8 +157,15 @@ def get_memberOf_xml(groupMid, position=0, highlighted="false"):
 def add_member(groupMid, memberMid, position=0, highlighted="false"):
     """Adds a a member to a group"""
     url = target + "api/media/" + memberMid + "/memberOf"
-    xml = getMemberOfXml(groupMid, position, highlighted)
+    xml = get_memberOf_xml(groupMid, position, highlighted)
     response = urllib2.urlopen(urllib2.Post(url, data=xml))
+
+def add_location(mid, programUrl):
+    xml = ("<location xmlns='urn:vpro:media:update:2009'>" +
+           "  <programUrl>" + programUrl + "</programUrl>" +
+           "</location >")
+    path = "api/media/media/" + mid + "/location"
+    return post_to(path, xml)
 
 def post_str(xml):
     return post(minidom.parseString(xml).documentElement)
@@ -237,7 +250,7 @@ def post(xml, lookupcrid=False):
 
 
     #print xml.toxml()
-    print "posting " + xml.getAttribute("mid") + " to " + url
+    logging.info("posting " + xml.getAttribute("mid") + " to " + url)
     req = urllib2.Request(url, data=xml.toxml('utf-8'))
     return _post(xml, req)
 
@@ -249,6 +262,17 @@ def parkpost(xml):
 
     print "posting to " + url
     req = urllib2.Request(url, data=xml.toxml('utf-8'))
+    return _post(xml, req)
+
+def post_to(path, xml):
+    _creds()
+    url = target + path
+    if type(xml) != str:
+        xml = xml.toxml('utf-8')
+    if email:
+        url += "&errors=" + email
+    req = urllib2.Request(url, data=xml)
+    logging.debug("Posting to " + url)
     return _post(xml, req)
 
 
