@@ -1,6 +1,5 @@
 import shelve
-import urllib2
-import urllib
+import urllib.request
 import sys
 import base64
 from xml.dom import minidom
@@ -20,50 +19,55 @@ environments = {
     'localhost': 'http://localhost:8071/rs/'
 }
 
-target = 'https://api-test.poms.omroep.nl/'
+target = None
 """The currently configured target. I.e. the URL of the POMS rest api"""
 
 
-def init(opts = None):
+def init_db(opts = None):
     """username/password and target can be stored in a database.
     If no username/password is known for a target, it is asked"""
+    global _opts, target
 
-    global target
-    global _opts
     _opts = [] if opts is None else opts
     d = open_db()
 
-    if not 'target' in d:
-        d['target'] = target
+    if 'target' in d:
+        target = d['target']
 
-    env = None
-    if 'ENV' in os.environ:
-        env = os.environ['ENV']
-
-    if 'DEBUG' in os.environ and os.environ['DEBUG']:
-        logging.basicConfig(level=logging.DEBUG)
+    init_logging()
 
     for o,a in opts:
         if o == '-t':
-            env = a
+            d['target'] = init_target(a)
         if o == '-e':
             d['email'] = a
         if o == '-s':
             for k in d.keys():
-                print k + "=" + d[k]
+                print(k + "=" + d[k])
 
-    if env:
-        d['target'] = environments[env]
 
-    target = d['target']
     d.close()
 
-def init_target(env):
+def init_target(env = None):
+    global target
+    if not env and 'ENV' in os.environ:
+        env = os.environ['ENV']
+
+    if env:
+        target = environments[env]
+    if not target:
+        target = environments['test']
+
+    return target
+
+def init_logging():
+    if 'DEBUG' in os.environ and os.environ['DEBUG']:
+        logging.basicConfig(level=logging.DEBUG)
 
 
-
-def opts(args = "t:e:srh", usage = None, minargs = 0, login = False):
-    """Some argument handling"""
+def opts(args = "t:e:srh", usage = None, minargs = 0, login = True, env = None):
+    """Initialization with opts. Some argument handling"""
+    init_logging()
     try:
         opts, args = getopt.getopt(sys.argv[1:], args)
     except getopt.GetoptError as err:
@@ -86,8 +90,8 @@ def opts(args = "t:e:srh", usage = None, minargs = 0, login = False):
             usage()
         generic_usage()
         sys.exit(1)
-
-    init(opts)
+    init_target(env)
+    init_db(opts)
     if login:
         creds()
     return opts,args
@@ -98,15 +102,18 @@ def creds(pref = ""):
     if "authorizationHeader" in vars():
         logging.debug("Already authorized")
         return
-
     d = open_db()
-    usernamekey = pref + d['target'] + ':username'
-    passwordkey = pref + d['target'] + ':password'
+    if not target:
+        raise Exception("No target defined")
+
+
+    usernamekey = pref + target + ':username'
+    passwordkey = pref + target + ':password'
 
     if not usernamekey in d  or ('-r','') in _opts :
-        d[usernamekey] = raw_input('Username for ' + target + ': ')
+        d[usernamekey] = input('Username for ' + target + ': ')
         d[passwordkey] = getpass.getpass()
-        print "Username/password stored in file creds.db. Use -r to set it."
+        print("Username/password stored in file creds.db. Use -r to set it.")
 
     login(d[usernamekey], d[passwordkey], d.get("email"))
 
@@ -115,12 +122,12 @@ def creds(pref = ""):
 
 def login(username, password, errors = None):
     logging.info("Logging in " + username)
-    passman = urllib2.HTTPPasswordMgrWithDefaultRealm()
+    passman = urllib.request.HTTPPasswordMgrWithDefaultRealm()
     passman.add_password(None, target, username, password)
-    urllib2.install_opener(urllib2.build_opener(urllib2.HTTPBasicAuthHandler(passman)))
+    urllib.request.install_opener(urllib.request.build_opener(urllib.request.HTTPBasicAuthHandler(passman)))
 
     global authorizationHeader
-    base64string = base64.encodestring('%s:%s' % (username, password))[:-1]
+    base64string = base64.encodebytes(('%s:%s' % (username, password)).encode()).decode()[:-1]
     authorizationHeader = "Basic %s" % base64string
     global email
     if errors:
@@ -133,24 +140,24 @@ def open_db():
     return shelve.open(get_poms_dir() + os.pathsep + "creds")
 
 def generic_usage():
-    print "-s       Show stored credentials (in creds.db). If none stored, username/password " + \
-        "will be asked interactively."
-    print "-t <url> Change target. 'test', 'dev' and 'prod' are " + \
-          "possible abbreviations for https://api[-test|-dev].poms.omroep.nl/media/. " + \
-          "Defaults to previously used version (stored in creds.db) or the environment variable 'ENV"
-    print "-r       Reset and ask username/password again"
-    print "-e <email> Set email address to mail errors to. " + \
-          "Defaults to previously used value (stored in creds.db)."
+    print("-s       Show stored credentials (in creds.db). If none stored, username/password " +
+        "will be asked interactively.")
+    print("-t <url> Change target. 'test', 'dev' and 'prod' are " +
+          "possible abbreviations for https://api[-test|-dev].poms.omroep.nl/media/. " +
+          "Defaults to previously used version (stored in creds.db) or the environment variable 'ENV")
+    print("-r       Reset and ask username/password again")
+    print("-e <email> Set email address to mail errors to. " +
+          "Defaults to previously used value (stored in creds.db).")
 
 # private method to implement both members and episodes calls.
 def _members_or_episodes(mid, what):
     creds()
-    print "loading members of " + mid
+    logging.info("loading members of " + mid)
     result = []
     offset = 0
     batch = 20
     while True:
-        url = (target + 'media/group/' +  urllib.quote(mid, '') + "/" + what + "?max=" + str(batch) +
+        url = (target + 'media/group/' +  urllib.parse.quote(mid, '') + "/" + what + "?max=" + str(batch) +
                "&offset=" + str(offset))
         xml = _get_xml(url)
         items = xml.getElementsByTagName('item')
@@ -160,7 +167,7 @@ def _members_or_episodes(mid, what):
         offset += batch
         #print xml.childNodes[0].toxml('utf-8')
         total = xml.childNodes[0].getAttribute("totalCount")
-        print str(len(result)) + "/" + total
+        logging.info(str(len(result)) + "/" + total)
 
 
     return result
@@ -204,7 +211,7 @@ def get_location(mid, programUrl):
 
 def set_location(mid, programUrl):
     xml = get
-    print get_xslt("location_set_publishStop.xslt")
+    logging.info(get_xslt("location_set_publishStop.xslt"))
     sys.exit(1)
 
 def get_xslt(name):
@@ -238,7 +245,7 @@ def parkpost_str(xml):
 def get(mid):
     """Returns XML-representation of a mediaobject"""
     creds()
-    url = target + "media/media/" + urllib.quote(mid, '')
+    url = target + "media/media/" + urllib.parse.quote(mid)
     return _get_xml(url)
 
 
@@ -255,18 +262,18 @@ def xslt(xml, xslt_file, params = None):
 def _get_xml(url):
     try:
         logging.info("getting " + url)
-        req = urllib2.Request(url)
+        req = urllib.request.Request(url)
         req.add_header("Accept", "application/xml")
-        response = urllib2.urlopen(req)
+        response = urllib.request.urlopen(req)
     except Exception as e:
-        print url + " " + str(e)
+        logging.error(url + " " + str(e))
         sys.exit(1)
 
     xmlStr = response.read();
     try:
         xml = minidom.parseString(xmlStr)
     except Exception as e:
-        print "Could not parse \n" + xmlStr
+        logging.error("Could not parse \n" + xmlStr)
     return xml
 
 
@@ -325,8 +332,8 @@ def post(xml, lookupcrid=False, followMerges=True):
 
     #print xml.toxml()
     logging.debug("posting " + xml.getAttribute("mid") + " to " + url)
-    req = urllib2.Request(url, data=xml.toxml('utf-8'))
-    return _post(req)
+    req = urllib.request.Request(url, data=xml.toxml('utf-8'))
+    return _post(req, accept = "text/plain")
 
 
 
@@ -334,8 +341,8 @@ def parkpost(xml):
     creds("parkpost:")
     url = target + "parkpost/promo"
 
-    print "posting to " + url
-    req = urllib2.Request(url, data=xml.toxml('utf-8'))
+    logging.info("posting to " + url)
+    req = urllib.request.Request(url, data=xml.toxml('utf-8'))
     return _post(req)
 
 def post_to(path, xml, accept="application/xml"):
@@ -346,7 +353,7 @@ def post_to(path, xml, accept="application/xml"):
 
     if email:
         url += "?errors=" + email
-    req = urllib2.Request(url, data=xml)
+    req = urllib.request.Request(url, data=xml)
     logging.debug("Posting to " + url)
     return _post(req, accept)
 
@@ -358,9 +365,8 @@ def _post(req, accept="application/xml"):
     #req.add_header("Accept", "application/json")
     #req.add_header("Accept", "text/plain")
     try:
-        response = urllib2.urlopen(req)
-        return response.read()
-    except urllib2.HTTPError as e:
-        error_message = e.read()
-        print error_message
+        response = urllib.request.urlopen(req)
+        return response.read().decode()
+    except urllib.request.HTTPError as e:
+        logging.error(e.read().decode())
         return None

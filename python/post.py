@@ -1,8 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Posts a POMS media update XML"""
 import sys
 import poms
-from xml.dom import minidom
 
 
 def usage():
@@ -13,7 +12,7 @@ def main():
     opts,args = poms.opts(usage = usage, minargs = 1, args="t:e:srh")
     xml_file  = args[0]
     with open (xml_file, "r") as myfile:
-        print poms.post_str(myfile.read())
+        print(poms.post_str(myfile.read()))
 
 
 if __name__ == "__main__":

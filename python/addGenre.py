@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Script to add a genre to all members of a group. Supported in poms >= 3.2 only"""
 import sys
 import poms

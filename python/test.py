@@ -1,10 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import sys
 import poms
-from xml.dom import minidom
-import time
 import unittest
 import xml.etree.ElementTree as ET
 
@@ -24,7 +22,7 @@ class POMSRSTest(unittest.TestCase):
 
 
     def test_post(self):
-        print "posting xml"
+        print("posting xml")
         mid = poms.post_str("""
         <program xmlns:media="urn:vpro:media:2009" xmlns:shared="urn:vpro:shared:2009" xmlns="urn:vpro:media:update:2009" type="CLIP" avType="VIDEO" embeddable="true">
            <broadcaster>VPRO</broadcaster>
@@ -36,8 +34,8 @@ class POMSRSTest(unittest.TestCase):
            <description type="EPISODE">Episode title</description>
            <tag>schaatsen</tag>
         </program>
-        """);
-
+        """)
+        print(mid)
         xml = self.to_et(poms.get(mid))
 
         self.assertEqual(xml.findall(pref + "title[@type='MAIN']")[0].text, "Holland Doc")
@@ -45,9 +43,9 @@ class POMSRSTest(unittest.TestCase):
         return mid
 
     def test_get(self):
-        print "getting xml"
-        xml = self.to_et(poms.get("POMS_VPRO_1250889"))
-        self.assertEqual(xml.findall(pref + "title[@type='MAIN']")[0].text, "Holland Doc")
+        print("getting xml")
+        xml = self.to_et(poms.get("POMS_NTR_388772"))
+        self.assertEqual(xml.findall(pref + "title[@type='MAIN']")[0].text, "Winfried Draait Door")
 
     def test_parkpost(self):
         xml = """<?xml version="1.0"?>
@@ -79,6 +77,6 @@ class POMSRSTest(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    poms.opts()
+    poms.opts(env = 'dev')
     del sys.argv[1:]
     unittest.main()

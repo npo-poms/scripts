@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Get's and formats a POMS media update xml"""
 import sys
 import poms

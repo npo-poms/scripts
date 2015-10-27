@@ -1,9 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Script to move members of a group to a set of other groups"""
 
-import urllib2
 import sys
-from xml.dom import minidom
 import poms
 
 def usage():

@@ -1,8 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Get's and formats a POMS media update xml"""
 import sys
 import poms
-from xml.dom import minidom
 
 
 def usage():
@@ -12,7 +11,7 @@ def usage():
 def main():
     opts, args = poms.opts(usage = usage, minargs = 1, args="t:srh")
     mid  = args[0]
-    print poms.get(mid).toprettyxml(encoding='utf-8', indent='  ')
+    print(poms.get(mid).toprettyxml(encoding='utf-8', indent='  ').decode())
 
 
 if __name__ == "__main__":
