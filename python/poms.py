@@ -137,7 +137,7 @@ def login(username, password, errors = None):
 
 
 def open_db():
-    return shelve.open(get_poms_dir() + os.pathsep + "creds")
+    return shelve.open(os.path.join(get_poms_dir(), "creds"))
 
 def generic_usage():
     print("-s       Show stored credentials (in creds.db). If none stored, username/password " +
@@ -215,7 +215,7 @@ def set_location(mid, programUrl):
     sys.exit(1)
 
 def get_xslt(name):
-    return get_poms_dir() + os.pathsep + ".." + os.pathsep + "xslt" + os.pathsep + name
+    return os.path.join(get_poms_dir(), "..", "xslt", name)
 
 def get_poms_dir():
     return os.path.dirname(__file__)

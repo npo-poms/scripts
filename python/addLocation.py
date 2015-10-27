@@ -4,7 +4,7 @@ import sys
 import poms
 
 def usage():
-    print sys.argv[0] + " [-r] [-h] [-s] [-t <target>] <MID> <program url>"
+    print(sys.argv[0] + " [-r] [-h] [-s] [-t <target>] <MID> <program url>")
 
 def main():
 
