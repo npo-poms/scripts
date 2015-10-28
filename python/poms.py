@@ -39,7 +39,7 @@ def init_db(opts = None):
         if o == '-t':
             d['target'] = init_target(a)
         if o == '-e':
-            d['email'] = a
+           d['email'] = errors(a)
         if o == '-s':
             for k in d.keys():
                 print(k + "=" + d[k])
@@ -64,7 +64,7 @@ def init_logging():
         logging.basicConfig(level=logging.DEBUG)
 
 
-def opts(args = "t:e:srh", usage = None, minargs = 0, login = True, env = None, errors = None):
+def opts(args = "t:e:srh", usage = None, minargs = 0, login = True, env = None, mail_errors = None):
     """Initialization with opts. Some argument handling"""
     init_logging()
     try:
@@ -89,8 +89,11 @@ def opts(args = "t:e:srh", usage = None, minargs = 0, login = True, env = None, 
             usage()
         generic_usage()
         sys.exit(1)
+
     init_target(env)
     init_db(opts)
+
+
     if login:
         creds()
     return opts,args
@@ -134,12 +137,15 @@ def login(username, password, errors = None):
 
 
 
-def errors(errors = None):
+def errors(mail = None):
     global email
-    if errors:
-        email = errors
+    if mail:
+        email = mail
+        logging.debug("Emailing to " + email)
     else:
         email = None
+        logging.debug("Not emailing")
+
 
 def open_db():
     return shelve.open(os.path.join(get_poms_dir(), "creds"))
@@ -236,11 +242,13 @@ def set_location(mid, location, publishStop = None, publishStart = None):
         args = {"id": location}
     else:
         args = {"programUrl": location}
+
     if publishStop:
         args['publishStop'] = date_attr_value(publishStop)
     if publishStart:
         args['publishStart'] = date_attr_value(publishStart)
 
+    logging.debug("Found " + xml)
     location_xml = xslt(xml, get_xslt("location_set_publishStop.xslt"), args)
     if location_xml != "":
         logging.debug("posting " + location_xml)
