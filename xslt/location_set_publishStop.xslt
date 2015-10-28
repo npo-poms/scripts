@@ -14,9 +14,24 @@
             <xsl:attribute name="{name()}"><xsl:value-of select="."/></xsl:attribute>
           </xsl:if>
         </xsl:for-each>
-        <xsl:attribute name="publishStop"><xsl:value-of select="$publishStop" /></xsl:attribute>
-        <xsl:copy-of select="*" />
+        <xsl:attribute name="publishStop">
+          <xsl:value-of select="$publishStop" />
+        </xsl:attribute>
+        <xsl:apply-templates select="*" />
       </update:location>
     </xsl:for-each>
+  </xsl:template>
+  <xsl:template match="update:programUrl">
+    <xsl:choose>
+      <xsl:when test="$programUrl">
+        <update:programUrl override="true"><xsl:value-of select="$programUrl" /></update:programUrl>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:copy-of select="." />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  <xsl:template match="update:*">
+    <xsl:copy-of select="." />
   </xsl:template>
 </xsl:stylesheet>
