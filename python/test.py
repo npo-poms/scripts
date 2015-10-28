@@ -4,6 +4,8 @@
 import sys
 import poms
 import unittest
+import logging
+
 import xml.etree.ElementTree as ET
 
 
@@ -75,7 +77,6 @@ class POMSRSTest(unittest.TestCase):
 
     def test_xslt(self):
         xsl = poms.get_xslt("location_set_publishStop.xslt")
-        print(xsl)
         locations="""
             <locations xmlns="urn:vpro:media:update:2009">
               <location>
@@ -91,13 +92,15 @@ class POMSRSTest(unittest.TestCase):
             </location>
             </locations>
         """
-        poms.xslt(locations, xsl, params = {"a": "b"})
+        print(poms.xslt(locations, xsl, params = {"programUrl": "rtsp:someurl",
+                                            "publishStop": '2012'}))
 
 
 
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.DEBUG)
     poms.opts(env = 'dev')
     del sys.argv[1:]
     suite = unittest.TestSuite()

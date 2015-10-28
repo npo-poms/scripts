@@ -9,8 +9,6 @@ import os
 import logging
 import pytz
 import subprocess
-import inspect
-
 
 environments = {
     'test': 'https://api-test.poms.omroep.nl/',
@@ -193,17 +191,33 @@ def add_member(groupMid, memberMid, position=0, highlighted="false"):
     xml = get_memberOf_xml(groupMid, position, highlighted)
     response = urllib2.urlopen(urllib2.Post(url, data=xml))
 
-def post_location(mid, programUrl, format = None, publishStart = None, publishStop = None):
+def post_location(mid, programUrl, duration = None, bitrate = None, height=None, width=None, aspectRatio = None, format = None, publishStart = None, publishStop = None):
     if not format:
         format = guess_format(programUrl)
 
-    xml = ("<location xmlns='urn:vpro:media:update:2009' format='" + format + "'" + date_attr("publishStart", publishStart) + date_attr("publishStop", publishStop) + ">" +
+    xml = ("<location xmlns='urn:vpro:media:update:2009'" + date_attr("publishStart", publishStart) + date_attr("publishStop", publishStop) + ">" +
            "  <programUrl>" + programUrl + "</programUrl>" +
-             "<avAttributes>< avFileFormat>" + format + "</avFileFormat></avAttributes>" +
-           "</location >")
-    path = "media/media/" + mid + "/location"
-    logging.debug(xml)
-    return post_to(path, xml, accept = "text/plain")
+           "   <avAttributes>");
+    if  format:
+        xml += "<avFileFormat>" + format + "</avFileFormat></avAttributes>";
+
+    if height or width or aspectRatio:
+        xml += "<videoAttributes "
+        if height:
+            xml += "height='" + height + "' "
+        if width:
+            xml += "width='" + width + "' "
+        xml +=">"
+        if aspectRatio:
+            xml += "<aspectRatio>" + aspectRatio + "</aspectRatio>"
+        xml += "</videoAttribute>"
+    if duration:
+        xml += "<duration>" + duration + "</duration>"
+
+
+    xml += "</avAttributes></location >"
+    logging.debug("posting " + xml)
+    return post_to("media/media/" + mid + "/location", xml, accept = "text/plain")
 
 def get_location(mid, programUrl):
     xml = get_locations(mid)
@@ -254,12 +268,17 @@ def get_locations(mid):
     url = target + "media/media/" + urllib.quote(mid, '') + "/locations"
     return _get_xml(url)
 
-def xslt(xml, xslt_file, params = None):
-    p = subprocess.Popen(["xsltproc", xslt_file], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+def xslt(xml, xslt_file, params= {}):
+    if not params: params = {}
+    args = ["xsltproc"]
+    for key, value in params.items():
+        args.extend(("--stringparam", key, value))
+    args.extend((xslt_file, "-"))
+    logging.debug(' '.join(args))
+    p = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     p.stdin.write(xml.encode())
-
-    output = p.communicate()[0]
-    print(str(output))
+    output = p.communicate()
+    return str(output[0].decode())
 
 
 def _get_xml(url):
@@ -356,7 +375,7 @@ def post_to(path, xml, accept="application/xml"):
 
     if email:
         url += "?errors=" + email
-    req = urllib.request.Request(url, data=xml)
+    req = urllib.request.Request(url, data = xml.decode())
     logging.debug("Posting to " + url)
     return _post(req, accept)
 
