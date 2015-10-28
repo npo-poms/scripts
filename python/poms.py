@@ -61,7 +61,9 @@ def init_target(env = None):
 
 def init_logging():
     if 'DEBUG' in os.environ and os.environ['DEBUG']:
-        logging.basicConfig(level=logging.DEBUG)
+        logging.basicConfig(stream = sys.stdout, level=logging.DEBUG)
+    else:
+        logging.basicConfig(stream = sys.stdout, level=logging.INFO)
 
 
 def opts(args = "t:e:srh", usage = None, minargs = 0, login = True, env = None, errors = None):
@@ -230,12 +232,15 @@ def post_location(mid, programUrl, duration = None, bitrate = None, height=None,
     return post_to("media/media/" + mid + "/location", xml, accept = "text/plain")
 
 
-def set_location(mid, location, publishStop = None, publishStart = None):
+def set_location(mid, location, publishStop = None, publishStart = None, programUrl = None):
     xml = get_locations(mid).toprettyxml()
     if location.isdigit():
         args = {"id": location}
+        if programUrl:
+            args["programUrl"] = programUrl
     else:
-        args = {"programUrl": location}
+        args = {"programUrl": urllib.parse.unquote(location)}
+
     if publishStop:
         args['publishStop'] = date_attr_value(publishStop)
     if publishStart:
