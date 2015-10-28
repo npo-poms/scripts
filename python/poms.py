@@ -192,7 +192,7 @@ def add_member(groupMid, memberMid, position=0, highlighted="false"):
     """Adds a a member to a group"""
     url = target + "api/media/" + memberMid + "/memberOf"
     xml = get_memberOf_xml(groupMid, position, highlighted)
-    response = urllib2.urlopen(urllib2.Post(url, data=xml))
+    response = urllib.request.urlopen(urllib.request.Post(url, data=xml))
 
 def post_location(mid, programUrl, duration = None, bitrate = None, height=None, width=None, aspectRatio = None, format = None, publishStart = None, publishStop = None):
     if not format:
@@ -200,9 +200,9 @@ def post_location(mid, programUrl, duration = None, bitrate = None, height=None,
 
     xml = ("<location xmlns='urn:vpro:media:update:2009'" + date_attr("publishStart", publishStart) + date_attr("publishStop", publishStop) + ">" +
            "  <programUrl>" + programUrl + "</programUrl>" +
-           "   <avAttributes>");
+           "   <avAttributes>")
     if  format:
-        xml += "<avFileFormat>" + format + "</avFileFormat></avAttributes>";
+        xml += "<avFileFormat>" + format + "</avFileFormat>";
 
     if height or width or aspectRatio:
         xml += "<videoAttributes "
@@ -210,7 +210,7 @@ def post_location(mid, programUrl, duration = None, bitrate = None, height=None,
             xml += "height='" + height + "' "
         if width:
             xml += "width='" + width + "' "
-        xml +=">"
+        xml += ">"
         if aspectRatio:
             xml += "<aspectRatio>" + aspectRatio + "</aspectRatio>"
         xml += "</videoAttribute>"
