@@ -1,0 +1,13 @@
+<locations xmlns="urn:vpro:media:update:2009">
+  <location>
+    <programUrl>rtsp:someurl</programUrl>
+    <avAttributes>
+      <bitrate>1000000</bitrate>
+      <avFileFormat>M4V</avFileFormat>
+      <videoAttributes width="320" height="180">
+        <aspectRatio>16:9</aspectRatio>
+      </videoAttributes>
+    </avAttributes>
+    <duration>P0DT0H1M40.000S</duration>
+  </location>
+</locations>
