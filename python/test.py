@@ -95,16 +95,20 @@ class POMSRSTest(unittest.TestCase):
         print(poms.xslt(locations, xsl, params = {"programUrl": "rtsp:someurl",
                                             "publishStop": '2012'}))
 
+    def test_get_locations(self):
 
+
+        print(poms.set_location("WO_VPRO_041686", "http://www.vpro.nl/123.mp4", publishStop = "2012-10-10T20:20:00"))
 
 
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     poms.opts(env = 'dev')
+    poms.errors('michiel.meeuwissen@gmail.com')
     del sys.argv[1:]
     suite = unittest.TestSuite()
-    suite.addTest(POMSRSTest("test_xslt"))
+    suite.addTest(POMSRSTest("test_get_locations"))
     runner = unittest.TextTestRunner()
     runner.run(suite)
     #unittest.main()

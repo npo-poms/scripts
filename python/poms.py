@@ -63,7 +63,7 @@ def init_logging():
         logging.basicConfig(level=logging.DEBUG)
 
 
-def opts(args = "t:e:srh", usage = None, minargs = 0, login = True, env = None):
+def opts(args = "t:e:srh", usage = None, minargs = 0, login = True, env = None, errors = None):
     """Initialization with opts. Some argument handling"""
     init_logging()
     try:
@@ -127,12 +127,15 @@ def login(username, password, errors = None):
     global authorizationHeader
     base64string = base64.encodebytes(('%s:%s' % (username, password)).encode()).decode()[:-1]
     authorizationHeader = "Basic %s" % base64string
+
+
+
+def errors(errors = None):
     global email
     if errors:
         email = errors
     else:
         email = None
-
 
 def open_db():
     return shelve.open(os.path.join(get_poms_dir(), "creds"))
@@ -219,14 +222,22 @@ def post_location(mid, programUrl, duration = None, bitrate = None, height=None,
     logging.debug("posting " + xml)
     return post_to("media/media/" + mid + "/location", xml, accept = "text/plain")
 
-def get_location(mid, programUrl):
-    xml = get_locations(mid)
 
+def set_location(mid, programUrl, publishStop = None, publishStart = None):
+    xml = get_locations(mid).toprettyxml()
+    args = {"programUrl": programUrl}
+    if publishStop:
+        args['publishStop'] = publishStop
+    if publishStart:
+        args['publishStart'] = publishStart
 
-def set_location(mid, programUrl):
-    xml = get
-    logging.info(get_xslt("location_set_publishStop.xslt"))
-    sys.exit(1)
+    location_xml = xslt(xml, get_xslt("location_set_publishStop.xslt"), args)
+    if location_xml != "":
+        logging.debug("posting " + location_xml)
+        return post_to("media/media/" + mid + "/location", location_xml, accept = "text/plain")
+    else:
+        return "No location " + programUrl
+
 
 def get_xslt(name):
     return os.path.normpath(os.path.join(get_poms_dir(), "..", "xslt", name))
@@ -265,11 +276,10 @@ def get(mid):
 
 def get_locations(mid):
     creds()
-    url = target + "media/media/" + urllib.quote(mid, '') + "/locations"
+    url = target + "media/media/" + urllib.parse.quote(mid) + "/locations"
     return _get_xml(url)
 
 def xslt(xml, xslt_file, params= {}):
-    if not params: params = {}
     args = ["xsltproc"]
     for key, value in params.items():
         args.extend(("--stringparam", key, value))
@@ -375,7 +385,7 @@ def post_to(path, xml, accept="application/xml"):
 
     if email:
         url += "?errors=" + email
-    req = urllib.request.Request(url, data = xml.decode())
+    req = urllib.request.Request(url, data = xml.encode())
     logging.debug("Posting to " + url)
     return _post(req, accept)
 
