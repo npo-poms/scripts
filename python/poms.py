@@ -97,9 +97,11 @@ def opts(args = "t:e:srh", usage = None, minargs = 0, login = True, env = None, 
 
 
 def creds(pref = ""):
+    global authorizationHeader
     if "authorizationHeader" in vars():
         logging.debug("Already authorized")
         return
+
     d = open_db()
     if not target:
         raise Exception("No target defined")
@@ -227,15 +229,16 @@ def set_location(mid, programUrl, publishStop = None, publishStart = None):
     xml = get_locations(mid).toprettyxml()
     args = {"programUrl": programUrl}
     if publishStop:
-        args['publishStop'] = publishStop
+        args['publishStop'] = date_attr_value(publishStop)
     if publishStart:
-        args['publishStart'] = publishStart
+        args['publishStart'] = date_attr_value(publishStart)
 
     location_xml = xslt(xml, get_xslt("location_set_publishStop.xslt"), args)
     if location_xml != "":
         logging.debug("posting " + location_xml)
         return post_to("media/media/" + mid + "/location", location_xml, accept = "text/plain")
     else:
+        logging.debug("no location " + programUrl)
         return "No location " + programUrl
 
 
@@ -255,9 +258,14 @@ def guess_format(url):
 def date_attr(name, datetime):
     if datetime:
         aware = datetime.replace(tzinfo=pytz.UTC)
-        return " " + name + "='" + aware.strftime("%Y-%m-%dT%H:%M:%SZ") + "'"
+        return " " + name + "='" + date_attr_value(datetime) + "'"
     else:
         return ""
+def date_attr_value(datetime):
+    if datetime:
+        aware = datetime.replace(tzinfo=pytz.UTC)
+        return aware.strftime("%Y-%m-%dT%H:%M:%SZ")
+    return None
 
 
 def post_str(xml):
