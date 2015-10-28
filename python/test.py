@@ -73,10 +73,35 @@ class POMSRSTest(unittest.TestCase):
   </Files>
 </NPO_gfxwrp>"""
 
+    def test_xslt(self):
+        xsl = poms.get_xslt("location_set_publishStop.xslt")
+        print(xsl)
+        locations="""
+            <locations xmlns="urn:vpro:media:update:2009">
+              <location>
+                <programUrl>rtsp:someurl</programUrl>
+                <avAttributes>
+                   <bitrate>1000000</bitrate>
+                   <avFileFormat>M4V</avFileFormat>
+                   <videoAttributes width="320" height="180">
+                    <aspectRatio>16:9</aspectRatio>
+                  </videoAttributes>
+                </avAttributes>
+               <duration>P0DT0H1M40.000S</duration>
+            </location>
+            </locations>
+        """
+        poms.xslt(locations, xsl, params = {"a": "b"})
+
+
 
 
 
 if __name__ == "__main__":
     poms.opts(env = 'dev')
     del sys.argv[1:]
-    unittest.main()
+    suite = unittest.TestSuite()
+    suite.addTest(POMSRSTest("test_xslt"))
+    runner = unittest.TextTestRunner()
+    runner.run(suite)
+    #unittest.main()

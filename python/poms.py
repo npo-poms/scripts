@@ -215,7 +215,7 @@ def set_location(mid, programUrl):
     sys.exit(1)
 
 def get_xslt(name):
-    return os.path.join(get_poms_dir(), "..", "xslt", name)
+    return os.path.normpath(os.path.join(get_poms_dir(), "..", "xslt", name))
 
 def get_poms_dir():
     return os.path.dirname(__file__)
@@ -255,9 +255,12 @@ def get_locations(mid):
     return _get_xml(url)
 
 def xslt(xml, xslt_file, params = None):
-    p = subprocess.Popen(["xsltproc", xslt_file], stdin=subprocess.PIPE)
-    p.stdin.write(xml)
-    return p.communicate()[0]
+    p = subprocess.Popen(["xsltproc", xslt_file], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    p.stdin.write(xml.encode())
+
+    output = p.communicate()[0]
+    print(str(output))
+
 
 def _get_xml(url):
     try:

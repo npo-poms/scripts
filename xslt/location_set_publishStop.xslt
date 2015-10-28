@@ -4,9 +4,11 @@
                 >
   <xsl:param name="publishStop" />
   <xsl:param name="id" />
+  <xsl:param name="programUrl" />
   <xsl:output method="xml"/>
   <xsl:template match="/">
-    <xsl:for-each select="//update:location[@urn=concat('urn:vpro:media:location:', $id)]">
+    <xsl:value-of select="$programUrl" />
+    <xsl:for-each select="//update:location[@urn=concat('urn:vpro:media:location:', $id) or update:programUrl = $programUrl]">
       <update:location>
         <xsl:for-each select="@*">
           <xsl:if test="name() != urn"> <!-- you cannot update existing locations, but it will match on programUrl like this -->
