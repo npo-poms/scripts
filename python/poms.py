@@ -9,6 +9,7 @@ import os
 import logging
 import pytz
 import subprocess
+import threading
 
 environments = {
     'test': 'https://api-test.poms.omroep.nl/',
@@ -94,7 +95,7 @@ def opts(args = "t:e:srh", usage = None, minargs = 0, login = True, env = None, 
         creds()
     return opts,args
 
-
+lock = threading.Lock()
 
 def creds(pref = ""):
     global authorizationHeader
@@ -102,22 +103,23 @@ def creds(pref = ""):
         logging.debug("Already authorized")
         return
 
-    d = open_db()
-    if not target:
-        raise Exception("No target defined")
+    with lock:
+        d = open_db()
+        if not target:
+            raise Exception("No target defined")
 
 
-    usernamekey = pref + target + ':username'
-    passwordkey = pref + target + ':password'
+        usernamekey = pref + target + ':username'
+        passwordkey = pref + target + ':password'
 
-    if not usernamekey in d  or ('-r','') in _opts :
-        d[usernamekey] = input('Username for ' + target + ': ')
-        d[passwordkey] = getpass.getpass()
-        print("Username/password stored in file creds.db. Use -r to set it.")
+        if not usernamekey in d  or ('-r','') in _opts :
+            d[usernamekey] = input('Username for ' + target + ': ')
+            d[passwordkey] = getpass.getpass()
+            print("Username/password stored in file creds.db. Use -r to set it.")
 
-    login(d[usernamekey], d[passwordkey], d.get("email"))
+        login(d[usernamekey], d[passwordkey], d.get("email"))
 
-    d.close()
+        d.close()
 
 
 def login(username, password, errors = None):
@@ -203,7 +205,9 @@ def post_location(mid, programUrl, duration = None, bitrate = None, height=None,
     xml = ("<location xmlns='urn:vpro:media:update:2009'" + date_attr("publishStart", publishStart) + date_attr("publishStop", publishStop) + ">" +
            "  <programUrl>" + programUrl + "</programUrl>" +
            "   <avAttributes>")
-    if  format:
+    if bitrate:
+        xml += "<bitrate>" + str(bitrate) + "</bitrate>";
+    if format:
         xml += "<avFileFormat>" + format + "</avFileFormat>";
 
     if height or width or aspectRatio:
@@ -215,19 +219,23 @@ def post_location(mid, programUrl, duration = None, bitrate = None, height=None,
         xml += ">"
         if aspectRatio:
             xml += "<aspectRatio>" + aspectRatio + "</aspectRatio>"
-        xml += "</videoAttribute>"
+        xml += "</videoAttributes>"
+
+    xml += "</avAttributes>"
     if duration:
         xml += "<duration>" + duration + "</duration>"
 
-
-    xml += "</avAttributes></location >"
+    xml += "</location >"
     logging.debug("posting " + xml)
     return post_to("media/media/" + mid + "/location", xml, accept = "text/plain")
 
 
-def set_location(mid, programUrl, publishStop = None, publishStart = None):
+def set_location(mid, location, publishStop = None, publishStart = None):
     xml = get_locations(mid).toprettyxml()
-    args = {"programUrl": programUrl}
+    if location.isdigit():
+        args = {"id": location}
+    else:
+        args = {"programUrl": location}
     if publishStop:
         args['publishStop'] = date_attr_value(publishStop)
     if publishStart:
@@ -238,8 +246,8 @@ def set_location(mid, programUrl, publishStop = None, publishStart = None):
         logging.debug("posting " + location_xml)
         return post_to("media/media/" + mid + "/location", location_xml, accept = "text/plain")
     else:
-        logging.debug("no location " + programUrl)
-        return "No location " + programUrl
+        logging.debug("no location " + location)
+        return "No location " + location
 
 
 def get_xslt(name):
