@@ -273,6 +273,8 @@ def get_poms_dir():
 def guess_format(url):
     if url.endswith(".mp4"):
         return "MP4"
+    elif url.endswith(".mp3"):
+        return "MP3"
     else:
         return "UNKNOWN"
 
