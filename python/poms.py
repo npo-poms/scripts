@@ -21,6 +21,8 @@ environments = {
 target = None
 """The currently configured target. I.e. the URL of the POMS rest api"""
 
+email = None
+
 
 def init_db(opts = None):
     """username/password and target can be stored in a database.
@@ -344,6 +346,23 @@ def add_genre(xml, genreId):
     genreEl = xml.ownerDocument.createElement("genre")
     genreEl.appendChild(xml.ownerDocument.createTextNode(genreId))
     _append_element(xml, genreEl)
+
+
+def add_image(mid, image, image_type="PICTURE"):
+    if os.path.isfile(image):
+        with open(image, "rb") as image_file:
+            encoded_string = base64.b64encode(image_file.read())
+            xml = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<image xmlns="urn:vpro:media:update:2009" type="%s">
+  <title>Image for %s</title>
+  <imageData>
+    <data>%s</data>
+  </imageData>
+</image>
+""" % (image_type, mid, encoded_string)
+
+            return post_to("media/media/" + mid + "/image", xml, accept = "text/plain")
+
 
 
 def _append_element(xml, element, path = ("crid",
