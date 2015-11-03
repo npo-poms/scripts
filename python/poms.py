@@ -23,6 +23,8 @@ target = None
 
 email = None
 
+authorizationHeader = None
+
 
 def init_db(opts = None):
     """username/password and target can be stored in a database.
@@ -106,7 +108,7 @@ lock = threading.Lock()
 
 def creds(pref = ""):
     global authorizationHeader
-    if "authorizationHeader" in vars():
+    if authorizationHeader:
         logging.debug("Already authorized")
         return
 
@@ -124,12 +126,13 @@ def creds(pref = ""):
             d[passwordkey] = getpass.getpass()
             print("Username/password stored in file creds.db. Use -r to set it.")
 
-        login(d[usernamekey], d[passwordkey], d.get("email"))
+        login(d[usernamekey], d[passwordkey])
+        errors(d["email"])
 
         d.close()
 
 
-def login(username, password, errors = None):
+def login(username, password):
     logging.info("Logging in " + username)
     passman = urllib.request.HTTPPasswordMgrWithDefaultRealm()
     passman.add_password(None, target, username, password)
@@ -141,7 +144,7 @@ def login(username, password, errors = None):
 
 
 
-def errors(mail = None):
+def errors(mail=None):
     global email
     if mail:
         email = mail
@@ -355,7 +358,7 @@ def add_image(mid, image, image_type="PICTURE", title=None):
         with open(image, "rb") as image_file:
             if not title:
                 title="Image for %s" % mid
-            encoded_string = base64.b64encode(image_file.read())
+            encoded_string = base64.b64encode(image_file.read()).decode("ascii")
             xml = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <image xmlns="urn:vpro:media:update:2009" type="%s">
   <title>%s</title>
@@ -364,7 +367,7 @@ def add_image(mid, image, image_type="PICTURE", title=None):
   </imageData>
 </image>
 """ % (image_type, title, encoded_string)
-
+            logging.info(xml)
             return post_to("media/media/" + mid + "/image", xml, accept="text/plain")
 
 
