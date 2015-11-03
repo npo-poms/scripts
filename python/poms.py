@@ -348,20 +348,22 @@ def add_genre(xml, genreId):
     _append_element(xml, genreEl)
 
 
-def add_image(mid, image, image_type="PICTURE"):
+def add_image(mid, image, image_type="PICTURE", title=None):
     if os.path.isfile(image):
         with open(image, "rb") as image_file:
+            if not title:
+                title="Image for %s" % mid
             encoded_string = base64.b64encode(image_file.read())
             xml = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <image xmlns="urn:vpro:media:update:2009" type="%s">
-  <title>Image for %s</title>
+  <title>%s</title>
   <imageData>
     <data>%s</data>
   </imageData>
 </image>
-""" % (image_type, mid, encoded_string)
+""" % (image_type, title, encoded_string)
 
-            return post_to("media/media/" + mid + "/image", xml, accept = "text/plain")
+            return post_to("media/media/" + mid + "/image", xml, accept="text/plain")
 
 
 
