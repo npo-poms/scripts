@@ -2,6 +2,7 @@ import shelve
 import urllib.request
 import sys
 import base64
+import xml.etree.ElementTree as ET
 from xml.dom import minidom
 import getopt
 import getpass
@@ -303,11 +304,11 @@ def parkpost_str(xml):
     return parkpost(minidom.parseString(xml).documentElement)
 
 
-def get(mid):
+def get(mid, parser=minidom):
     """Returns XML-representation of a mediaobject"""
     creds()
     url = target + "media/media/" + urllib.parse.quote(mid)
-    return _get_xml(url)
+    return _get_xml(url, parser=parser)
 
 
 def get_locations(mid):
@@ -327,7 +328,7 @@ def xslt(xml, xslt_file, params= {}):
     return str(output[0].decode())
 
 
-def _get_xml(url):
+def _get_xml(url, parser=minidom):
     try:
         logging.info("getting " + url)
         req = urllib.request.Request(url)
@@ -338,7 +339,10 @@ def _get_xml(url):
         sys.exit(1)
     xmlBytes = response.read()
     try:
-        xml = minidom.parseString(xmlBytes)
+        if parser == ET:
+            xml = ET.fromstring(xmlBytes)
+        elif parser == minidom:
+            xml = minidom.parseString(xmlBytes)
     except Exception:
         logging.error("Could not parse \n" + xmlBytes.decode(sys.stdout.encoding, "surrogateescape"))
     return xml
