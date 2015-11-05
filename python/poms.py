@@ -336,12 +336,11 @@ def _get_xml(url):
     except Exception as e:
         logging.error(url + " " + str(e))
         sys.exit(1)
-
-    xmlStr = response.read();
+    xmlBytes = response.read()
     try:
-        xml = minidom.parseString(xmlStr)
-    except Exception as e:
-        logging.error("Could not parse \n" + xmlStr)
+        xml = minidom.parseString(xmlBytes)
+    except Exception:
+        logging.error("Could not parse \n" + xmlBytes.decode(sys.stdout.encoding, "surrogateescape"))
     return xml
 
 
