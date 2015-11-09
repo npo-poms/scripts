@@ -26,6 +26,8 @@ email = None
 
 authorizationHeader = None
 
+namespaces = {'update': 'urn:vpro:media:update:2009'}
+
 
 def init_db(opts = None):
     """username/password and target can be stored in a database.
