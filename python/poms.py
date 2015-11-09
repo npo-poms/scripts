@@ -127,7 +127,7 @@ def creds(pref = ""):
             print("Username/password stored in file creds.db. Use -r to set it.")
 
         login(d[usernamekey], d[passwordkey])
-        errors(d["email"])
+        errors(d.get("email"))
 
         d.close()
 
@@ -367,7 +367,7 @@ def add_image(mid, image, image_type="PICTURE", title=None):
   </imageData>
 </image>
 """ % (image_type, title, encoded_string)
-            logging.info(xml)
+            logging.debug(xml)
             return post_to("media/media/" + mid + "/image", xml, accept="text/plain")
 
 
