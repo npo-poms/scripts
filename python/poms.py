@@ -54,6 +54,7 @@ def init_db(opts = None):
 
 def init_target(env = None):
     global target
+    t = None
     if not env and 'ENV' in os.environ:
         t = os.environ['ENV']
 
