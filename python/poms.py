@@ -40,8 +40,6 @@ def init_db(opts = None):
     if 'target' in d:
         target = d['target']
 
-    init_logging()
-
     for o,a in opts:
         if o == '-t':
             d['target'] = init_target(a)
@@ -73,9 +71,10 @@ def init_logging():
         logging.basicConfig(stream = sys.stdout, level=logging.INFO)
 
 
-def opts(args = "t:e:srh", usage = None, minargs = 0, login = True, env = None, mail_errors = None):
+def opts(args = "t:e:srh", usage = None, minargs = 0, login = True, env = None, mail_errors = None, init_log = True):
     """Initialization with opts. Some argument handling"""
-    init_logging()
+    if init_log:
+        init_logging()
     try:
         opts, args = getopt.getopt(sys.argv[1:], args)
     except getopt.GetoptError as err:
