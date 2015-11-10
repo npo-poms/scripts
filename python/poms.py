@@ -37,7 +37,7 @@ def init_db(opts = None):
     _opts = [] if opts is None else opts
     d = open_db()
 
-    if 'target' in d:
+    if not target and 'target' in d:
         target = d['target']
 
     for o,a in opts:
@@ -55,10 +55,11 @@ def init_db(opts = None):
 def init_target(env = None):
     global target
     if not env and 'ENV' in os.environ:
-        env = os.environ['ENV']
+        t = os.environ['ENV']
 
-    if env:
-        target = environments[env]
+
+    if t:
+        target = environments[t]
     if not target:
         target = environments['test']
 
