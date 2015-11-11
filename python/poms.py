@@ -11,6 +11,8 @@ import logging
 import pytz
 import subprocess
 import threading
+import codecs
+
 
 environments = {
     'test': 'https://api-test.poms.omroep.nl/',
@@ -223,33 +225,39 @@ def add_member(group_mid, member_mid, position=0, highlighted="false"):
 
 
 def post_location(mid, programUrl, duration=None, bitrate=None, height=None, width=None, aspectRatio=None, format=None, publishStart=None, publishStop=None):
-    if not format:
-        format = guess_format(programUrl)
+    if os.path.isfile(programUrl):
+        logging.debug(programUrl + " seems to be a local file")
+        with codecs.open(programUrl, "r", "utf-8") as myfile:
+            xml = myfile.read()
+    else:
+        if not format:
+            format = guess_format(programUrl)
 
-    xml = ("<location xmlns='urn:vpro:media:update:2009'" + date_attr("publishStart", publishStart) + date_attr("publishStop", publishStop) + ">" +
-           "  <programUrl>" + programUrl + "</programUrl>" +
-           "   <avAttributes>")
-    if bitrate:
-        xml += "<bitrate>" + str(bitrate) + "</bitrate>";
-    if format:
-        xml += "<avFileFormat>" + format + "</avFileFormat>";
+        xml = ("<location xmlns='urn:vpro:media:update:2009'" + date_attr("publishStart", publishStart) + date_attr("publishStop", publishStop) + ">" +
+        "  <programUrl>" + programUrl + "</programUrl>" +
+        "   <avAttributes>")
+        if bitrate:
+            xml += "<bitrate>" + str(bitrate) + "</bitrate>";
+        if format:
+            xml += "<avFileFormat>" + format + "</avFileFormat>";
 
-    if height or width or aspectRatio:
-        xml += "<videoAttributes "
-        if height:
-            xml += "height='" + height + "' "
-        if width:
-            xml += "width='" + width + "' "
-        xml += ">"
-        if aspectRatio:
-            xml += "<aspectRatio>" + aspectRatio + "</aspectRatio>"
-        xml += "</videoAttributes>"
+        if height or width or aspectRatio:
+            xml += "<videoAttributes "
+            if height:
+                xml += "height='" + height + "' "
+            if width:
+                xml += "width='" + width + "' "
+            xml += ">"
+            if aspectRatio:
+                xml += "<aspectRatio>" + aspectRatio + "</aspectRatio>"
+            xml += "</videoAttributes>"
 
-    xml += "</avAttributes>"
-    if duration:
-        xml += "<duration>" + duration + "</duration>"
+        xml += "</avAttributes>"
+        if duration:
+            xml += "<duration>" + duration + "</duration>"
 
-    xml += "</location >"
+        xml += "</location >"
+
     logging.debug("posting " + xml)
     return post_to("media/media/" + mid + "/location", xml, accept="text/plain")
 
