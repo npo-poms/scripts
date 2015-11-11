@@ -32,7 +32,7 @@ namespaces = {'update': 'urn:vpro:media:update:2009'}
 def init_db(opts = None):
     """username/password and target can be stored in a database.
     If no username/password is known for a target, it is asked"""
-    global _opts, target
+    global _opts, target, email
 
     _opts = [] if opts is None else opts
     d = open_db()
@@ -44,7 +44,8 @@ def init_db(opts = None):
         if o == '-t':
             d['target'] = init_target(a)
         if o == '-e':
-           d['email'] = errors(a)
+            errors(a)
+            d['email'] = email
         if o == '-s':
             for k in d.keys():
                 print(k + "=" + d[k])
@@ -68,9 +69,9 @@ def init_target(env = None):
 
 def init_logging():
     if 'DEBUG' in os.environ and os.environ['DEBUG']:
-        logging.basicConfig(stream = sys.stdout, level=logging.DEBUG)
+        logging.basicConfig(stream = sys.stderr, level=logging.DEBUG, format="%(asctime)-15s:%(levelname).3s:%(message)s")
     else:
-        logging.basicConfig(stream = sys.stdout, level=logging.INFO, format="%(asctime)-15s:%(levelname).3s:%(message)s")
+        logging.basicConfig(stream = sys.stderr, level=logging.INFO, format="%(asctime)-15s:%(levelname).3s:%(message)s")
 
 
 def opts(args = "t:e:srh", usage = None, minargs = 0, login = True, env = None, mail_errors = None, init_log = True):
@@ -113,7 +114,7 @@ lock = threading.Lock()
 def creds(pref = ""):
     global authorizationHeader
     if authorizationHeader:
-        logging.debug("Already authorized")
+        #logging.debug("Already authorized")
         return
 
     with lock:
@@ -137,7 +138,7 @@ def creds(pref = ""):
 
 
 def login(username, password):
-    logging.info("Logging in " + username)
+    logging.debug("Logging in " + username)
     passman = urllib.request.HTTPPasswordMgrWithDefaultRealm()
     passman.add_password(None, target, username, password)
     urllib.request.install_opener(urllib.request.build_opener(urllib.request.HTTPBasicAuthHandler(passman)))
@@ -150,12 +151,13 @@ def login(username, password):
 
 def errors(mail=None):
     global email
-    if mail:
-        email = mail
-        logging.debug("Emailing to " + email)
-    else:
-        email = None
-        logging.debug("Not emailing")
+    if email != mail:
+        if mail:
+            email = mail
+            logging.debug("Emailing to " + email)
+        else:
+            email = None
+            logging.debug("Not emailing")
 
 
 def open_db():
