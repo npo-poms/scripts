@@ -70,7 +70,7 @@ def init_logging():
     if 'DEBUG' in os.environ and os.environ['DEBUG']:
         logging.basicConfig(stream = sys.stdout, level=logging.DEBUG)
     else:
-        logging.basicConfig(stream = sys.stdout, level=logging.INFO)
+        logging.basicConfig(stream = sys.stdout, level=logging.INFO, format="%(asctime)-15s:%(levelname).3s:%(message)s")
 
 
 def opts(args = "t:e:srh", usage = None, minargs = 0, login = True, env = None, mail_errors = None, init_log = True):
@@ -341,6 +341,7 @@ def _get_xml(url, parser=minidom):
         logging.error(url + " " + str(e))
         sys.exit(1)
     xmlBytes = response.read()
+    xml = None
     try:
         if parser == ET:
             xml = ET.fromstring(xmlBytes)
