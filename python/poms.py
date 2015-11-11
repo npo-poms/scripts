@@ -29,7 +29,7 @@ authorizationHeader = None
 namespaces = {'update': 'urn:vpro:media:update:2009'}
 
 
-def init_db(opts = None):
+def init_db(opts=None):
     """username/password and target can be stored in a database.
     If no username/password is known for a target, it is asked"""
     global _opts, target, email
@@ -53,12 +53,12 @@ def init_db(opts = None):
 
     d.close()
 
-def init_target(env = None):
+
+def init_target(env=None):
     global target
     t = None
     if not env and 'ENV' in os.environ:
         t = os.environ['ENV']
-
 
     if t:
         target = environments[t]
@@ -67,6 +67,7 @@ def init_target(env = None):
 
     return target
 
+
 def init_logging():
     if 'DEBUG' in os.environ and os.environ['DEBUG']:
         logging.basicConfig(stream = sys.stderr, level=logging.DEBUG, format="%(asctime)-15s:%(levelname).3s:%(message)s")
@@ -74,7 +75,7 @@ def init_logging():
         logging.basicConfig(stream = sys.stderr, level=logging.INFO, format="%(asctime)-15s:%(levelname).3s:%(message)s")
 
 
-def opts(args = "t:e:srh", usage = None, minargs = 0, login = True, env = None, mail_errors = None, init_log = True):
+def opts(args = "t:e:srh", usage=None, minargs=0, login=True, env=None, init_log=True):
     """Initialization with opts. Some argument handling"""
     if init_log:
         init_logging()
@@ -104,12 +105,12 @@ def opts(args = "t:e:srh", usage = None, minargs = 0, login = True, env = None, 
     init_target(env)
     init_db(opts)
 
-
     if login:
         creds()
     return opts,args
 
 lock = threading.Lock()
+
 
 def creds(pref = ""):
     global authorizationHeader
@@ -122,16 +123,15 @@ def creds(pref = ""):
         if not target:
             raise Exception("No target defined")
 
+        username_key = pref + target + ':username'
+        password_key = pref + target + ':password'
 
-        usernamekey = pref + target + ':username'
-        passwordkey = pref + target + ':password'
-
-        if not usernamekey in d  or ('-r','') in _opts :
-            d[usernamekey] = input('Username for ' + target + ': ')
-            d[passwordkey] = getpass.getpass()
+        if not username_key in d  or ('-r','') in _opts :
+            d[username_key] = input('Username for ' + target + ': ')
+            d[password_key] = getpass.getpass()
             print("Username/password stored in file creds.db. Use -r to set it.")
 
-        login(d[usernamekey], d[passwordkey])
+        login(d[username_key], d[password_key])
         errors(d.get("email"))
 
         d.close()
@@ -139,9 +139,9 @@ def creds(pref = ""):
 
 def login(username, password):
     logging.debug("Logging in " + username)
-    passman = urllib.request.HTTPPasswordMgrWithDefaultRealm()
-    passman.add_password(None, target, username, password)
-    urllib.request.install_opener(urllib.request.build_opener(urllib.request.HTTPBasicAuthHandler(passman)))
+    password_manager = urllib.request.HTTPPasswordMgrWithDefaultRealm()
+    password_manager.add_password(None, target, username, password)
+    urllib.request.install_opener(urllib.request.build_opener(urllib.request.HTTPBasicAuthHandler(password_manager)))
 
     global authorizationHeader
     base64string = base64.encodebytes(('%s:%s' % (username, password)).encode()).decode()[:-1]
@@ -163,15 +163,16 @@ def errors(mail=None):
 def open_db():
     return shelve.open(os.path.join(get_poms_dir(), "creds"))
 
+
 def generic_usage():
-    print("-s       Show stored credentials (in creds.db). If none stored, username/password " +
-        "will be asked interactively.")
+    print("-s       Show stored credentials (in creds.db). If none stored, username/password will be asked interactively.")
     print("-t <url> Change target. 'test', 'dev' and 'prod' are " +
           "possible abbreviations for https://api[-test|-dev].poms.omroep.nl/media/. " +
           "Defaults to previously used version (stored in creds.db) or the environment variable 'ENV")
     print("-r       Reset and ask username/password again")
     print("-e <email> Set email address to mail errors to. " +
           "Defaults to previously used value (stored in creds.db).")
+
 
 # private method to implement both members and episodes calls.
 def _members_or_episodes(mid, what):
@@ -181,7 +182,7 @@ def _members_or_episodes(mid, what):
     offset = 0
     batch = 20
     while True:
-        url = (target + 'media/group/' +  urllib.parse.quote(mid, '') + "/" + what + "?max=" + str(batch) +
+        url = (target + 'media/group/' + urllib.parse.quote(mid, '') + "/" + what + "?max=" + str(batch) +
                "&offset=" + str(offset))
         xml = _get_xml(url)
         items = xml.getElementsByTagName('item')
@@ -193,31 +194,35 @@ def _members_or_episodes(mid, what):
         total = xml.childNodes[0].getAttribute("totalCount")
         logging.info(str(len(result)) + "/" + total)
 
-
     return result
+
 
 def members(mid):
     """return a list of all members of a group. As XML objects, wrapped
     in 'items', so you can see the position"""
     return _members_or_episodes(mid, "members")
 
+
 def episodes(mid):
     """return a list of all episodes of a group. As XML objects, wrapped
     in 'items', so you can see the position"""
     return _members_or_episodes(mid, "episodes")
 
-def get_memberOf_xml(groupMid, position=0, highlighted="false"):
+
+def get_memberOf_xml(group_mid, position=0, highlighted="false"):
     """create an xml sniplet representing a memberOf"""
     return ('<memberOf position="' + str(position) + '" highlighted="' +
-            highlighted + '">' + groupMid + '</memberOf>')
+            highlighted + '">' + group_mid + '</memberOf>')
 
-def add_member(groupMid, memberMid, position=0, highlighted="false"):
+
+def add_member(group_mid, member_mid, position=0, highlighted="false"):
     """Adds a a member to a group"""
-    url = target + "api/media/" + memberMid + "/memberOf"
-    xml = get_memberOf_xml(groupMid, position, highlighted)
+    url = target + "api/media/" + member_mid + "/memberOf"
+    xml = get_memberOf_xml(group_mid, position, highlighted)
     response = urllib.request.urlopen(urllib.request.Post(url, data=xml))
 
-def post_location(mid, programUrl, duration = None, bitrate = None, height=None, width=None, aspectRatio = None, format = None, publishStart = None, publishStop = None):
+
+def post_location(mid, programUrl, duration=None, bitrate=None, height=None, width=None, aspectRatio=None, format=None, publishStart=None, publishStop=None):
     if not format:
         format = guess_format(programUrl)
 
@@ -246,10 +251,10 @@ def post_location(mid, programUrl, duration = None, bitrate = None, height=None,
 
     xml += "</location >"
     logging.debug("posting " + xml)
-    return post_to("media/media/" + mid + "/location", xml, accept = "text/plain")
+    return post_to("media/media/" + mid + "/location", xml, accept="text/plain")
 
 
-def set_location(mid, location, publishStop = None, publishStart = None, programUrl = None):
+def set_location(mid, location, publishStop=None, publishStart=None, programUrl=None):
     xml = get_locations(mid).toprettyxml()
     if location.isdigit():
         args = {"id": location}
@@ -277,6 +282,7 @@ def set_location(mid, location, publishStop = None, publishStart = None, program
 def get_xslt(name):
     return os.path.normpath(os.path.join(get_poms_dir(), "..", "xslt", name))
 
+
 def get_poms_dir():
     return os.path.dirname(__file__)
 
@@ -289,12 +295,15 @@ def guess_format(url):
     else:
         return "UNKNOWN"
 
+
 def date_attr(name, datetime):
     if datetime:
         aware = datetime.replace(tzinfo=pytz.UTC)
         return " " + name + "='" + date_attr_value(datetime) + "'"
     else:
         return ""
+
+
 def date_attr_value(datetime):
     if datetime:
         aware = datetime.replace(tzinfo=pytz.UTC)
@@ -302,8 +311,6 @@ def date_attr_value(datetime):
     return None
 
 
-def post_str(xml):
-    return post(minidom.parseString(xml).documentElement)
 
 def parkpost_str(xml):
     return parkpost(minidom.parseString(xml).documentElement)
@@ -321,7 +328,10 @@ def get_locations(mid):
     url = target + "media/media/" + urllib.parse.quote(mid) + "/locations"
     return _get_xml(url)
 
-def xslt(xml, xslt_file, params= {}):
+
+def xslt(xml, xslt_file, params=None):
+    if not params:
+        params = {}
     args = ["xsltproc"]
     for key, value in params.items():
         args.extend(("--stringparam", key, value))
@@ -342,24 +352,23 @@ def _get_xml(url, parser=minidom):
     except Exception as e:
         logging.error(url + " " + str(e))
         sys.exit(1)
-    xmlBytes = response.read()
+    xml_bytes = response.read()
     xml = None
     try:
         if parser == ET:
-            xml = ET.fromstring(xmlBytes)
+            xml = ET.fromstring(xml_bytes)
         elif parser == minidom:
-            xml = minidom.parseString(xmlBytes)
+            xml = minidom.parseString(xml_bytes)
     except Exception:
-        logging.error("Could not parse \n" + xmlBytes.decode(sys.stdout.encoding, "surrogateescape"))
+        logging.error("Could not parse \n" + xml_bytes.decode(sys.stdout.encoding, "surrogateescape"))
     return xml
 
 
-
-def add_genre(xml, genreId):
+def add_genre(xml, genre_id):
     """Adds a genre to the minidom object"""
-    genreEl = xml.ownerDocument.createElement("genre")
-    genreEl.appendChild(xml.ownerDocument.createTextNode(genreId))
-    _append_element(xml, genreEl)
+    genre_el = xml.ownerDocument.createElement("genre")
+    genre_el.appendChild(xml.ownerDocument.createTextNode(genre_id))
+    _append_element(xml, genre_el)
 
 
 def add_image(mid, image, image_type="PICTURE", title=None):
@@ -380,32 +389,32 @@ def add_image(mid, image, image_type="PICTURE", title=None):
             return post_to("media/media/" + mid + "/image", xml, accept="text/plain")
 
 
-
-def _append_element(xml, element, path = ("crid",
-                                          "broadcaster",
-                                          "portal",
-                                          "exclusive",
-                                          "region",
-                                          "title",
-                                          "description",
-                                          "tag",
-                                          "genre",
-                                          "avAttributes",
-                                          "releaseYear",
-                                          "duration",
-                                          "credits",
-                                          "memberOf",
-                                          "ageRating",
-                                          "contentRating",
-                                          "email",
-                                          "website",
-                                          "location",
-                                          "scheduleEvents",
-                                          "relation",
-                                          "images",
-                                          "asset")):
+def _append_element(xml, element, path=
+    ("crid",
+    "broadcaster",
+    "portal",
+    "exclusive",
+    "region",
+    "title",
+    "description",
+    "tag",
+    "genre",
+    "avAttributes",
+    "releaseYear",
+    "duration",
+    "credits",
+    "memberOf",
+    "ageRating",
+    "contentRating",
+    "email",
+    "website",
+    "location",
+    "scheduleEvents",
+    "relation",
+    "images",
+    "asset")):
     """Appends an element in the correct location in the given (minidom) xml"""
-    index =  path.index(element.nodeName)
+    index = path.index(element.nodeName)
     for child in xml.childNodes:
         if path.index(child.nodeName) > index:
             xml.insertBefore(element, child)
@@ -413,24 +422,25 @@ def _append_element(xml, element, path = ("crid",
     xml.appendChild(element)
 
 
+def xml_to_bytes(xml):
+    t = type(xml)
+    if t == str:
+        return xml.encode('utf-8')
+    elif t == minidom.Element:
+        #xml.setAttribute("xmlns", "urn:vpro:media:update:2009")
+        #xml.setAttribute("xmlns:xsi",
+        #    "http://www.w3.org/2001/XMLSchema-instance")
+        return xml.toxml('utf-8')
+    else:
+        raise "unrecognized type " + t
+
+
 def post(xml, lookupcrid=False, followMerges=True):
-    creds()
-    # it seems minidom sucks a bit, since it should have added these attributes
-    # automaticly of course. The xml is simply not valid otherwise
-    xml.setAttribute("xmlns", "urn:vpro:media:update:2009")
-    xml.setAttribute("xmlns:xsi",
-                     "http://www.w3.org/2001/XMLSchema-instance")
-    url = target + "media/media?lookupcrid=" + str(lookupcrid) + "&followMerges=" + str(followMerges)
-
-    if email:
-        url += "&errors=" + email
+    return post_to("media/media", xml, accept="text/plain", lookupcrid=lookupcrid, followMerges=followMerges)
 
 
-    #print xml.toxml()
-    logging.debug("posting " + xml.getAttribute("mid") + " to " + url)
-    req = urllib.request.Request(url, data=xml.toxml('utf-8'))
-    return _post(req, accept = "text/plain")
-
+def find(xml, lookupcrid=False, followMerges=True):
+    return post_to("media/find", xml, lookupcrid=lookupcrid, followMerges=followMerges)
 
 
 def parkpost(xml):
@@ -441,28 +451,55 @@ def parkpost(xml):
     req = urllib.request.Request(url, data=xml.toxml('utf-8'))
     return _post(req)
 
-def post_to(path, xml, accept="application/xml"):
-    creds()
-    url = target + path
-    if type(xml) != str:
-        xml = xml.toxml('utf-8')
 
-    if email:
-        url += "?errors=" + email
-    req = urllib.request.Request(url, data = xml.encode())
+def append_params(url, include_errors=True, **kwargs):
+    if not kwargs:
+        kwargs = {}
+    if not "errors" in kwargs and email and include_errors:
+        kwargs["errors"] = email
+
+    sep = "?"
+    for key, value in kwargs.items():
+        url += sep + key + "=" + str(value)
+        sep = "&"
+    return url
+
+
+def post_to(path, xml, accept="application/xml", **kwargs):
+    creds()
+    url = append_params(target + path, **kwargs)
+    bytes = xml_to_bytes(xml)
+    req = urllib.request.Request(url, data=bytes)
     logging.debug("Posting to " + url)
-    return _post(req, accept)
+    return _post(req, accept=accept)
 
 
 def _post(req, accept="application/xml"):
     req.add_header("Authorization", authorizationHeader);
     req.add_header("Content-Type", "application/xml")
     req.add_header("Accept", accept)
-    #req.add_header("Accept", "application/json")
-    #req.add_header("Accept", "text/plain")
     try:
         response = urllib.request.urlopen(req)
         return response.read().decode()
     except urllib.request.HTTPError as e:
         logging.error(e.read().decode())
         return None
+
+import unittest
+
+
+class Tests(unittest.TestCase):
+    def test_xml_to_bytes_string(self):
+        self.assertEquals("<a xmlns='urn:vpro:media:update:2009' />",
+                          xml_to_bytes("<a xmlns='urn:vpro:media:update:2009' />").decode("utf-8"))
+
+    def test_xml_to_bytes_minidom(self):
+        self.assertEquals('<a xmlns="urn:vpro:media:update:2009"/>',
+                          xml_to_bytes(minidom.parseString("<a xmlns='urn:vpro:media:update:2009' />").documentElement).decode("utf-8"))
+
+    def test_append_params(self):
+        self.assertEquals("http://vpro.nl?a=a&x=y", append_params("http://vpro.nl", a="a", x="y"))
+
+
+
+

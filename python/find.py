@@ -11,7 +11,7 @@ def usage():
           " [-r] [-h] [-s] [--resolvecrid] [-t <target>] <xml file>")
 
 if __name__ == "__main__":
-    opts,args = poms.opts(usage = usage, minargs = 1, args="t:e:srh")
-    xml_file  = args[0]
+    opts, args = poms.opts(usage = usage, minargs = 1, args="t:e:srh")
+    xml_file = args[0]
     with codecs.open(xml_file, "r", "utf-8") as myfile:
-        print(poms.post(myfile.read()))
+        print(poms.find(myfile.read()))

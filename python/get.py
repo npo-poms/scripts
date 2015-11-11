@@ -17,12 +17,13 @@ if __name__ == "__main__":
     if len(args) > 1:
         xpath = args[1]
 
+    xml = None
     if xpath:
         attr = None
         if len(args) > 2:
             attr = args[2]
-
-        result = poms.get(mid, parser=ET).findall(xpath, poms.namespaces)
+        xml = poms.get(mid, parser=ET)
+        result = xml.findall(xpath, poms.namespaces)
         for el in result:
             if attr:
                 print(el.get(attr))
@@ -30,4 +31,8 @@ if __name__ == "__main__":
                 print(el.text)
 
     else:
-        print(poms.get(mid, parser=minidom).toprettyxml(encoding='utf-8', indent='  ').decode(sys.stdout.encoding, "surrogateescape"))
+        xml = poms.get(mid, parser=minidom)
+        if xml:
+            print(xml.toprettyxml(encoding='utf-8', indent='  ').decode(sys.stdout.encoding, "surrogateescape"))
+        else:
+            print("<empty />")
