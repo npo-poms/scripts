@@ -2,6 +2,8 @@
 """Posts a POMS media update XML"""
 import sys
 import poms
+import codecs
+
 
 
 def usage():
@@ -11,5 +13,5 @@ def usage():
 if __name__ == "__main__":
     opts,args = poms.opts(usage = usage, minargs = 1, args="t:e:srh")
     xml_file  = args[0]
-    with open (xml_file, "r") as myfile:
+    with codecs.open(xml_file, "r", "utf-8") as myfile:
         print(poms.post_str(myfile.read()))
