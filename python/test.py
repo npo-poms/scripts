@@ -25,7 +25,8 @@ class POMSRSTest(unittest.TestCase):
 
     def test_post(self):
         print("posting xml")
-        mid = poms.post_str("""
+        poms.init_target()
+        mid = poms.post("""
         <program xmlns:media="urn:vpro:media:2009" xmlns:shared="urn:vpro:shared:2009" xmlns="urn:vpro:media:update:2009" type="CLIP" avType="VIDEO" embeddable="true">
            <broadcaster>VPRO</broadcaster>
            <title type="MAIN">Holland Doc</title>
@@ -46,6 +47,7 @@ class POMSRSTest(unittest.TestCase):
 
     def test_get(self):
         print("getting xml")
+        poms.init_target()
         xml = self.to_et(poms.get("POMS_NTR_388772"))
         self.assertEqual(xml.findall(pref + "title[@type='MAIN']")[0].text, "Winfried Draait Door")
 
@@ -96,9 +98,7 @@ class POMSRSTest(unittest.TestCase):
                                             "publishStop": '2012'}))
 
     def test_get_locations(self):
-
-
-        print(poms.set_location("WO_VPRO_041686", "http://www.vpro.nl/123.mp4", publishStop = "2012-10-10T20:20:00"))
+        print(poms.set_location("WO_VPRO_041686", "http://www.vpro.nl/123.mp4", publishStop="2012-10-10T20:20:00"))
 
 
 

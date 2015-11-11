@@ -80,7 +80,7 @@ def opts(args = "t:e:srh", usage=None, minargs=0, login=True, env=None, init_log
     if init_log:
         init_logging()
     try:
-        opts, args = getopt.getopt(sys.argv[1:], args)
+        _opts, args = getopt.getopt(sys.argv[1:], args)
     except getopt.GetoptError as err:
         print(err)
         if usage is not None:
@@ -88,7 +88,7 @@ def opts(args = "t:e:srh", usage=None, minargs=0, login=True, env=None, init_log
         generic_usage()
         sys.exit(2)
 
-    for o, a in opts:
+    for o, a in _opts:
         if o == '-h':
             if usage is not None:
                 usage()
@@ -103,16 +103,16 @@ def opts(args = "t:e:srh", usage=None, minargs=0, login=True, env=None, init_log
         sys.exit(1)
 
     init_target(env)
-    init_db(opts)
+    init_db(_opts)
 
     if login:
-        creds()
-    return opts,args
+        creds(opts=_opts)
+    return _opts,args
 
 lock = threading.Lock()
 
 
-def creds(pref = ""):
+def creds(pref="", opts=None):
     global authorizationHeader
     if authorizationHeader:
         #logging.debug("Already authorized")
@@ -126,7 +126,7 @@ def creds(pref = ""):
         username_key = pref + target + ':username'
         password_key = pref + target + ':password'
 
-        if not username_key in d  or ('-r','') in _opts :
+        if not username_key in d or (opts and ('-r', '') in opts):
             d[username_key] = input('Username for ' + target + ': ')
             d[password_key] = getpass.getpass()
             print("Username/password stored in file creds.db. Use -r to set it.")
@@ -273,7 +273,7 @@ def set_location(mid, location, publishStop=None, publishStart=None, programUrl=
     location_xml = xslt(xml, get_xslt("location_set_publishStop.xslt"), args)
     if location_xml != "":
         logging.debug("posting " + location_xml)
-        return post_to("media/media/" + mid + "/location", location_xml, accept = "text/plain")
+        return post_to("media/media/" + mid + "/location", location_xml, accept="text/plain")
     else:
         logging.debug("no location " + location)
         return "No location " + location
@@ -304,10 +304,13 @@ def date_attr(name, datetime):
         return ""
 
 
-def date_attr_value(datetime):
-    if datetime:
-        aware = datetime.replace(tzinfo=pytz.UTC)
-        return aware.strftime("%Y-%m-%dT%H:%M:%SZ")
+def date_attr_value(datetime_att):
+    if datetime_att:
+        if type(datetime_att) == str:
+            return datetime_att
+        else:
+            aware = datetime_att.replace(tzinfo=pytz.UTC)
+            return aware.strftime("%Y-%m-%dT%H:%M:%SZ")
     return None
 
 
