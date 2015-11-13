@@ -3,6 +3,7 @@ import urllib.request
 import sys
 import base64
 import xml.etree.ElementTree as ET
+from xml.sax.saxutils import escape
 from xml.dom import minidom
 import getopt
 import getpass
@@ -382,20 +383,27 @@ def add_genre(xml, genre_id):
     _append_element(xml, genre_el)
 
 
-def add_image(mid, image, image_type="PICTURE", title=None):
+def add_image(mid, image, image_type="PICTURE", title=None, description=None):
     if os.path.isfile(image):
         with open(image, "rb") as image_file:
             if not title:
-                title="Image for %s" % mid
+                title = "Image for %s" % escape(mid)
+            if not description:
+                description_xml = ""
+            else:
+                descrption_xml = "<description>%s</description>" % escape(description)
+
+
             encoded_string = base64.b64encode(image_file.read()).decode("ascii")
             xml = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <image xmlns="urn:vpro:media:update:2009" type="%s">
   <title>%s</title>
+  %s
   <imageData>
     <data>%s</data>
   </imageData>
 </image>
-""" % (image_type, title, encoded_string)
+""" % (image_type, escape(title), description_xml, encoded_string)
             logging.debug(xml)
             return post_to("media/media/" + mid + "/image", xml, accept="text/plain")
 
@@ -510,7 +518,3 @@ class Tests(unittest.TestCase):
 
     def test_append_params(self):
         self.assertEquals("http://vpro.nl?a=a&x=y", append_params("http://vpro.nl", a="a", x="y"))
-
-
-
-
