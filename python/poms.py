@@ -323,7 +323,6 @@ def date_attr_value(datetime_att):
     return None
 
 
-
 def parkpost_str(xml):
     return parkpost(minidom.parseString(xml).documentElement)
 
@@ -376,17 +375,16 @@ def _get_xml(url, parser=minidom):
     return xml
 
 
-def add_genre(xml, genre_id):
+def xml_add_genre(xml, genre_id):
     """Adds a genre to the minidom object"""
     genre_el = xml.ownerDocument.createElement("genre")
     genre_el.appendChild(xml.ownerDocument.createTextNode(genre_id))
     _append_element(xml, genre_el)
 
-def add_duration(xml, duration):
-    duration_el = xml.ownerDocument.createElement("duration");
-    duration_el.appendChild(xml.ownerDocument.createTextNode(duration))
-    _append_element(xml, duration_el)
 
+def xml_add_duration(xml, duration):
+    duration_el = ET.fromstring("<duration xmlns='urn:vpro:media:update:2009'>%s</duration>" % duration)
+    _append_element(xml, duration_el)
 
 
 def add_image(mid, image, image_type="PICTURE", title=None, description=None):
@@ -398,7 +396,6 @@ def add_image(mid, image, image_type="PICTURE", title=None, description=None):
                 description_xml = ""
             else:
                 description_xml = "<description>%s</description>" % escape(description)
-
 
             encoded_string = base64.b64encode(image_file.read()).decode("ascii")
             xml = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -414,7 +411,8 @@ def add_image(mid, image, image_type="PICTURE", title=None, description=None):
             return post_to("media/media/" + mid + "/image", xml, accept="text/plain")
 
 
-def _append_element(xml, element, path=("crid",
+def _append_element(x, element, path=(
+    "crid",
     "broadcaster",
     "portal",
     "exclusive",
@@ -432,17 +430,18 @@ def _append_element(xml, element, path=("crid",
     "contentRating",
     "email",
     "website",
-    "location",
+    "locations",
     "scheduleEvents",
     "relation",
     "images",
     "asset")):
-    if type(xml) == minidom:
-        _append_element_minidom(xml, element, path)
-    elif type(xml) == xml.etree.Element:
-        _append_element_et(xml, element, path)
+    t = type(x)
+    if t == minidom.Element:
+        return _append_element_minidom(x, element, path)
+    elif t == ET.Element:
+        return _append_element_et(x, element, path)
     else:
-        _append_element_et(Element.fromstring(str(xml), Element.fromstring(str(element)), path)
+        return _append_element_et(ET.fromstring(str(x)), ET.fromstring(str(element)), path)
 
 
 def _append_element_minidom(xml, element, path):
@@ -451,12 +450,22 @@ def _append_element_minidom(xml, element, path):
     for child in xml.childNodes:
         if path.index(child.nodeName) > index:
             xml.insertBefore(element, child)
-            return
+            return xml
     xml.appendChild(element)
+    return xml
+
 
 def _append_element_et(xml, element, path):
-    nop
-    #TODO
+    "asdf"
+    index = path.index(element.tag[len("{urn:vpro:media:update:2009}"):])
+    for i, child in enumerate(list(xml)):
+        if path.index(child.tag[len("{urn:vpro:media:update:2009}"):]) > index:
+            xml.insert(i, element)
+            return xml
+    xml.insert(len(xml), element)
+    return xml
+
+
 
 
 def xml_to_bytes(xml):
@@ -536,3 +545,10 @@ class Tests(unittest.TestCase):
 
     def test_append_params(self):
         self.assertEquals("http://vpro.nl?a=a&x=y", append_params("http://vpro.nl", a="a", x="y"))
+
+    def test_append_element(self):
+        self.assertEquals("<a><b>B</b><x>x</x><y>Y</y></a>",
+                        ET.tostring(_append_element("<a><b>B</b><y>Y</y></a>", "<x>x</x>", ("b", "x", "y", "z"))).decode("utf-8"))
+        self.assertEquals("<a><b>B</b><x>x</x><y>Y</y></a>",
+                          ET.tostring(_append_element(ET.fromstring("<a><b>B</b><y>Y</y></a>"), ET.fromstring("<x>x</x>"), ("b", "x", "y", "z"))).decode("utf-8"))
+
