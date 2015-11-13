@@ -382,6 +382,12 @@ def add_genre(xml, genre_id):
     genre_el.appendChild(xml.ownerDocument.createTextNode(genre_id))
     _append_element(xml, genre_el)
 
+def add_duration(xml, duration):
+    duration_el = xml.ownerDocument.createElement("duration");
+    duration_el.appendChild(xml.ownerDocument.createTextNode(duration))
+    _append_element(xml, duration_el)
+
+
 
 def add_image(mid, image, image_type="PICTURE", title=None, description=None):
     if os.path.isfile(image):
@@ -408,8 +414,7 @@ def add_image(mid, image, image_type="PICTURE", title=None, description=None):
             return post_to("media/media/" + mid + "/image", xml, accept="text/plain")
 
 
-def _append_element(xml, element, path=
-    ("crid",
+def _append_element(xml, element, path=("crid",
     "broadcaster",
     "portal",
     "exclusive",
@@ -432,6 +437,15 @@ def _append_element(xml, element, path=
     "relation",
     "images",
     "asset")):
+    if type(xml) == minidom:
+        _append_element_minidom(xml, element, path)
+    elif type(xml) == xml.etree.Element:
+        _append_element_et(xml, element, path)
+    else:
+        _append_element_et(Element.fromstring(str(xml), Element.fromstring(str(element)), path)
+
+
+def _append_element_minidom(xml, element, path):
     """Appends an element in the correct location in the given (minidom) xml"""
     index = path.index(element.nodeName)
     for child in xml.childNodes:
@@ -439,6 +453,10 @@ def _append_element(xml, element, path=
             xml.insertBefore(element, child)
             return
     xml.appendChild(element)
+
+def _append_element_et(xml, element, path):
+    nop
+    #TODO
 
 
 def xml_to_bytes(xml):
