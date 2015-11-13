@@ -477,6 +477,8 @@ def xml_to_bytes(xml):
         #xml.setAttribute("xmlns:xsi",
         #    "http://www.w3.org/2001/XMLSchema-instance")
         return xml.toxml('utf-8')
+    elif t == ET.Element:
+        return ET.tostring(xml, encoding='utf-8')
     else:
         raise "unrecognized type " + t
 
@@ -551,4 +553,3 @@ class Tests(unittest.TestCase):
                         ET.tostring(_append_element("<a><b>B</b><y>Y</y></a>", "<x>x</x>", ("b", "x", "y", "z"))).decode("utf-8"))
         self.assertEquals("<a><b>B</b><x>x</x><y>Y</y></a>",
                           ET.tostring(_append_element(ET.fromstring("<a><b>B</b><y>Y</y></a>"), ET.fromstring("<x>x</x>"), ("b", "x", "y", "z"))).decode("utf-8"))
-
