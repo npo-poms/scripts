@@ -391,7 +391,7 @@ def add_image(mid, image, image_type="PICTURE", title=None, description=None):
             if not description:
                 description_xml = ""
             else:
-                descrption_xml = "<description>%s</description>" % escape(description)
+                description_xml = "<description>%s</description>" % escape(description)
 
 
             encoded_string = base64.b64encode(image_file.read()).decode("ascii")
