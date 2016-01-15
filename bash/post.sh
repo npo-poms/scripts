@@ -16,5 +16,5 @@ target=$(getUrl media?errors=$errors&lookupcrid=true)
 
 echo $target >&2
 
-curl -i -s --insecure --user $user --header "Content-Type: application/xml" -X POST --data @$1 \
+$CURL -i -s --insecure --user $user --header "Content-Type: application/xml" -X POST --data @$1 \
     ${target}
