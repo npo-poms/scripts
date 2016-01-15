@@ -34,6 +34,6 @@ fi
 
 echo $target >&2
 
-curl -s --insecure --user $user --header "Content-Type: application/xml" -X GET \
+$CURL -s --insecure --user $user --header "Content-Type: application/xml" -X GET \
     "${target}" \
     | xmllint -format -

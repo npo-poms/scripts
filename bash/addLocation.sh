@@ -26,5 +26,5 @@ fi
 
 echo -e "Posting \n $xml to ${target}"
 
-curl -i -s --insecure --user $user --header "Content-Type: application/xml" -X POST --data "$xml"  \
+$CURL -i -s --insecure --user $user --header "Content-Type: application/xml" -X POST --data "$xml"  \
     ${target}

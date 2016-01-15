@@ -22,8 +22,8 @@ xslt=$(dirname ${SOURCE[0]})/../xslt/location_set_publishStop.xslt
 echo $xslt
 echo $publishStop
 
-curl -s --insecure --user $user --header "Content-Type: application/xml" -X GET  $(getUrl media/$1/locations) | xsltproc  --stringparam id $2 --stringparam publishStop $publishStop  $xslt - > /tmp/location.xml
+$CURL -s --insecure --user $user --header "Content-Type: application/xml" -X GET  $(getUrl media/$1/locations) | xsltproc  --stringparam id $2 --stringparam publishStop $publishStop  $xslt - > /tmp/location.xml
 
 target=$(getUrl media/$1/location?errors=$errors)
 
-curl -s --insecure --user $user --header "Content-Type: application/xml" -X POST --data @/tmp/location.xml  ${target}
+$CURL -s --insecure --user $user --header "Content-Type: application/xml" -X POST --data @/tmp/location.xml  ${target}

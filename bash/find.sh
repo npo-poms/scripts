@@ -17,5 +17,5 @@ if [[ ! -z "$2" ]] ; then
     writable=$2
 fi
 
-curl -s --insecure --user $user --header "Content-Type: application/xml" -X POST --data @$1 \
+$CURL -s --insecure --user $user --header "Content-Type: application/xml" -X POST --data @$1 \
     $(getUrl find)?writable=$writable

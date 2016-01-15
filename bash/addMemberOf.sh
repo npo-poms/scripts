@@ -25,4 +25,4 @@ echo -e "Posting \n $xml"
 target=$(getUrl media/$1/memberOf?errors=$errors)\&followMerges=true
 
 
-curl -i -s --insecure --user $user --header "Content-Type: application/xml" -X POST --data "$xml"  $target
+$CURL -i -s --insecure --user $user --header "Content-Type: application/xml" -X POST --data "$xml"  $target

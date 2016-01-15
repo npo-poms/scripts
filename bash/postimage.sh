@@ -37,7 +37,7 @@ target=$(getUrl media/$1/image?errors=$errors)
 
 echo posting "$imagexml"
 
-curl   -s --insecure --user $user --header "Content-Type: application/xml" -X POST --data "$imagexml" \
+$CURL   -s --insecure --user $user --header "Content-Type: application/xml" -X POST --data "$imagexml" \
     ${target}
 error=$?
 if [ $error != 0 ] ; then

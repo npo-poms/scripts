@@ -16,4 +16,4 @@ source $(dirname ${SOURCE[0]})/functions.sh
 
 target=$(getUrl media/$1/location/$2?errors=$errors)
 
-curl -s --insecure --user $user -X DELETE ${target}
+$CURL -s --insecure --user $user -X DELETE ${target}
