@@ -6,6 +6,8 @@ if [ "$DEBUG" = 'true' ]  ; then
     set -x
 fi
 
+CURL=/usr/bin/curl
+
 trap "exit 1" TERM
 export TOP_PID=$$
 

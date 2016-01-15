@@ -24,7 +24,7 @@ echo $user >&2
 
 echo $target >&2
 
-curl  -s --insecure -f  -o- --user $user --header "Content-Type: application/xml" -X GET \
+$CURL  -s --insecure -f  -o- --user $user --header "Content-Type: application/xml" -X GET \
     ${target} | xmllint -format -
 
 status=${PIPESTATUS[0]}
