@@ -19,12 +19,12 @@ else
 fi
 
 
-curl -s --insecure --user $user --header "Content-Type: application/xml" -X GET  $(getUrl media/$1) | xsltproc  --stringparam publishStop $publishStop media_set_publishStop.xslt - > /tmp/media.xml
+$CURL -s --insecure --user $user --header "Content-Type: application/xml" -X GET  $(getUrl media/$1) | xsltproc  --stringparam publishStop $publishStop media_set_publishStop.xslt - > /tmp/media.xml
 
 echo posting:
 xmllint --format /tmp/media.xml
 
 target=$(getUrl "media?errors=$errors")
 echo result:
-curl -s --insecure --user $user --header "Content-Type: application/xml" -X POST --data @/tmp/media.xml  ${target}
+$CURL -s --insecure --user $user --header "Content-Type: application/xml" -X POST --data @/tmp/media.xml  ${target}
 echo
