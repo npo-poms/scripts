@@ -31,8 +31,9 @@ if __name__ == "__main__":
                 print(el.text)
 
     else:
-        xml = poms.get(mid, parser=minidom)
+        xml = poms.get(mid)
         if xml:
+            #print(ET.tostring(xml).decode("utf-8"))
             print(xml.toprettyxml(encoding='utf-8', indent='  ').decode(sys.stdout.encoding, "surrogateescape"))
         else:
             print("<empty />")

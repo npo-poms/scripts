@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<program xmlns:media="urn:vpro:media:2009" xmlns:shared="urn:vpro:shared:2009" xmlns="urn:vpro:media:update:2009" type="TRACK" avType="AUDIO" embeddable="true" publishStop="2014-10-28T15:25:17.536+01:00">
+    <broadcaster>VPRO</broadcaster>
+    <title type="MAIN">Cauldron</title>
+    <duration>P0DT0H5M10.000S</duration>
+    <memberOf position="7" highlighted="false">POMS_VPRO_661112</memberOf>
+    <locations>
+        <location urn="urn:vpro:media:location:null">
+            <programUrl>odis+http://content.omroep.nl/vpro/protected/luisterpaal/albums/world/POMS_VPRO_661112/track07.mp3</programUrl>
+            <avAttributes>
+                <bitrate>112</bitrate>
+                <avFileFormat>MP3</avFileFormat>
+                <audioAttributes>
+                    <channels>2</channels>
+                    <coding>MP3</coding>
+                </audioAttributes>
+            </avAttributes>
+            <duration>P0DT0H5M10.000S</duration>
+        </location>
+    </locations>
+    <scheduleEvents/>
+    <relation type="ARTIST" broadcaster="VPRO">2562</relation>
+    <relation type="LABEL" broadcaster="VPRO">When In Doubt</relation>
+    <images>
+        <image type="PICTURE" highlighted="false">
+            <title>2562 - The New Today</title>
+            <description>Cover image</description>
+            <imageLocation>
+                <url>http://images.poms.omroep.nl/image/526325.jpg</url>
+            </imageLocation>
+        </image>
+    </images>
+    <segments/>
+</program>

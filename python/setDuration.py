@@ -12,7 +12,8 @@ if __name__ == "__main__":
     opt, args = poms.opts(usage = usage, minargs = 2)
     mid, duration = args
     xml = poms.get(mid, parser=ET)
-    poms.xml_add_duration(xml, "bla")
+
+    poms.xml_set_or_add_duration(xml, duration)
 
     print(ET.tostring(xml).decode("utf-8"))
-
+    poms.post(xml)
