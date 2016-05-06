@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-
+"""
+This script checks wether a poms playlist contains multiple translations of the same source. If so, it will delete remove all but one.
+"""
 from npoapi import MediaBackend
 import pprint
 
