@@ -31,6 +31,9 @@ authorizationHeader = None
 
 namespaces = {'update': 'urn:vpro:media:update:2009'}
 
+for key, value in namespaces.items():
+    ET.register_namespace(key, value)
+
 
 def init_db(opts=None):
     """username/password and target can be stored in a database.
@@ -377,9 +380,18 @@ def _get_xml(url, parser=minidom):
 
 def xml_add_genre(xml, genre_id):
     """Adds a genre to the minidom object"""
+    print(xml, xml.ownerDocument)
     genre_el = xml.ownerDocument.createElement("genre")
     genre_el.appendChild(xml.ownerDocument.createTextNode(genre_id))
     _append_element(xml, genre_el)
+
+
+def xml_set_or_add_duration(xml, duration):
+    existing_duration = xml.findall("update:duration", namespaces)
+    if existing_duration:
+        existing_duration[0].text = duration
+    else:
+        xml_add_duration(xml, duration)
 
 
 def xml_add_duration(xml, duration):
@@ -553,3 +565,9 @@ class Tests(unittest.TestCase):
                         ET.tostring(_append_element("<a><b>B</b><y>Y</y></a>", "<x>x</x>", ("b", "x", "y", "z"))).decode("utf-8"))
         self.assertEquals("<a><b>B</b><x>x</x><y>Y</y></a>",
                           ET.tostring(_append_element(ET.fromstring("<a><b>B</b><y>Y</y></a>"), ET.fromstring("<x>x</x>"), ("b", "x", "y", "z"))).decode("utf-8"))
+
+    def test_add_or_set_duration(self):
+        xml = """
+        <ns0:program xmlns:ns0="urn:vpro:media:update:2009" avType="VIDEO" embeddable="true" mid="WO_VPRO_041300" type="CLIP" urn="urn:vpro:media:program:7066435"><ns0:crid>crid://tmp.fragment.mmbase.vpro.nl/35291040</ns0:crid><ns0:broadcaster>VPRO</ns0:broadcaster><ns0:title type="MAIN">Wie eegie sanie - Onze eigen dingen</ns0:title><ns0:title type="SUB">HUMAN, 1 juli 2004 (58.12)</ns0:title><ns0:description type="SUB">een documentaire van John Albert Jansen over de Surinamers die vanaf de jaren '50 als eersten op zoek gingen naar hun eigen wortels en cultuur, naar 'wie eegie sanie' ('onze eigen dingen'). In dit bewustwordingsproces speelde de in 1950 in Amsterdam opgerichte vereniging Wie Eegie Sanie (WES) en haar oprichter, de advocaat, politicus en schrijver Eddy Bruma, een sleutelrol. WES vereenzelvigde de eigen cultuur in de eerste plaats met de Afro-Amerikaanse en Afrikaanse cultuur waarbij het 'eigene' vooral werd gezocht in de Surinaamse taal, het Sranan tongo, en in de Surinaamse geschiedenis.</ns0:description><ns0:duration>P0DT5H13M48.000S</ns0:duration><ns0:duration>P0DT5H13M48.000S</ns0:duration><ns0:locations><ns0:location urn="urn:vpro:media:location:54462022"><ns0:programUrl>http://cgi.omroep.nl/cgi-bin/streams?/tv/human/humandonderdag/bb.20040701.rm?title=Wie eegie sanie - Onze eigen dingen</ns0:programUrl><ns0:avAttributes><ns0:avFileFormat>WM</ns0:avFileFormat></ns0:avAttributes></ns0:location></ns0:locations><ns0:scheduleEvents /><ns0:images /><ns0:segments /></ns0:program>
+        """
+        xml_set_or_add_duration(ET.fromstring(xml), "bla")

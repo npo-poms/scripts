@@ -1,7 +1,17 @@
 Python scripts
 ============
 
+This directory collects various python scripts to talk with the POMS backend api.
+
+Most of them use a collection of utilities collected in 'poms.py', but we moved most of those also to a nicer object oriented structure in https://github.com/npo-poms/pyapi.
+
+poms.py
+-------
 Most functionality is in 'poms.py' which is imported in the other scripts. It also takes care of command line parsing and a database of credentials. The simplest example is 'post.sh', which simply posts an existing file.
+
+MediaBackend.py
+---------------
+cleanupGroup.py  is an example of script using the MediaBackend client object in pyapi.
 
 
 addGenre
