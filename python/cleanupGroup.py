@@ -12,25 +12,25 @@ args = api.parse_args()
 group = args.mid[0]
 members = api.members(group, max=3000, batch=50)
 
-map = {}
+mids = {}
 for member in members:
     update = member.firstChild
     mid = update.attributes["mid"].value
     relations = member.getElementsByTagName("relation")
     for relation in relations:
-        type = relation.attributes["type"].value
-        if type == "TRANSLATION_SOURCE":
+        relation_type = relation.attributes["type"].value
+        if relation_type == "TRANSLATION_SOURCE":
             translation_source = relation.firstChild.nodeValue
-            if not translation_source in map:
-                map[translation_source] = []
-            map[translation_source].append(mid)
+            if not translation_source in mids:
+                mids[translation_source] = []
+            mids[translation_source].append(mid)
 
 #print(pprint.pformat(map))
-for mid in map:
-    todelete = sorted(map[mid])[1:]
-    if len(todelete) > 0:
-        print("for %s are the following translations %s , to delete are %s" %  (mid, str(map[mid]), str(todelete)))
-        for d in todelete:
+for mid in mids:
+    mid_to_delete = sorted(mids[mid])[1:]
+    if len(mid_to_delete) > 0:
+        print("for %s are the following translations %s , to delete are %s" % (mid, str(mids[mid]), str(mid_to_delete)))
+        for d in mid_to_delete:
             print("Deleting %s from %s" % (d, group))
             api.delete_member(d, group)
 
