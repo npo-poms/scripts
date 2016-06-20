@@ -76,9 +76,9 @@ def init_target(env=None):
 
 def init_logging():
     if 'DEBUG' in os.environ and os.environ['DEBUG']:
-        logging.basicConfig(stream = sys.stderr, level=logging.DEBUG, format="%(asctime)-15s:%(levelname).3s:%(message)s")
+        logging.basicConfig(stream=sys.stderr, level=logging.DEBUG, format="%(asctime)-15s:%(levelname).3s:%(message)s")
     else:
-        logging.basicConfig(stream = sys.stderr, level=logging.INFO, format="%(asctime)-15s:%(levelname).3s:%(message)s")
+        logging.basicConfig(stream=sys.stderr, level=logging.INFO, format="%(asctime)-15s:%(levelname).3s:%(message)s")
 
 
 def opts(args = "t:e:srh", usage=None, minargs=0, login=True, env=None, init_log=True):
@@ -519,7 +519,7 @@ def append_params(url, include_errors=True, **kwargs):
         kwargs["errors"] = email
 
     sep = "?"
-    for key, value in kwargs.items():
+    for key, value in sorted(kwargs.items()):
         url += sep + key + "=" + str(value)
         sep = "&"
     return url
