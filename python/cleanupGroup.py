@@ -26,10 +26,10 @@ for member in members:
 
 #print(pprint.pformat(map))
 for mid in translations_for_mid:
-    mid_to_delete = sorted(translations_for_mid[mid])[1:]
-    if len(mid_to_delete) > 0:
-        print("for %s are the following translations %s , to delete are %s" % (mid, str(translations_for_mid[mid]), str(mid_to_delete)))
-        for d in mid_to_delete:
+    mids_to_delete = sorted(translations_for_mid[mid])[1:]
+    if len(mids_to_delete) > 0:
+        print("for %s are the following translations %s , to delete are %s" % (mid, str(translations_for_mid[mid]), str(mids_to_delete)))
+        for d in mids_to_delete:
             print("Deleting %s from %s" % (d, group))
             api.delete_member(d, group)
 
