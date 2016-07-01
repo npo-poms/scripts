@@ -1,0 +1,10 @@
+<segment midRef="POMS_VPRO_1434043" avType="VIDEO" xmlns="urn:vpro:media:update:2009">
+  <crid>crid://tests/segments/1</crid>
+  <broadcaster>VPRO</broadcaster>
+  <title type="MAIN">TEST</title>
+  <duration>P0DT2H0M0.000S</duration>
+  <locations/>
+  <scheduleEvents/>
+  <images/>
+  <start>P0DT0H2M0.000S</start>
+</segment>
