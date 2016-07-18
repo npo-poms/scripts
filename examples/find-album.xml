@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<s:mediaForm xmlns="urn:vpro:media:2009" xmlns:shared="urn:vpro:shared:2009" xmlns:s="urn:vpro:media:search:2012" xmlns:update="urn:vpro:media:update:2009" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <s:pager>
+    <s:offset>0</s:offset>
+    <s:max>2</s:max>
+    <s:sort>creationDate</s:sort>
+    <s:order>ASC</s:order>
+  </s:pager>
+  <s:title type="MAIN" owner="BROADCASTER" tokenized="false">Breakin' Point     </s:title>
+  <s:type>ALBUM</s:type>
+  <s:releaseYear>2016</s:releaseYear>
+  <s:relation type="ARTIST" broadcaster="VPRO">Peter Bjorn &amp; John     </s:relation>
+  <s:noBroadcast>false</s:noBroadcast>
+  <s:hasLocations>false</s:hasLocations>
+  <s:noPlaylist>false</s:noPlaylist>
+  <s:notAnEpisode>false</s:notAnEpisode>
+</s:mediaForm>
