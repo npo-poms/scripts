@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Script to add a image to all members of a group."""
 
-from npoapi import MediaBackend
+from npoapi import MediaBackend, MediaBackendUtil as MU
 from npoapi.xml import mediaupdate
 from npoapi.xml import poms
 
@@ -17,8 +17,7 @@ image = args.image[0]
 title = args.title
 bytes = api.get(mid, ignore_not_found=True)
 if bytes:
-    members = api.members(mid, batch=200)
-    members.extend(api.episodes(mid, batch=200))
+    members = MU.descendants(api, mid, batch=200)
 
     for member in map(lambda m: poms.CreateFromDOM(m.getElementsByTagName("mediaUpdate")[0], mediaupdate.Namespace),
                       members):
