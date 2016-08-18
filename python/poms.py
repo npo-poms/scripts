@@ -1,3 +1,5 @@
+""" This is deprecated use scripts from https://github.com/npo-poms/pyapi """
+
 import shelve
 import urllib.request
 import sys
