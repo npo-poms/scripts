@@ -2,13 +2,11 @@
 """Script to add a image to all members of a group."""
 
 from npoapi import MediaBackend, MediaBackendUtil as MU
-from npoapi.xml import mediaupdate
-from npoapi.xml import poms
 
 api = MediaBackend().command_line_client()
 api.add_argument('mid', type=str, nargs=1, help='The mid  of the object to handle')
 api.add_argument('image', type=str, nargs=1, help='new image')
-api.add_argument('title', type=str, nargs='?', help='new image')
+api.add_argument('title', type=str, nargs='?', help='title for new images')
 
 args = api.parse_args()
 
@@ -19,8 +17,7 @@ bytes = api.get(mid, ignore_not_found=True)
 if bytes:
     members = MU.descendants(api, mid, batch=200)
 
-    for member in map(lambda m: poms.CreateFromDOM(m.getElementsByTagName("mediaUpdate")[0], mediaupdate.Namespace),
-                      members):
+    for member in MU.iterate_objects(members):
         member_mid = member.mid
         print("Adding image " + image + " to " + member_mid)
         if title is None:
