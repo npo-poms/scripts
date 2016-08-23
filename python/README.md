@@ -1,13 +1,11 @@
 Python scripts
 ============
 
-This directory collects various python scripts to talk with the POMS backend api.
+This directory collects various python scripts to peform certain specialized tasks related to the POMS Backend API
 
-Most of them use a collection of utilities collected in 'poms.py', but we moved some of those also to a nicer object oriented structure in https://github.com/npo-poms/pyapi.
+Most of them used to use a collection of utilities collected in 'poms.py', but we are migrating them to a nicer object oriented structure in https://github.com/npo-poms/pyapi.
 
-poms.py
--------
-Most functionality is in 'poms.py' which is imported in the other scripts. It also takes care of command line parsing and a database of credentials. The simplest example is 'post.sh', which simply posts an existing file.
+
 
 MediaBackend.py
 ---------------
@@ -65,3 +63,6 @@ posting WO_VPRO_430115 to https://api-test.poms.omroep.nl/media/media?lookupcrid
 Adding genre 3.0.1.1 to WO_VPRO_430113
 posting WO_VPRO_430113 to https://api-test.poms.omroep.nl/media/media?lookupcrid=False
 ```
+poms.py
+-------
+This is deprecated. It can be imported in the other scripts, to have basic api functionality available. It also takes care of command line parsing and a database of credentials. The simplest example is 'post.sh', which simply posts an existing file.
