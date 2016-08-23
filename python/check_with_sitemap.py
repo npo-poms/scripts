@@ -1,15 +1,36 @@
 #!/usr/bin/env python3
 """
+This script has two arguments. A sitemap url and a api profile.
+
+It will download the entire profile from the NPO Front end api, and it will also download the entire sitemap.
+
+Then, it compares the found URL's in both. They should represent the same set.
+
+If there are URL in the API which are not in the Sitemap, which are indeed not existing (give 404's) then the script supposes this is
+an error and deletes the object from the API.
+
+If objects are in the API but not in the sitemap, then we suppose the sitemap is outdated.
+
+If objects are in the sitemap but not in the API then there are two possibilities
+  - The object is in the API, but not in the profile
+  - The object does not existing in the API at all
+
+In both cases the object needs the be reindexed from the CMS.
 """
 
 from npoapi import Pages
+from npoapi import PagesBackend
+from npoapi.xml import poms
 import json
 import pickle
 import os
 import urllib
 import xml.etree.ElementTree
 
+
+
 api = Pages().command_line_client()
+backend = PagesBackend(env=api.actualenv).configured_login()
 api.add_argument('sitemap', type=str, nargs=1, help='sitemap')
 api.add_argument('profile', type=str, nargs='?', help='profile')
 api.add_argument('-C', '--clean', action='store_true', default=False, help='clean')
@@ -21,7 +42,7 @@ sitemap = args.sitemap[0]
 clean = args.clean
 
 if clean:
-    print("Cleaning")
+    api.logger.info("Cleaning")
 
 def get_urls_from_api() -> set:
     offset = 0
@@ -83,13 +104,44 @@ def get_sitemap():
         pickle.dump(urls, open(sitemap_file, "wb"))
     return urls
 
+def http_status(url):
+    try:
+        req = urllib.request.Request(url, method="HEAD")
+        resp = urllib.request.urlopen(req)
+        return resp.status
+    except Exception as ue:
+        return ue.status
+
+
+def clean_from_api(urls:set, sitemap:set):
+    print("in api but not in sitemap: %s" % len(urls - sitemap))
+    for idx, url in enumerate(urls - sitemap):
+        status = http_status(url)
+        if status == 404:
+            api.logger.info("Deleting %s", url)
+            backend.delete(url)
+        else:
+            page = poms.CreateFromDocument(backend.get(url))
+            api.logger.info("url %s: %s", url, str(page.lastPublished))
+            # print(url, http_status(url))
+
+def add_to_api(urls:set, sitemap:set):
+    print("in sitemap but not in api: %s" % len(sitemap - urls))
+    for url in list(sitemap - urls)[:10]:
+        print(url)
+        from_backend = backend.get(url)
+        from_frontend = api.get(url)
+        if from_backend:
+            page = poms.CreateFromDocument(from_backend)
+
+
 urls = get_urls()
 sitemap = get_sitemap()
 
-print("in api but not in sitemap: %s" % len(urls - sitemap))
-for url in list(urls - sitemap)[:10]:
-    print(url)
-print("in sitemap but not in api: %s" % len(sitemap - urls))
-for url in list(sitemap - urls)[:10]:
-    print(url)
+
+# clean_from_api(urls, sitemap)
+add_to_api(urls, sitemap)
+
+
+
 

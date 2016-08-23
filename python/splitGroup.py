@@ -10,7 +10,7 @@ def usage():
 
 def move_to_group(item, group_mid, dest, position):
     mediaobject = item.childNodes[0]
-    mid =  mediaobject.getAttribute("mid");
+    mid =  mediaobject.getAttribute("mid")
     print(mid + "->" + dest)
     if dest != group_mid:
 
@@ -23,7 +23,7 @@ def move_to_group(item, group_mid, dest, position):
             if memberOf.firstChild.data == group_mid:
                 memberOf.firstChild.replaceWholeText(dest)
                 print("->" + memberOf.firstChild.data)
-                memberOf.setAttribute("position", str(position));
+                memberOf.setAttribute("position", str(position))
                 break
         poms.post(mediaobject)
 

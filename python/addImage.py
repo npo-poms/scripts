@@ -4,7 +4,7 @@
 from npoapi import MediaBackend, MediaBackendUtil as MU
 
 api = MediaBackend().command_line_client()
-api.add_argument('mid', type=str, nargs=1, help='The mid  of the object to handle')
+api.add_argument('mid',   type=str, nargs=1, help='The mid  of the object to handle')
 api.add_argument('image', type=str, nargs=1, help='new image')
 api.add_argument('title', type=str, nargs='?', help='title for new images')
 
@@ -24,7 +24,8 @@ if bytes:
             t = member.title[0].value()
         else:
             t = title
-        api.add_image(member_mid, image, title=t)
+
+        api.add_image(member_mid, MU.create_image(image, title=t))
 else:
     print("Not found %s", mid)
 
