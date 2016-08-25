@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<program type="CLIP" avType="MIXED" embeddable="true" xmlns="urn:vpro:media:update:2009" xmlns:shared="urn:vpro:shared:2009" xmlns:media="urn:vpro:media:2009">
+    <crid>crid://pyapi/clip/1/a</crid>
+    <broadcaster>VPRO</broadcaster>
+    <title type="MAIN">hoi 1472053757.497178</title>
+    <credits>
+        <person role="EDITOR">
+            <givenName>Pietje</givenName>
+            <familyName>PuK</familyName>
+        </person>
+    </credits>
+    <locations/>
+    <scheduleEvents/>
+    <images>
+        <image type="PICTURE" highlighted="false">
+            <title>Plaatje van clip 1472053757.497178</title>
+            <imageLocation>
+                <url>https://placeholdit.imgix.net/~text?txtsize=15&amp;txt=image2&amp;w=120&amp;h=120</url>
+            </imageLocation>
+        </image>
+    </images>
+    <segments>
+        <segment avType="MIXED" embeddable="true">
+            <crid>crid://pyapi/segment/1/a</crid>
+            <broadcaster>VPRO</broadcaster>
+            <title type="MAIN">hoi (1) 1472053757.497178</title>
+
+
+            <locations/>
+            <scheduleEvents/>
+            <images/>
+            <start>PT10.000S</start>
+        </segment>
+    </segments>
+</program>
