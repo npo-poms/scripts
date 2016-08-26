@@ -33,13 +33,15 @@ api = Pages().command_line_client()
 backend = PagesBackend(env=api.actualenv).configured_login()
 api.add_argument('sitemap', type=str, nargs=1, help='sitemap')
 api.add_argument('profile', type=str, nargs='?', help='profile')
-api.add_argument('-C', '--clean', action='store_true', default=False, help='clean')
+api.add_argument('-C', '--clean', action='store_true', default=False, help='clean build')
+api.add_argument('-D', '--delete', action='store_true', default=False, help='delete from api')
 
 args = api.parse_args()
 
 profile = args.profile
-sitemap = args.sitemap[0]
+sitemap_url = args.sitemap[0]
 clean = args.clean
+delete_from_api = args.delete
 
 if clean:
     api.logger.info("Cleaning")
@@ -48,7 +50,7 @@ def get_urls_from_api() -> set:
     offset = 0
     urls = set()
     while True:
-        result = api.search(profile=args.profile, offset=offset, limit=240)
+        result = api.search(profile=profile, offset=offset, limit=240)
         json_object = json.loads(result)
         items = json_object['items']
         total = json_object['total']
@@ -76,7 +78,7 @@ def get_urls() -> set:
 
 
 def get_sitemap_from_xml():
-    response = urllib.request.urlopen(sitemap)
+    response = urllib.request.urlopen(sitemap_url)
     locs = set()
     for ev, el in xml.etree.ElementTree.iterparse(response):
         if el.tag == "{http://www.sitemaps.org/schemas/sitemap/0.9}loc":
@@ -115,18 +117,23 @@ def http_status(url):
 
 def clean_from_api(urls:set, sitemap:set):
     print("in api but not in sitemap: %s" % len(urls - sitemap))
-    for idx, url in enumerate(urls - sitemap):
-        status = http_status(url)
-        if status == 404:
-            api.logger.info("Deleting %s", url)
-            backend.delete(url)
-        else:
-            page = poms.CreateFromDocument(backend.get(url))
-            api.logger.info("url %s: %s", url, str(page.lastPublished))
-            # print(url, http_status(url))
+    if delete_from_api:
+        for idx, url in enumerate(urls - sitemap):
+            status = http_status(url)
+            if status == 404:
+                api.logger.info("Deleting %s", url)
+                backend.delete(url)
+            else:
+                page = poms.CreateFromDocument(backend.get(url))
+                api.logger.info("In api, not in sitemap, but not giving 404 url %s: %s", url, str(page.lastPublished))
+                # print(url, http_status(url))
 
 def add_to_api(urls:set, sitemap:set):
     print("in sitemap but not in api: %s" % len(sitemap - urls))
+    with open('in_' + profile + "_but_not_in_sitemap.txt", 'w') as f:
+        f.write('\n'.join(list(sitemap - urls)))
+
+    print("Wrote to %s" % f.name)
     for url in list(sitemap - urls)[:10]:
         print(url)
         from_backend = backend.get(url)
@@ -135,11 +142,9 @@ def add_to_api(urls:set, sitemap:set):
             page = poms.CreateFromDocument(from_backend)
 
 
-urls = get_urls()
+urls    = get_urls()
 sitemap = get_sitemap()
-
-
-# clean_from_api(urls, sitemap)
+clean_from_api(urls, sitemap)
 add_to_api(urls, sitemap)
 
 
