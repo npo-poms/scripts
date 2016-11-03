@@ -14,10 +14,17 @@ MU.descendants(api,
                args.mid[0], batch=200, target=members, log_progress=True, limit=100)
 
 for member in MU.iterate_objects(members):
-    location = member.locations.location[0]
-    programUrl = location.programUrl
-    publishStart = location.publishStart
-    publishStop = location.publishStop
-    crids = member.crids
-    print(member)
+    print("%s %s %s" % (member.mid, member.locations.location[0].programUrl, str(list(member.crid))))
+    if len(member.locations.location) == 1:
+
+        location = member.locations.location[0]
+        if location.avAttributes.avFileFormat == 'HASP':
+            programUrl = location.programUrl
+            publishStart = location.publishStart
+            publishStop = location.publishStop
+            lastpart = programUrl.split('/')[-1]
+            newLocation = 'http://video.omroep.nl/ntr/schooltv/beeldbank/video/' + lastpart + ".mp4"
+            print(newLocation)
+
+    #print(member)
 
