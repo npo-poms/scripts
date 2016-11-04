@@ -29,8 +29,6 @@ count_done = 0
 count_404 = 0
 
 for member in MU.iterate_objects(members):
-    if count_new > 100:
-        break
     print("%s %s %s " % (member.mid, member.locations.location[0].programUrl, str(list(member.crid))), end="")
     has_mp4 = False
     if len(member.locations.location) >= 1:
@@ -46,17 +44,16 @@ for member in MU.iterate_objects(members):
                 new_program_url = 'http://video.omroep.nl/ntr/schooltv/beeldbank/video/' + last_part + ".mp4"
                 resp = requests.head(new_program_url)
                 new_location = MU.create_location(new_program_url, embargo={'publish_start':publish_start, 'publish_stop':publish_stop}, avFileFormat='MP4')
-                print("%s %s" % (new_program_url, resp.status_code), end="")
+                print("%s %s " % (new_program_url, resp.status_code), end="")
                 if not has_mp4:
                     if resp.status_code == 302:
-                        #print(api.add_location(member.mid, new_location))
+                        print(api.add_location(member.mid, new_location))
                         count_new += 1
                     else:
                         count_404 += 1
                 else:
                     count_done += 1
 
-
-    print()
+        print()
 print("new locations: %s, not added because 404: %s, already had mp4: %s" % (str(count_new), str(count_404), str(count_done)))
 
