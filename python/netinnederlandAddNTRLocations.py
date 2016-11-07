@@ -6,6 +6,7 @@ from npoapi import MediaBackend, MediaBackendUtil as MU
 import requests
 import pickle
 import os.path
+import time
 
 api = MediaBackend().command_line_client()
 api.add_argument('mid', type=str, nargs=1, help='The mid  of the object to handle')
@@ -49,11 +50,13 @@ for member in MU.iterate_objects(members):
                     if resp.status_code == 302:
                         print(api.add_location(member.mid, new_location))
                         count_new += 1
+                        time.sleep(1)
                     else:
+                        print("404 not doing")
                         count_404 += 1
                 else:
+                    print("done already")
                     count_done += 1
 
-        print()
 print("new locations: %s, not added because 404: %s, already had mp4: %s" % (str(count_new), str(count_404), str(count_done)))
 
