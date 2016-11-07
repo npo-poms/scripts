@@ -33,7 +33,7 @@ for member in MU.iterate_objects(members):
     has_mp4 = False
     if len(member.locations.location) >= 1:
         for location in member.locations.location:
-            if location.avAttributes.avFileFormat == 'MP4':
+            if location.avAttributes.avFileFormat == 'MP4' and not location.avAttributes.bitrate is None:
                 has_mp4 = True
         for location in member.locations.location:
             if location.avAttributes.avFileFormat == 'HASP':
@@ -43,7 +43,7 @@ for member in MU.iterate_objects(members):
                 last_part = programUrl.split('/')[-1]
                 new_program_url = 'http://video.omroep.nl/ntr/schooltv/beeldbank/video/' + last_part + ".mp4"
                 resp = requests.head(new_program_url)
-                new_location = MU.create_location(new_program_url, embargo={'publish_start':publish_start, 'publish_stop':publish_stop}, avFileFormat='MP4')
+                new_location = MU.create_location(new_program_url, embargo={'publish_start':publish_start, 'publish_stop':publish_stop}, avFileFormat='MP4', bitrate=1000000)
                 print("%s %s " % (new_program_url, resp.status_code), end="")
                 if not has_mp4:
                     if resp.status_code == 302:
