@@ -9,7 +9,7 @@ api.add_argument('mid', type=str, nargs=1, help='The mid  of the object to handl
 args = api.parse_args()
 
 group = args.mid[0]
-members = api.members(group, batch=200)
+members = api.members(group, batch=200, log_progress=True)
 
 translations_for_mid = {}
 for member in members:
