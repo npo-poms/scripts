@@ -1,0 +1,14 @@
+<s:mediaForm xmlns="urn:vpro:media:2009" xmlns:shared="urn:vpro:shared:2009" xmlns:s="urn:vpro:media:search:2012" xmlns:update="urn:vpro:media:update:2009" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <s:pager>
+    <s:offset>0</s:offset>
+    <s:max>50</s:max>
+    <s:sort>creationDate</s:sort>
+    <s:order>ASC</s:order>
+  </s:pager>
+  <s:broadcaster>VPRO</s:broadcaster>
+  <s:title type="MAIN" tokenized="false">API_FUNCTIONAL_TEST_2016-12-16T16:06:41.456</s:title>
+  <s:creationRange>
+    <s:start>2016-12-16T00:00:00+01:00</s:start>
+    <s:stop>2016-12-17T00:00:00+01:00</s:stop>
+  </s:creationRange>
+</s:mediaForm>
