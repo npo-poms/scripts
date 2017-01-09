@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<program xmlns="urn:vpro:media:update:2009"
+         type="CLIP" avType="VIDEO" publishStop="2012-01-11T18:16:01.287+01:00" publishStart="2012-01-11T16:16:01.287+01:00" embeddable="true">
+  <broadcaster>VPRO</broadcaster>
+  <title type="MAIN">TEST TEST</title>
+  <tag>Kabouters</tag>
+  <ageRating>ALL</ageRating>
+  <email>programma@avro.nl</email>
+
+</program>
