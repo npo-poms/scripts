@@ -3,6 +3,7 @@
 This script checks wether a poms playlist contains multiple translations of the same source. If so, it will delete remove all but one.
 """
 from npoapi import MediaBackend
+import time
 
 api = MediaBackend().command_line_client()
 api.add_argument('mid', type=str, nargs=1, help='The mid  of the object to handle')
@@ -34,6 +35,7 @@ for mid in translations_for_mid:
         for d in mids_to_delete:
             print("Deleting %s from %s (keeping %s)" % (d, group, mid_to_keep))
             api.delete_member(d, group)
+            time.sleep(1)
 
 
 
