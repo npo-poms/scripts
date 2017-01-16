@@ -77,14 +77,14 @@ def get_urls() -> set:
     if os.path.exists(url_file) and not clean:
         new_urls = pickle.load(open(url_file, "rb"))
     else:
-        new_urls = sorted(get_urls_from_api())
+        new_urls = get_urls_from_api()
         pickle.dump(new_urls, open(url_file, "wb"))
 
     with codecs.open(profile + ".txt", 'w', "utf-8") as f:
-        f.write('\n'.join(list(new_urls)))
+        f.write('\n'.join(sorted(new_urls)))
     api.logger.info("Wrote %s", profile + ".txt")
 
-    return new_urls
+    return set(new_urls)
 
 
 def get_sitemap_from_xml():
@@ -115,11 +115,11 @@ def get_sitemap():
     if os.path.exists(sitemap_file) and not clean:
         new_urls = pickle.load(open(sitemap_file, "rb"))
     else:
-        new_urls = sorted(get_sitemap_from_xml())
+        new_urls = get_sitemap_from_xml()
         pickle.dump(new_urls, open(sitemap_file, "wb"))
 
     with codecs.open(profile + ".sitemap.txt", 'w', "utf-8") as f:
-        f.write('\n'.join(list(new_urls)))
+        f.write('\n'.join(sorted(new_urls)))
     api.logger.info("Wrote %s", profile + ".sitemap.txt")
 
     return new_urls
@@ -135,8 +135,11 @@ def http_status(url):
 
 def clean_from_api(urls:set, sitemap:set):
     print("in api but not in sitemap: %s" % len(urls - sitemap))
+    not_in_sitemap = urls - sitemap
+    with codecs.open('in_' + profile + '_but_not_in_sitemap.txt', 'w', 'utf-8') as f:
+        f.write('\n'.join(sorted(list(not_in_sitemap))))
     if delete_from_api:
-        for idx, url in enumerate(urls - sitemap):
+        for idx, url in enumerate(not_in_sitemap):
             status = http_status(url)
             if status == 404:
                 api.logger.info("Deleting %s", url)
@@ -148,12 +151,13 @@ def clean_from_api(urls:set, sitemap:set):
 
 
 def add_to_api(urls:set, sitemap:set):
-    print("in sitemap but not in api: %s" % len(sitemap - urls))
+    not_in_api = sitemap - urls
+    print("in sitemap but not in api: %s" % len(not_in_api))
     with open('in_sitemap_but_not_in_' + profile + ".txt", 'w') as f:
-        f.write('\n'.join(sorted(list(sitemap - urls))))
+        f.write('\n'.join(sorted(list(not_in_api))))
 
     print("Wrote to %s" % f.name)
-    for url in list(sitemap - urls)[:10]:
+    for url in list(not_in_api)[:10]:
         print(url)
         from_backend = backend.get(url)
         from_frontend = api.get(url)
