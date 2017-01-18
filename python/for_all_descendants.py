@@ -3,6 +3,8 @@
 
 import pickle
 import os
+from tempfile import gettempdir
+
 # some imports handy for the exec call
 import npoapi.xml.mediaupdate
 from dateutil.parser import parse
@@ -35,12 +37,14 @@ clean = args.clean
 
 log = api.logger
 
-cache = "/tmp/foralldescendants.p"
+cache = os.path.join(gettempdir(), "foralldescendants." + mid + ".p")
 members = []
 if os.path.exists(cache) and not clean:
     log.info("Reusing from " + cache)
     members = pickle.load(open(cache, "rb"))
 else:
+    if not clean:
+        log.info("Not found " + cache)
     MU.descendants(api, mid, batch=200, target=members, segments=False, episodes=False, log_progress=True)
     pickle.dump(members, open(cache, "wb"))
 
@@ -63,9 +67,13 @@ for idx, member in enumerate(MU.iterate_objects(members)):
         exec(open(process).read())
     else:
         exec(process)
-    log.info("Execed %s for %s", process, member_mid)
+
     if not args.dryrun:
+        log.info("Execed %s for %s and posting", process, member_mid)
         api.post(member)
+    else:
+        log.info("Execed %s for %s (not posting because of dryrun parameter)", process, member_mid)
+
     posts += 1
 
 log.info("Ready. Posted %s updates to POMS", str(posts))
