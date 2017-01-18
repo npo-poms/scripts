@@ -27,7 +27,7 @@ api.add_argument('--filter', type=str, help="""
 Filter. A piece of python code to filter. E.g.
 type(member) == npoapi.xml.mediaupdate.programUpdateType
 member.type == 'CLIP'
-member.mainTti
+'kort!' in short_title.lower()
 """)
 args = api.parse_args()
 process = args.process[0]
@@ -51,28 +51,29 @@ else:
 log.info("Found " + str(len(members)) + " objects")
 posts = 0
 
+if os.path.exists(process):
+    log.info("%s is a file.", str(process))
+    process = open(process).read()
+
 for idx, member in enumerate(MU.iterate_objects(members)):
     member_mid = member.mid
     main_title = MU.title(member, "MAIN")
     short_title = MU.title(member, "SHORT")
     if filter:
         result = eval(filter)
-        log.debug("Execed %s result %s", str(filter), str(result))
+        log.debug("%s Execed %s result %s", str(idx), str(filter), str(result))
         if not result:
             log.debug("Skipping %s, %s %s because of filter %s", str(type(member)), str(member.type), member_mid,
                             filter)
             continue
-    if os.path.exists(process):
-        log.info("%s is a file.", str(process))
-        exec(open(process).read())
-    else:
-        exec(process)
+
+    exec(process)
 
     if not args.dryrun:
-        log.info("Execed %s for %s and posting", process, member_mid)
+        log.info("%s Execed %s for %s and posting", str(idx), process, member_mid)
         api.post(member)
     else:
-        log.info("Execed %s for %s (not posting because of dryrun parameter)", process, member_mid)
+        log.info("%s Execed %s for %s (not posting because of dryrun parameter)", str(idx), process, member_mid)
 
     posts += 1
 
