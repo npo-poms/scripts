@@ -32,11 +32,14 @@ def function_or_arg(given_function, args, attr, log):
             given_function = None
     return given_function
 
-api = MediaBackend().command_line_client()
 
-def main(processor=None, filter=None):
+
+
+def init(processor=None, filter=None):
+    global api
     api = MediaBackend().command_line_client()
     api.add_argument('mid', type=str, nargs=1, help='The mid  of the object to handle')
+
     if processor is None:
         api.add_argument('process', type=str, nargs=1, help="""
     python code to postprocess. E.g.
@@ -56,6 +59,10 @@ type(member) == npoapi.xml.mediaupdate.programUpdateType
 member.type == 'CLIP'
 'kort!' in short_title.lower()
 """)
+
+
+def main(processor=None, filter=None):
+
     args = api.parse_args()
     log = api.logger
     processor = function_or_arg(processor, args, "process", log)
@@ -111,6 +118,7 @@ member.type == 'CLIP'
 
 
 if __name__ == "__main__":
+    init()
     main()
 
 
