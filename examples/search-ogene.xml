@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<mediaForm xmlns="urn:vpro:media:search:2012">
+    <pager>
+        <max>30</max>
+        <sort>lastModified</sort>
+        <order>DESC</order>
+    </pager>
+    <broadcaster>AVROTROS</broadcaster>
+    <text>ogene</text>
+    <type>CLIP</type>
+    <noBroadcast>false</noBroadcast>
+    <hasLocations>false</hasLocations>
+    <noPlaylist>false</noPlaylist>
+    <avType>VIDEO</avType>
+</mediaForm>
