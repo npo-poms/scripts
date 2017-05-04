@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<program avType="VIDEO" embeddable="true" mid="POW_00366324" type="BROADCAST" urn="urn:vpro:media:program:8296345" xmlns="urn:vpro:media:update:2009" xmlns:media="urn:vpro:media:2009" xmlns:shared="urn:vpro:shared:2009">
+  <crid>crid://tmp.program.omroep.nl/12201756</crid>
+  <broadcaster>MAX</broadcaster>
+  <broadcaster>VPRO</broadcaster>
+  <title type="MAIN">Heb je dat gezien?</title>
+  <title type="SUB">Kreatief met kurk en Rita Reys</title>
+  <description type="MAIN">Terugblik op verrassende, ontroerende en bijzondere televisiemomenten, ter gelegenheid van het zestigjarig jubileum van de Nederlandse televisie. Herinneringen komen terug en er wordt getoond hoe rijk de Nederlandse televisiegeschiedenis is.</description>
+  <description type="SHORT">Kreatief met Kurk, 'Europe's First Lady of Jazz' Rita Reys en Hadimassa in Montreux</description>
+  <genre>3.0.1.6</genre>
+  <avAttributes>
+    <avFileFormat>UNKNOWN</avFileFormat>
+    <videoAttributes>
+      <aspectRatio>4:3</aspectRatio>
+    </videoAttributes>
+  </avAttributes>
+  <duration>P0DT0H20M0.000S</duration>
+  <website>http://www.hebjedatgezien.tv</website>
+  <locations/>
+  <scheduleEvents>
+    <scheduleEvent channel="NED1">
+      <start>2011-02-28T11:30:00+01:00</start>
+      <duration>P0DT0H30M0.000S</duration>
+      <titles>
+        <title type="MAIN">foobar</title>
+      </titles>
+    </scheduleEvent>
+  </scheduleEvents>
+  <images/>
+  <episodeOf highlighted="false" position="16">POW_00366298</episodeOf>
+</program>

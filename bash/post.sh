@@ -12,7 +12,7 @@ source $(dirname ${SOURCE[0]})/creds.sh
 source $(dirname ${SOURCE[0]})/functions.sh
 
 
-target=$(getUrl media?errors=$errors&lookupcrid=true)
+target=$(getUrl "media?errors=$errors&lookupcrid=true&validateInput=true")
 
 echo $target >&2
 

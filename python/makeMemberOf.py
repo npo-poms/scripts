@@ -8,18 +8,28 @@ from npoapi.xml import poms
 api = MediaBackend().command_line_client()
 api.add_argument('mid', type=str, nargs=1, help='The mid  of the object to handle')
 api.add_argument('group', type=str, nargs=1, help='Group')
+api.add_argument('--use_get', action='store_true', default=False)
+api.add_argument('--position', type=int, default=None)
+
 args = api.parse_args()
 
 mid   = args.mid[0]
 group = args.group[0]
 
-media = poms.CreateFromDocument(api.get(mid))
+if args.use_get:
+    media = poms.CreateFromDocument(api.get(mid))
+    memberOf = mediaupdate.memberRef(group)
+    memberOf.highlighted = False
+    memberOf.position = args.position
+    media.memberOf.append(memberOf)
 
-memberOf = mediaupdate.memberRefUpdateType(group)
-memberOf.highlighted = False
-media.memberOf.append(memberOf)
+    api.post(media)
+else:
+    api.add_member(mid, group, position=args.position)
 
 
-api.post(media)
+
+
+
 
 
