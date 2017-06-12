@@ -36,6 +36,8 @@ api.add_argument('profile', type=str, nargs='?', help='profile')
 api.add_argument('-C', '--clean', action='store_true', default=False, help='clean build')
 api.add_argument('-D', '--delete', action='store_true', default=False, help='delete from api')
 api.add_argument('--https_to_http', action='store_true', default=False, help='Replace all https with http')
+api.add_argument('--http_to_https', action='store_true', default=False, help='Replace all http with https')
+api.add_argument('--post_process_sitemap', type=str, default=None, help='')
 
 args = api.parse_args()
 
@@ -44,6 +46,9 @@ sitemap_url = args.sitemap[0]
 clean = args.clean
 delete_from_api = args.delete
 https_to_http = args.https_to_http
+http_to_https = args.http_to_https
+if https_to_http and http_to_https:
+    raise Exception("Can't set both https_to_http and http_to_https")
 
 if clean:
     api.logger.info("Cleaning")
@@ -88,6 +93,7 @@ def get_urls() -> set:
 
 
 def get_sitemap_from_xml():
+    api.logger.debug("Opening %s", sitemap_url)
     response = urllib.request.urlopen(sitemap_url)
     locs = set()
     for ev, el in xml.etree.ElementTree.iterparse(response):
@@ -134,8 +140,8 @@ def http_status(url):
 
 
 def clean_from_api(urls:set, sitemap:set):
-    print("in api but not in sitemap: %s" % len(urls - sitemap))
     not_in_sitemap = urls - sitemap
+    print("in api but not in sitemap: %s" % len(not_in_sitemap))
     with codecs.open('in_' + profile + '_but_not_in_sitemap.txt', 'w', 'utf-8') as f:
         f.write('\n'.join(sorted(list(not_in_sitemap))))
     if delete_from_api:
@@ -153,7 +159,7 @@ def clean_from_api(urls:set, sitemap:set):
 def add_to_api(urls:set, sitemap:set):
     not_in_api = sitemap - urls
     print("in sitemap but not in api: %s" % len(not_in_api))
-    with open('in_sitemap_but_not_in_' + profile + ".txt", 'w') as f:
+    with codecs.open('in_sitemap_but_not_in_' + profile + ".txt", 'w', 'utf-8') as f:
         f.write('\n'.join(sorted(list(not_in_api))))
 
     print("Wrote to %s" % f.name)
@@ -165,18 +171,37 @@ def add_to_api(urls:set, sitemap:set):
             page = poms.CreateFromDocument(from_backend)
 
 
-urls = get_urls()
-sitemap = get_sitemap()
+def main():
+    got_urls = get_urls()
+    got_sitemap = get_sitemap()
 
-if https_to_http:
-    mapped_urls = set(map(lambda url: re.sub(r'^https://(.*)', r'http://\1', url), urls))
-    mapped_sitemap = set(map(lambda url: re.sub(r'^https://(.*)', r'http://\1', url), sitemap))
-else:
-    mapped_urls = urls
-    mapped_sitemap = sitemap
+    post_process_sitemap = lambda url: url
+    if args.post_process_sitemap:
+        post_process_sitemap = eval(args.post_process_sitemap)
 
-clean_from_api(mapped_urls, mapped_sitemap)
-add_to_api(urls, sitemap)
+    schema_mapper = lambda url: url
+    if https_to_http:
+        schema_mapper  = lambda url: re.sub(r'^https://(.*)', r'http://\1', url)
+
+    if http_to_https:
+        schema_mapper = lambda url: re.sub(r'^http://(.*)', r'https://\1', url)
+
+
+    mapped_urls = set(map(schema_mapper, got_urls))
+    mapped_sitemap = set(map(lambda url: post_process_sitemap(schema_mapper(url)), got_sitemap))
+
+    with codecs.open(profile + ".mapped.txt", 'w', "utf-8") as f:
+        f.write('\n'.join(sorted(mapped_urls)))
+    with codecs.open(profile + ".sitemap.mapped.txt", 'w', "utf-8") as f:
+        f.write('\n'.join(sorted(mapped_sitemap)))
+
+
+    clean_from_api(mapped_urls, mapped_sitemap)
+    add_to_api(mapped_urls, mapped_sitemap)
+
+
+if __name__ == "__main__":
+    main()
 
 
 
