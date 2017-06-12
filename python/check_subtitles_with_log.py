@@ -36,10 +36,6 @@ api.add_argument('profile', type=str, nargs='?', help='profile')
 api.add_argument('-C', '--clean', action='store_true', default=False, help='clean build')
 api.add_argument('-D', '--delete', action='store_true', default=False, help='delete from api')
 api.add_argument('--https_to_http', action='store_true', default=False, help='Replace all https with http')
-api.add_argument('--http_to_https', action='store_true', default=False, help='Replace all http with https')
-api.add_argument('--post_process_sitemap', type=str, default=None, help='')
-api.add_argument('--post_process_api', type=str, default=None, help='')
-api.add_argument('--post_process', type=str, default=None, help='')
 
 args = api.parse_args()
 
@@ -48,15 +44,12 @@ sitemap_url = args.sitemap[0]
 clean = args.clean
 delete_from_api = args.delete
 https_to_http = args.https_to_http
-http_to_https = args.http_to_https
-if https_to_http and http_to_https:
-    raise Exception("Can't set both https_to_http and http_to_https")
 
 if clean:
     api.logger.info("Cleaning")
 
 
-def get_urls_from_api_search() -> set:
+def get_urls_from_api() -> set:
     offset = 0
     new_urls = set()
     while True:
@@ -68,6 +61,8 @@ def get_urls_from_api_search() -> set:
         grow = 0
         for item in items:
             url = item['result']['url']
+            if https_to_http:
+                url = re.sub(r'^https://(.*)', r'http://\1', url)
             new_urls.add(url)
             offset += 1
             grow += 1
@@ -77,27 +72,12 @@ def get_urls_from_api_search() -> set:
     return new_urls
 
 
-def get_urls_from_api_iterate() -> set:
-    new_urls = set()
-    from npoapi.xml.api import pagesForm
-    form = pagesForm()
-    form.sortFields.add('lastModified')
-    pages = api.iterate(profile=profile, form=form)
-    for page in pages:
-        new_urls.add(page['url'])
-        if len(new_urls) % 100 == 0:
-            api.logger.info("API: Found %s urls for profile %s", len(new_urls), profile)
-
-    return new_urls
-
-
 def get_urls() -> set:
-    url_file = "/tmp/" + profile + ".p"
+    url_file = "/tmp/urls." + profile + ".p"
     if os.path.exists(url_file) and not clean:
         new_urls = pickle.load(open(url_file, "rb"))
     else:
-        #new_urls = get_urls_from_api_search()
-        new_urls = get_urls_from_api_iterate()
+        new_urls = get_urls_from_api()
         pickle.dump(new_urls, open(url_file, "wb"))
 
     with codecs.open(profile + ".txt", 'w', "utf-8") as f:
@@ -190,38 +170,16 @@ def main():
     got_urls = get_urls()
     got_sitemap = get_sitemap()
 
-    post_process = lambda url: url
-    if args.post_process:
-        post_process = eval(args.post_process)
-
-    post_process_sitemap = lambda url: url
-    post_process_api = lambda url: url
-
-
-    if args.post_process_sitemap:
-        post_process_sitemap = eval(args.post_process_sitemap)
-
-    if args.post_process_api:
-        post_process_api= eval(args.post_process_api)
-
-    schema_mapper = lambda url: url
     if https_to_http:
-        schema_mapper  = lambda url: re.sub(r'^https://(.*)', r'http://\1', url)
-
-    if http_to_https:
-        schema_mapper = lambda url: re.sub(r'^http://(.*)', r'https://\1', url)
-
-
-
-    mapped_urls = set(map(lambda url: post_process(post_process_api(schema_mapper(url))), got_urls))
-    mapped_sitemap = set(map(lambda url: post_process(post_process_sitemap(schema_mapper(url))), got_sitemap))
-
-    with codecs.open(profile + ".mapped.txt", 'w', "utf-8") as f:
-        f.write('\n'.join(sorted(mapped_urls)))
-    api.logger.info("Wrote %s", profile + ".mapped.txt")
-    with codecs.open(profile + ".sitemap.mapped.txt", 'w', "utf-8") as f:
-        f.write('\n'.join(sorted(mapped_sitemap)))
-    api.logger.info("Wrote %s", profile + ".sitemap.mapped.txt")
+        mapped_urls = set(map(lambda url: re.sub(r'^https://(.*)', r'http://\1', url), got_urls))
+        with codecs.open(profile + ".mapped.txt", 'w', "utf-8") as f:
+            f.write('\n'.join(sorted(mapped_urls)))
+        mapped_sitemap = set(map(lambda url: re.sub(r'^https://(.*)', r'http://\1', url), got_sitemap))
+        with codecs.open(profile + ".sitemap.mapped.txt", 'w', "utf-8") as f:
+            f.write('\n'.join(sorted(mapped_sitemap)))
+    else:
+        mapped_urls = got_urls
+        mapped_sitemap = got_sitemap
 
 
     clean_from_api(mapped_urls, mapped_sitemap)
