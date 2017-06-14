@@ -28,6 +28,10 @@ import urllib
 import xml.etree.ElementTree
 import re
 import codecs
+import pyxb
+from datetime import datetime
+
+
 
 api = Pages().command_line_client()
 backend = PagesBackend(env=api.actualenv).configured_login()
@@ -40,6 +44,7 @@ api.add_argument('--http_to_https', action='store_true', default=False, help='Re
 api.add_argument('--post_process_sitemap', type=str, default=None, help='')
 api.add_argument('--post_process_api', type=str, default=None, help='')
 api.add_argument('--post_process', type=str, default=None, help='')
+api.add_argument('--ignore_api_before', type=str, default=None, help='')
 
 args = api.parse_args()
 
@@ -79,9 +84,11 @@ def get_urls_from_api_search() -> set:
 
 def get_urls_from_api_iterate() -> set:
     new_urls = set()
-    from npoapi.xml.api import pagesForm
-    form = pagesForm()
-    form.sortFields.add('lastModified')
+    from npoapi.xml import api as API
+    form = API.pagesForm()
+    form.sortFields = pyxb.BIND()
+    form.sortFields.append(API.pageSortTypeEnum.lastModified)
+    form.highlight = False
     pages = api.iterate(profile=profile, form=form)
     for page in pages:
         new_urls.add(page['url'])
