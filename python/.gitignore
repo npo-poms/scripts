@@ -48,5 +48,6 @@ coverage.xml
 docs/_build/
 
 
-creds.db
-creds
+
+*.iml
+.idea
