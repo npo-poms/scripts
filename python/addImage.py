@@ -67,7 +67,8 @@ if mediaUpdate:
                 api.logger.info("%s/%s Adding image %s to %s", idx, len(members), images[count % len(images)], member_mid)
                 count += 1
                 if not args.dry_run:
-                    api.add_image(member_mid, MU.create_image(images[count % len(images)], title=t))
+                    image = MU.create_image(images[count % len(images)], title=t)
+                    api.add_image(member_mid, image)
                 if args.max and count >= args.max:
                     break
 
@@ -76,7 +77,7 @@ if mediaUpdate:
 
 
 else:
-    print("Not found %s" % mid)
+    api.logger.info("Not found %s" % mid)
 
-print("Added %s images" % str(count))
+api.logger.info("Added %s images" % str(count))
 

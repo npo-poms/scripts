@@ -30,7 +30,7 @@ import re
 import codecs
 import pyxb
 import datetime
-
+import requests
 
 
 api = Pages().command_line_client()
@@ -156,14 +156,14 @@ def get_sitemap():
 
     return new_urls
 
+
 def http_status(url):
     try:
-        req = urllib.request.Request(url, method="HEAD")
-        resp = urllib.request.urlopen(req)
-        return resp.status
-    except Exception as ue:
-        return ue.status
-
+        resp = requests.head(url, allow_redirects=False)
+        return resp.status_code
+    except Exception as e:
+        api.logg.info("%e", str(e))
+        return 404
 
 def clean_from_api(mapped_api_urls: list,
                    api_urls: list,
@@ -244,9 +244,7 @@ def main():
     clean_from_api(mapped_api_urls,
                    api_urls,
                    mapped_sitemap_urls, sitemap_urls)
-    add_to_api(api_urls,
-               sitemap_urls
-               )
+    add_to_api(mapped_api_urls, api_urls, mapped_sitemap_urls, sitemap_urls)
 
 
 if __name__ == "__main__":

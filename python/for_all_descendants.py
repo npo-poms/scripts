@@ -51,6 +51,9 @@ member.publishStop=parse("2018-12-31")
 """)
     api.add_argument('-C', '--clean', action='store_true', default=False)
     api.add_argument('--dryrun', action='store_true', default=False)
+    api.add_argument('--segments', action='store_true', default=False, help='')
+    api.add_argument('--episodes', action='store_true', default=False, help='')
+
 
     if filter is None:
         api.add_argument('--filter', type=str, help="""
@@ -84,7 +87,7 @@ def main(processor=None, filter=None):
     else:
         if not clean:
             log.info("Not found " + cache)
-        MU.descendants(api, mid, batch=200, target=members, segments=False, episodes=False, log_progress=True)
+        MU.descendants(api, mid, batch=200, target=members, segments=args.segments, episodes=args.episodes, log_progress=True)
         pickle.dump(members, open(cache, "wb"))
 
     log.info("Found " + str(len(members)) + " objects")
