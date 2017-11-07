@@ -1,9 +1,17 @@
-<admin:republishMediaForm xmlns="urn:vpro:media:2009" xmlns:shared="urn:vpro:shared:2009" xmlns:s="urn:vpro:media:search:2012" xmlns:update="urn:vpro:media:update:2009" xmlns:admin="urn:vpro:media:admin:2017" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <search>
-        <s:pager>
-            <s:offset>0</s:offset>
-            <s:order>ASC</s:order>
-        </s:pager>
-    </search>
-    <destination>ElasticSearch</destination>
+<admin:republishMediaForm
+    xmlns:admin="urn:vpro:media:admin:2017"
+    xmlns:s="urn:vpro:media:search:2012"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="urn:vpro:media:search:2012 https://poms.omroep.nl/schema/search/vproMediaSearch.xsd"
+    >
+  <admin:search>
+    <s:pager>
+      <s:offset>0</s:offset>
+      <s:max>1000</s:max>
+      <s:sort>lastModified</s:sort>
+      <s:order>DESC</s:order>
+    </s:pager>
+  </admin:search>
+  <admin:destination>ElasticSearch</admin:destination>
+  <admin:reason>republish 1000</admin:reason>
 </admin:republishMediaForm>
