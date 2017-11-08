@@ -55,6 +55,7 @@ def get_urls_from_api_search(max=None) -> set:
             url = item['result']['url']
             if url.startswith("http:"):
                 print(url)
+                new_urls.add(url)
             for crid in item['result']['crids']:
                 if crid.startswith("crid://vpro/media/vpro/"):
                     new_urls.add(url)
@@ -75,10 +76,11 @@ def main():
 
     for api_url in api_urls:
         backend.delete(api_url)
-
         api_url_encoded = urllib.request.quote(api_url, safe='')
         print(api_url + "-> " + api_url_encoded)
-        requests.delete('http://localhost:9208/apipages/page/' + urllib.request.quote(api_url, safe=''))
+        es_url = 'http://localhost:9208/apipages/page/' + api_url_encoded
+        print(es_url)
+        requests.delete(es_url)
     print(api_urls)
 
 
