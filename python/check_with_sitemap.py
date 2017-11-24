@@ -26,7 +26,6 @@ import pickle
 import re
 import urllib
 import xml.etree.ElementTree
-from urllib.error import HTTPError
 
 import pyxb
 import requests
@@ -47,6 +46,7 @@ api.add_argument('--http_to_https', action='store_true', default=False, help='Re
 api.add_argument('--post_process_sitemap', type=str, default=None, help='')
 api.add_argument('--post_process_api', type=str, default=None, help='')
 api.add_argument('--post_process', type=str, default=None, help='')
+api.add_argument('--target_directory', type=str, default=None, help='')
 
 args = api.parse_args()
 
@@ -60,6 +60,12 @@ https_to_http = args.https_to_http
 http_to_https = args.http_to_https
 if https_to_http and http_to_https:
     raise Exception("Can't set both https_to_http and http_to_https")
+if args.target_directory:
+    target_directory = args.target_directory
+else:
+    target_directory = ""
+
+print("T ", target_directory)
 
 if clean:
     api.logger.info("Cleaning")
@@ -116,7 +122,7 @@ def get_urls() -> list:
         new_urls = get_urls_from_api_iterate()
         pickle.dump(new_urls, open(url_file, "wb"))
 
-    with codecs.open(profile + ".txt", 'w', "utf-8") as f:
+    with codecs.open(os.path.join(target_directory, profile + ".txt"), 'w', "utf-8") as f:
         f.write('\n'.join(sorted(new_urls)))
     api.logger.info("Wrote %s", profile + ".txt")
 
@@ -154,7 +160,7 @@ def get_sitemap():
         new_urls = get_sitemap_from_xml()
         pickle.dump(new_urls, open(sitemap_file, "wb"))
 
-    with codecs.open(profile + ".sitemap.txt", 'w', "utf-8") as f:
+    with codecs.open(os.path.join(target_directory, profile + ".sitemap.txt"), 'w', "utf-8") as f:
         f.write('\n'.join(sorted(new_urls)))
     api.logger.info("Wrote %s", profile + ".sitemap.txt")
 
@@ -178,7 +184,7 @@ def clean_from_api(mapped_api_urls: list,
     mapped_not_in_sitemap = set(mapped_api_urls) - set(mapped_sitemap_urls)
     not_in_sitemap = set(map(lambda url: api_urls[mapped_api_urls.index(url)], mapped_not_in_sitemap))
     print("in api but not in sitemap: %s" % len(not_in_sitemap))
-    with codecs.open('in_' + profile + '_but_not_in_sitemap.txt', 'w', 'utf-8') as f:
+    with codecs.open(os.path.join(target_directory,'in_' + profile + '_but_not_in_sitemap.txt'), 'w', 'utf-8') as f:
         f.write('\n'.join(sorted(list(not_in_sitemap))))
     if delete_from_api:
         for idx, url in enumerate(not_in_sitemap):
@@ -203,7 +209,7 @@ def add_to_api(mapped_api_urls: list,
     mapped_not_in_api = set(mapped_sitemap_urls) - set(mapped_api_urls)
     not_in_api = set(map(lambda turl: sitemap_urls[mapped_sitemap_urls.index(turl)], mapped_not_in_api))
     print("in sitemap but not in api: %s" % len(not_in_api))
-    with codecs.open('in_sitemap_but_not_in_' + profile + ".txt", 'w', 'utf-8') as f:
+    with codecs.open(os.path.join(target_directory,'in_sitemap_but_not_in_' + profile + ".txt"), 'w', 'utf-8') as f:
         f.write('\n'.join(sorted(list(not_in_api))))
 
     print("Wrote to %s" % f.name)
