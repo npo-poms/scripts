@@ -4,7 +4,6 @@
 vpro:
 	../check_with_sitemap.py \
 		-e prod --http_to_https \
-		--delete \
 		--post_process "lambda url: re.sub(r'^https://www.vpro.nl/speel[~\.](.*?)[~\.](.*)', r'https://www.vpro.nl/speel~\1~.html', url)" \
 		https://magnolia1-frontend1-prod.vpro.nl/vpronl/sitemap.xml \
 		vpro-predictions
