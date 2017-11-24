@@ -18,5 +18,12 @@ vpro:
 		https://magnolia1-frontend1-prod.vpro.nl/3v12/sitemap.xml \
 		3voor12
 
+human:
+        ../check_with_sitemap.py \
+                -e prod --http_to_https \
+                --post_process "lambda url: re.sub(r'^https://www.human.nl/speel[~\.](.*?)[~\.](.*)', r'https://www.human.nl/speel~\1~.html', url)" \
+                https://magnolia1-frontend1-prod.vpro.nl/human/sitemap.xml \
+                human
+
 clean:
 	rm -f /tmp/*.p
