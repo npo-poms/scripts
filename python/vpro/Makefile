@@ -1,5 +1,5 @@
 
-.PHONY: clean vpro 3voor12
+all: clean vpro 3voor12 human
 
 vpro:
 	../check_with_sitemap.py \
