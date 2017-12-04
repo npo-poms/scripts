@@ -205,7 +205,7 @@ def clean_from_api(
 
 
     if not os.path.exists(filename) or clean:
-        api.logger("Calculating what needs to be removed from api")
+        log.info("Calculating what needs to be removed from api")
         mapped_not_in_sitemap = set(mapped_api_urls) - set(mapped_sitemap_urls)
         # translate to actual urls
         not_in_sitemap = sorted(list(set(map(lambda url: unmap(mapped_api_urls, api_urls, url), mapped_not_in_sitemap))))
