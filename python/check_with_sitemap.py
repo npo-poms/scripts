@@ -27,7 +27,7 @@ import os
 import urllib
 import xml.etree.ElementTree
 import re
-import codecs
+import io
 import pyxb
 import datetime
 import requests
@@ -58,6 +58,8 @@ if https_to_http and http_to_https:
 
 if clean:
     api.logger.info("Cleaning")
+
+api.logger.info("%s" % api.url)
 
 
 def get_urls_from_api_search() -> set:
@@ -111,7 +113,7 @@ def get_urls() -> list:
         new_urls = get_urls_from_api_iterate()
         pickle.dump(new_urls, open(url_file, "wb"))
 
-    with codecs.open(profile + ".txt", 'w', "utf-8") as f:
+    with io.open(profile + ".txt", 'w', encoding="utf-8") as f:
         f.write('\n'.join(sorted(new_urls)))
     api.logger.info("Wrote %s", profile + ".txt")
 
@@ -150,7 +152,7 @@ def get_sitemap():
         new_urls = get_sitemap_from_xml()
         pickle.dump(new_urls, open(sitemap_file, "wb"))
 
-    with codecs.open(profile + ".sitemap.txt", 'w', "utf-8") as f:
+    with io.open(profile + ".sitemap.txt", 'w', encoding="utf-8") as f:
         f.write('\n'.join(sorted(new_urls)))
     api.logger.info("Wrote %s", profile + ".sitemap.txt")
 
@@ -165,17 +167,37 @@ def http_status(url):
         api.logg.info("%e", str(e))
         return 404
 
+
+def map_to_api(mapped_api_urls: list, api_urls: list, url: str):
+    try:
+        i = mapped_api_urls.index(url)
+        return api_urls[i]
+    except ValueError:
+        return ""
+
 def clean_from_api(mapped_api_urls: list,
                    api_urls: list,
                    mapped_sitemap_urls: list,
                    sitemap_urls: list
                    ):
+    filename = "in_" + profile + "_but_not_in_sitemap.txt"
 
-    mapped_not_in_sitemap = set(mapped_api_urls) - set(mapped_sitemap_urls)
-    not_in_sitemap = set(map(lambda url: api_urls[mapped_api_urls.index(url)], mapped_not_in_sitemap))
-    print("in api but not in sitemap: %s" % len(not_in_sitemap))
-    with codecs.open('in_' + profile + '_but_not_in_sitemap.txt', 'w', 'utf-8') as f:
-        f.write('\n'.join(sorted(list(not_in_sitemap))))
+
+    if not os.path.exists(filename) or clean:
+        mapped_not_in_sitemap = set(mapped_api_urls) - set(mapped_sitemap_urls)
+
+        not_in_sitemap = sorted(list(set(map(lambda url: map_to_api(mapped_api_urls, api_urls, url), mapped_not_in_sitemap))))
+        print("in api but not in sitemap: %s" % len(not_in_sitemap))
+
+        with io.open(filename, 'w', encoding='utf-8') as f:
+            f.write('\n'.join(sorted(list(not_in_sitemap))))
+            api.logger.info("Wrote to %s" % f.name)
+    else:
+        with io.open(filename, 'r', encoding='utf-8') as f:
+            not_in_sitemap = f.read().splitlines()
+            api.logger.info("Read from %s" % f.name)
+
+
     if delete_from_api:
         for idx, url in enumerate(not_in_sitemap):
             status = http_status(url)
@@ -197,14 +219,26 @@ def add_to_api(
         api_urls:list,
         mapped_sitemap_urls: list,
         sitemap_urls:list):
-    mapped_not_in_api = set(mapped_sitemap_urls) - set(mapped_api_urls)
-    not_in_api = set(map(lambda url: api_urls[mapped_api_urls.index(url)], mapped_not_in_api))
-    print("in sitemap but not in api: %s" % len(not_in_api))
-    with codecs.open('in_sitemap_but_not_in_' + profile + ".txt", 'w', 'utf-8') as f:
-        f.write('\n'.join(sorted(list(not_in_api))))
 
-    print("Wrote to %s" % f.name)
-    for url in list(not_in_api)[:10]:
+    filename = "in_sitemap_but_not_in_" + profile + ".txt"
+    not_in_api = ()
+    if  not os.path.exists(filename) or clean:
+        mapped_not_in_api = set(mapped_sitemap_urls) - set(mapped_api_urls)
+
+        not_in_api = sorted(list(set(map(lambda url: map_to_api(mapped_api_urls, api_urls, url), mapped_not_in_api))))
+        print("in sitemap but not in api: %s" % len(not_in_api))
+
+        with io.open(filename, 'w', encoding='utf-8') as f:
+            f.write('\n'.join(not_in_api))
+            print("Wrote to %s" % f.name)
+
+    else:
+        with io.open(filename, 'r', encoding='utf-8') as f:
+            not_in_api = f.read().splitlines()
+            api.logger.info("Read from %s" % f.name)
+
+
+    for url in not_in_api[:10]:
         print(url)
         from_backend = backend.get(url)
         from_frontend = api.get(url)
