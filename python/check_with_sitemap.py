@@ -7,7 +7,7 @@ It will download the entire profile from the NPO Front end api, and it will also
 Then, it compares the found URL's in both. They should represent the same set.
 
 If there are URL in the API which are not in the Sitemap, which are indeed not existing (give 404's) then the script
-supposes this is an error and deletes the object from the API.
+supposes this is an error and can delete the object from the API (if --delete is specified)
 
 If objects are in the API but not in the sitemap, then we suppose the sitemap is outdated.
 
@@ -228,27 +228,26 @@ def clean_from_api(
         clean_from_es = file_in_target("todo." + profile + ".should_be_removed_from_es.txt")
         remove_from_api = file_in_target("done." + profile + ".removed_from_api.txt")
         log.info("Deleting from api")
-        with io.open(clean_from_es, 'w', encoding='utf-8') as f_clean_from_es:
-            with io.open(remove_from_api, 'w', encoding='utf-8') as f_removed_from_api:
-
-                for idx, url in enumerate(not_in_sitemap):
-                    status = http_status(url)
-                    if status == 404 or status == 301:
-                        log.info("(%d/%d) Deleting %s", idx, len(not_in_sitemap), url)
-                        response = backend.delete(url)
-                        if response == "NOTFOUND":
-                            log.info("Backend gave 404 for delete call: %s", url)
-                            f_clean_from_es.write(url + '\n')
-                        else:
-                            log.info("%s" % response)
-                            f_removed_from_api.write(url + '\n')
+        with io.open(clean_from_es, 'w', encoding='utf-8') as f_clean_from_es, \
+            io.open(remove_from_api, 'w', encoding='utf-8') as f_removed_from_api:
+            for idx, url in enumerate(not_in_sitemap):
+                status = http_status(url)
+                if status == 404 or status == 301:
+                    log.info("(%d/%d) Deleting %s", idx, len(not_in_sitemap), url)
+                    response = backend.delete(url)
+                    if response == "NOTFOUND":
+                        log.info("Backend gave 404 for delete call: %s", url)
+                        f_clean_from_es.write(url + '\n')
                     else:
-                        result = backend.get(url)
-                        if not result is None:
-                            page = poms.CreateFromDocument(result)
-                            log.info("(%d/%d) In api, not in sitemap, but not giving 404 (but %s) url %s: %s", idx, len(not_in_sitemap), str(status), url, str(page.lastPublished))
-                        else:
-                            log.info("(%d/%d) In api, not giving 404 (but %s), but not found in publisher %s", idx, len(not_in_sitemap), str(status), url)
+                        log.info("%s" % response)
+                        f_removed_from_api.write(url + '\n')
+                else:
+                    result = backend.get(url)
+                    if not result is None:
+                        page = poms.CreateFromDocument(result)
+                        log.info("(%d/%d) In api, not in sitemap, but not giving 404 (but %s) url %s: %s", idx, len(not_in_sitemap), str(status), url, str(page.lastPublished))
+                    else:
+                        log.info("(%d/%d) In api, not giving 404 (but %s), but not found in publisher %s", idx, len(not_in_sitemap), str(status), url)
     else:
         log.info("No actual deletes requested")
 

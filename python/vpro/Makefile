@@ -3,12 +3,15 @@ check := ../check_with_sitemap.py
 magnolia1 := https://magnolia1-frontend1-prod.vpro.nl/
 target := ~/integrity-check-results
 
-.PHONY: vpro 3voor12 human vpro-clean-api 3voor12-clean-api human-clean-api clean
+.PHONY: vpro 3voor12 human vpro-clean-api 3voor12-clean-api human-clean-api report clean
 
-all: clean vpro 3voor12 human
+all: clean vpro 3voor12 human report
 
-clean-api: vpro-clean-api 3voor12-clean-api human-clean-api
 
+report:
+	@for f in `ls $(target)/report.*.txt` ; do wc -l $$f ; done
+	@for f in `ls $(target)/done.*.txt` ; do wc -l $$f ; done
+	@for f in `ls $(target)/todo.*.txt` ; do wc -l $$f ; done
 
 vpro:
 	$(check) \
@@ -39,6 +42,7 @@ human:
 		human
 
 
+clean-api: vpro-clean-api 3voor12-clean-api human-clean-api
 
 vpro-clean-api:
 	$(check) --use_database --target_directory $(target) -D $(magnolia1)/vpronl/sitemap.xml vpro-predictions
