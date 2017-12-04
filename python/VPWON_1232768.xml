@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<program avType="VIDEO" embeddable="true" mid="VPWON_1232768" type="BROADCAST" urn="urn:vpro:media:program:53846998" xmlns="urn:vpro:media:update:2009" xmlns:media="urn:vpro:media:2009" xmlns:shared="urn:vpro:shared:2009">
+  <broadcaster>VPRO</broadcaster>
+  <title type="MAIN">Buitenhoftjes</title>
+  <description type="MAIN">Discussieprogramma waar de actualiteit met vooraanstaande opiniemakers en politici besproken wordt, live vanuit de Hortus Botanicus in Amsterdam.</description>
+  <description type="SHORT">Discussieprogramma waar de actualiteit met vooraanstaande opiniemakers en politici besproken wordt. Live vanuit de Hortus Botanicus in Amsterdam.</description>
+  <description type="EPISODE"> </description>
+  <description type="KICKER">Discussieprogramma waar de actualiteit met opiniemakers en politici besproken wordt. Live vanuit de Hortus Botanicus in Amsterdam.</description>
+  <genre>3.0.1.7.21</genre>
+  <releaseYear>2015</releaseYear>
+  <duration>P0DT0H54M50.000S</duration>
+  <credits>
+    <person role="PRESENTER">
+      <givenName>Pieter Jan</givenName>
+      <familyName>Hagens</familyName>
+    </person>
+    <person role="PRESENTER">
+      <givenName>Ruud</givenName>
+      <familyName>Lubbers</familyName>
+    </person>
+    <person role="PRESENTER">
+      <givenName>Marcia</givenName>
+      <familyName>Luyten</familyName>
+    </person>
+  </credits>
+  <ageRating>6</ageRating>
+
+  <locations/>
+  <scheduleEvents>
+    <scheduleEvent channel="BVNT">
+      <start>2015-05-17T16:05:00+02:00</start>
+      <duration>P0DT0H54M50.000S</duration>
+    </scheduleEvent>
+    <scheduleEvent channel="BVNT">
+      <start>2015-05-18T04:05:00+02:00</start>
+      <duration>P0DT0H54M50.000S</duration>
+    </scheduleEvent>
+  </scheduleEvents>
+  <images/>
+  <segments/>
+</program>

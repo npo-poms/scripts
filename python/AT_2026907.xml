@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<program avType="VIDEO" embeddable="true" mid="AT_2026907" type="BROADCAST" urn="urn:vpro:media:program:45581979" xmlns="urn:vpro:media:update:2009" xmlns:media="urn:vpro:media:2009" xmlns:shared="urn:vpro:shared:2009">
+  <broadcaster>AVTR</broadcaster>
+  <broadcaster>VPRO</broadcaster>
+  <title type="MAIN">Wie is de Mol?!xxxx</title>
+  <description type="MAIN">Avontuurlijk spelprogramma waarbij een team van bekende Nederlanders opdrachten uitvoert en jaagt op een Mol in haar midden. De opdrachten zijn spectaculair, angstaanjagend of ontroerend, maar altijd intrigerend. Nodig zijn: inventiviteit, stressbestendigheid, intelligentie, inzicht, lef en bovenal mensenkennis. De kandidaten voeren deze opdrachten uit om gezamenlijk de prijzenpot te spekken. Met de aanwezigheid van een Mol - een saboteur - in hun midden is dat voortdurend een lastige klus. Samenwerken en vertrouwen onder de kandidaten is er niet altijd bij. Want hoeveel vreugde er ook is over het slagen van een opdracht, de dreiging van de Mol blijft aldoor voelbaar. Wie de Mol is houdt ook de kijker in zijn greep, want een slimme kijker kan ontdekken waar en hoe de Mol saboteert. Slaagt een opdracht, dan verdient de groep geld voor de groepspot. Om de opdrachten tot een goed einde te brengen, moeten ze samenwerken en elkaar vertrouwen. Alleen: wie is te vertrouwen en wie niet? De Mol is altijd onder hen en probeert de opdrachten te saboteren, zodat er geen geld wordt verdiend voor de pot. Het vijftiende seizoen is opgenomen in Sri Lanka.</description>
+  <description type="SHORT">De spannende ontknoping van Wie is de Mol? 2015. In deze speciale uitzending, vanuit Vondel CS in Amsterdam, schuiven de drie finalisten aan en komt de waarheid eindelijk op tafel.</description>
+  <description type="EPISODE">De spannende ontknoping van Wie is de Mol? 2015. In deze speciale uitzending, vanuit Vondel CS in Amsterdam, schuiven de drie finalisten aan en komt de waarheid eindelijk op tafel. De kijker thuis, de fans aanwezig in Vondel CS en de overige kandidaten van Wie is de Mol? krijgen eindelijk antwoord op hun vragen. Hoe is het spel gespeeld? Hoe heeft de Mol de andere kandidaten kunnen misleiden en opdrachten kunnen saboteren? Wat waren de geheime aanwijzingen? Wie is de winnaar en natuurlijk de allerbelangrijkste onthulling: wie is de Mol?</description>
+  <description type="KICKER">De spannende ontknoping van Wie is de Mol? 2015. De drie finalisten schuiven aan en de waarheid komt eindelijk op tafel.</description>
+  <genre>3.0.1.6.19</genre>
+  <avAttributes>
+    <avFileFormat>UNKNOWN</avFileFormat>
+    <videoAttributes>
+      <color>BLACK AND WHITE AND COLOR</color>
+    </videoAttributes>
+    <audioAttributes>
+      <channels>2</channels>
+    </audioAttributes>
+  </avAttributes>
+  <releaseYear>2014</releaseYear>
+  <duration>P0DT0H55M50.000S</duration>
+   <locations/>
+  <scheduleEvents>
+    <scheduleEvent channel="NED1">
+      <start>2015-03-05T20:34:33+01:00</start>
+      <duration>P0DT1H0M16.000S</duration>
+    </scheduleEvent>
+    <scheduleEvent channel="BVNT">
+      <start>2015-03-05T21:00:00+01:00</start>
+      <duration>P0DT0H55M50.000S</duration>
+    </scheduleEvent>
+    <scheduleEvent channel="BVNT">
+      <start>2015-03-06T09:00:00+01:00</start>
+      <duration>P0DT0H55M50.000S</duration>
+    </scheduleEvent>
+    <scheduleEvent channel="NED3">
+      <start>2015-03-08T23:48:33+01:00</start>
+      <duration>P0DT1H0M15.000S</duration>
+    </scheduleEvent>
+  </scheduleEvents>
+  <images/>
+  <episodeOf highlighted="false" position="10">AT_2011557</episodeOf>
+  <segments/>
+</program>

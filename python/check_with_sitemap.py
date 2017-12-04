@@ -18,20 +18,20 @@ If objects are in the sitemap but not in the API then there are two possibilitie
 In both cases the object needs the be reindexed from the CMS.
 """
 
+import datetime
+import io
+import json
+import os
+import pickle
+import re
+import urllib
+import xml.etree.ElementTree
+
+import pyxb
+import requests
 from npoapi import Pages
 from npoapi import PagesBackend
 from npoapi.xml import poms
-import json
-import pickle
-import os
-import urllib
-import xml.etree.ElementTree
-import re
-import io
-import pyxb
-import datetime
-import requests
-
 
 api = Pages().command_line_client()
 backend = PagesBackend(env=api.actualenv).configured_login()
@@ -39,11 +39,14 @@ api.add_argument('sitemap', type=str, nargs=1, help='sitemap')
 api.add_argument('profile', type=str, nargs='?', help='profile')
 api.add_argument('-C', '--clean', action='store_true', default=False, help='clean build')
 api.add_argument('-D', '--delete', action='store_true', default=False, help='delete from api')
+api.add_argument('-A', '--add', action='store_true', default=False, help='add to api')
+api.add_argument('-S', '--show', action='store_true', default=False, help='show from api')
 api.add_argument('--https_to_http', action='store_true', default=False, help='Replace all https with http')
 api.add_argument('--http_to_https', action='store_true', default=False, help='Replace all http with https')
 api.add_argument('--post_process_sitemap', type=str, default=None, help='')
 api.add_argument('--post_process_api', type=str, default=None, help='')
 api.add_argument('--post_process', type=str, default=None, help='')
+api.add_argument('--target_directory', type=str, default=None, help='')
 
 args = api.parse_args()
 
@@ -51,10 +54,22 @@ profile = args.profile
 sitemap_url = args.sitemap[0]
 clean = args.clean
 delete_from_api = args.delete
+add_docs_to_api = args.add
+show_docs_from_api = args.show
 https_to_http = args.https_to_http
 http_to_https = args.http_to_https
 if https_to_http and http_to_https:
     raise Exception("Can't set both https_to_http and http_to_https")
+if args.target_directory:
+    target_directory = args.target_directory
+    api.logger.info("Target directory: %s" % target_directory)
+    if not os.path.exists(target_directory):
+        api.logger.info("Created")
+        os.makedirs(target_directory)
+else:
+    target_directory = ""
+
+
 
 if clean:
     api.logger.info("Cleaning")
@@ -92,7 +107,7 @@ def get_urls_from_api_iterate() -> set:
     form.searches = pyxb.BIND()
     form.searches.creationDates = pyxb.BIND()
     now = datetime.datetime.now()
-    today = now.replace(hour = 6, minute=0, second=0, microsecond=0)
+    today = now.replace(hour=6, minute=0, second=0, microsecond=0)
     dateRange = API.dateRangeMatcherType(end=today)
     form.searches.creationDates.append(dateRange)
     pages = api.iterate(profile=profile, form=form)
@@ -109,18 +124,17 @@ def get_urls() -> list:
     if os.path.exists(url_file) and not clean:
         new_urls = pickle.load(open(url_file, "rb"))
     else:
-        #new_urls = get_urls_from_api_search()
+        # new_urls = get_urls_from_api_search()
         new_urls = get_urls_from_api_iterate()
         pickle.dump(new_urls, open(url_file, "wb"))
 
-    with io.open(profile + ".txt", 'w', encoding="utf-8") as f:
+    with io.open(os.path.join(target_directory, profile + ".txt"), 'w', encoding="utf-8") as f:
         f.write('\n'.join(sorted(new_urls)))
-    api.logger.info("Wrote %s", profile + ".txt")
-
+    api.logger.info("Wrote %s (%d entries)", profile + ".txt", len(new_urls))
     return list(new_urls)
 
 
-def get_sitemap_from_xml():
+def get_sitemap_from_xml() -> list:
     api.logger.debug("Opening %s", sitemap_url)
     response = urllib.request.urlopen(sitemap_url)
     locs = set()
@@ -130,7 +144,7 @@ def get_sitemap_from_xml():
     response.close()
     new_urls = set()
     for loc in locs:
-        print(loc)
+        #print(loc)
         response = urllib.request.urlopen(loc)
         for ev, el in xml.etree.ElementTree.iterparse(response):
             if el.tag == "{http://www.sitemaps.org/schemas/sitemap/0.9}loc":
@@ -140,11 +154,10 @@ def get_sitemap_from_xml():
                     api.logger.info("Sitemap: %s urls", len(new_urls))
         response.close()
 
+    return list(new_urls)
 
-    return new_urls
 
-
-def get_sitemap():
+def get_sitemap() -> list:
     sitemap_file = "/tmp/" + profile + ".sitemap.p"
     if os.path.exists(sitemap_file) and not clean:
         new_urls = pickle.load(open(sitemap_file, "rb"))
@@ -152,9 +165,9 @@ def get_sitemap():
         new_urls = get_sitemap_from_xml()
         pickle.dump(new_urls, open(sitemap_file, "wb"))
 
-    with io.open(profile + ".sitemap.txt", 'w', encoding="utf-8") as f:
+    with io.open(os.path.join(target_directory, profile + ".sitemap.txt"), 'w', encoding="utf-8") as f:
         f.write('\n'.join(sorted(new_urls)))
-    api.logger.info("Wrote %s", profile + ".sitemap.txt")
+    api.logger.info("Wrote %s (%d entries)", profile + ".sitemap.txt", len(new_urls))
 
     return new_urls
 
@@ -168,26 +181,27 @@ def http_status(url):
         return 404
 
 
-def map_to_api(mapped_api_urls: list, api_urls: list, url: str):
+def unmap(mapped_urls: list, urls: list, url: str):
     try:
-        i = mapped_api_urls.index(url)
-        return api_urls[i]
+        i = mapped_urls.index(url)
+        return urls[i]
     except ValueError:
+        api.logger.error("Could not map")
         return ""
 
-def clean_from_api(mapped_api_urls: list,
-                   api_urls: list,
-                   mapped_sitemap_urls: list,
-                   sitemap_urls: list
-                   ):
+def clean_from_api(
+        mapped_api_urls: list,
+        api_urls: list,
+        mapped_sitemap_urls: list):
+    """Explores what needs to be cleaned from the API, and (optionally) also tries to do that."""
     filename = "in_" + profile + "_but_not_in_sitemap.txt"
 
 
     if not os.path.exists(filename) or clean:
+        api.logger("Calculating what needs to be removed from api")
         mapped_not_in_sitemap = set(mapped_api_urls) - set(mapped_sitemap_urls)
-
-        not_in_sitemap = sorted(list(set(map(lambda url: map_to_api(mapped_api_urls, api_urls, url), mapped_not_in_sitemap))))
-        print("in api but not in sitemap: %s" % len(not_in_sitemap))
+        # translate to actual urls
+        not_in_sitemap = sorted(list(set(map(lambda url: unmap(mapped_api_urls, api_urls, url), mapped_not_in_sitemap))))
 
         with io.open(filename, 'w', encoding='utf-8') as f:
             f.write('\n'.join(sorted(list(not_in_sitemap))))
@@ -197,8 +211,10 @@ def clean_from_api(mapped_api_urls: list,
             not_in_sitemap = f.read().splitlines()
             api.logger.info("Read from %s" % f.name)
 
+    api.logger.info("In api but not in sitemap: %s" % len(not_in_sitemap))
 
     if delete_from_api:
+        api.logger.info("Deleting from api")
         for idx, url in enumerate(not_in_sitemap):
             status = http_status(url)
             if status == 404 or status == 301:
@@ -211,7 +227,9 @@ def clean_from_api(mapped_api_urls: list,
                     api.logger.info("In api, not in sitemap, but not giving 404 (but %s) url %s: %s", str(status), url, str(page.lastPublished))
                 else:
                     api.logger.info("In api, not giving 404 (but %s), but not found in publisher %s", str(status), url)
-                # print(url, http_status(url))
+    else:
+        api.logger.info("No actual deletes requested")
+
 
 
 def add_to_api(
@@ -219,14 +237,13 @@ def add_to_api(
         api_urls:list,
         mapped_sitemap_urls: list,
         sitemap_urls:list):
-
+    """Explores what needs to be added to the API"""
     filename = "in_sitemap_but_not_in_" + profile + ".txt"
     not_in_api = ()
     if  not os.path.exists(filename) or clean:
+        api.logger("Calculating what needs to be added to the api")
         mapped_not_in_api = set(mapped_sitemap_urls) - set(mapped_api_urls)
-
-        not_in_api = sorted(list(set(map(lambda url: map_to_api(mapped_api_urls, api_urls, url), mapped_not_in_api))))
-        print("in sitemap but not in api: %s" % len(not_in_api))
+        not_in_api = sorted(list(set(map(lambda url: unmap(mapped_sitemap_urls, sitemap_urls, url), mapped_not_in_api))))
 
         with io.open(filename, 'w', encoding='utf-8') as f:
             f.write('\n'.join(not_in_api))
@@ -237,17 +254,19 @@ def add_to_api(
             not_in_api = f.read().splitlines()
             api.logger.info("Read from %s" % f.name)
 
+    api.logger.info("In sitemap but not in api: %s" % len(not_in_api))
 
     for url in not_in_api[:10]:
         print(url)
-        from_backend = backend.get(url)
-        from_frontend = api.get(url)
-        if from_backend:
-            page = poms.CreateFromDocument(from_backend)
+
+
 
 
 def main():
+
+    # list of all urls as they are present in the page api
     api_urls = get_urls()
+    # list of all urls as there are present in the sitemap
     sitemap_urls = get_sitemap()
 
     post_process = lambda url: url
@@ -257,33 +276,34 @@ def main():
     post_process_sitemap = lambda url: url
     post_process_api = lambda url: url
 
-
     if args.post_process_sitemap:
         post_process_sitemap = eval(args.post_process_sitemap)
 
     if args.post_process_api:
-        post_process_api= eval(args.post_process_api)
+        post_process_api = eval(args.post_process_api)
 
     schema_mapper = lambda url: url
     if https_to_http:
-        schema_mapper  = lambda url: re.sub(r'^https://(.*)', r'http://\1', url)
+        schema_mapper = lambda url: re.sub(r'^https://(.*)', r'http://\1', url)
 
     if http_to_https:
         schema_mapper = lambda url: re.sub(r'^http://(.*)', r'https://\1', url)
 
-
+    api.logger.info("Post processing")
+    # list of all urls as they are present in the page api, but post processed. Should be used for comparing, not for operations
     mapped_api_urls = list(map(lambda url: post_process(post_process_api(schema_mapper(url))), api_urls))
+    # list of all urls as they are present in the sitemap, but post processed. Should be used for comparing, not for operations
     mapped_sitemap_urls = list(map(lambda url: post_process(post_process_sitemap(schema_mapper(url))), sitemap_urls))
+    api.logger.info(".")
 
-    clean_from_api(mapped_api_urls,
-                   api_urls,
-                   mapped_sitemap_urls, sitemap_urls)
+    clean_from_api(
+        mapped_api_urls,
+        api_urls,
+        mapped_sitemap_urls)
+
     add_to_api(mapped_api_urls, api_urls, mapped_sitemap_urls, sitemap_urls)
 
 
 if __name__ == "__main__":
     main()
-
-
-
-
+    print("Ready.")

@@ -1,0 +1,19 @@
+<program avType="VIDEO" embeddable="true" mid="WO_VPRO_041300" type="CLIP" urn="urn:vpro:media:program:7066435" xmlns="urn:vpro:media:update:2009" xmlns:media="urn:vpro:media:2009" xmlns:shared="urn:vpro:shared:2009">
+  <crid>crid://tmp.fragment.mmbase.vpro.nl/35291040</crid>
+  <broadcaster>VPRO</broadcaster>
+  <title type="MAIN">Wie eegie sanie - Onze eigen dingen</title>
+  <title type="SUB">HUMAN, 1 juli 2004 (58.12)</title>
+  <description type="SUB">een documentaire van John Albert Jansen over de Surinamers die vanaf de jaren '50 als eersten op zoek gingen naar hun eigen wortels en cultuur, naar 'wie eegie sanie' ('onze eigen dingen'). In dit bewustwordingsproces speelde de in 1950 in Amsterdam opgerichte vereniging Wie Eegie Sanie (WES) en haar oprichter, de advocaat, politicus en schrijver Eddy Bruma, een sleutelrol. WES vereenzelvigde de eigen cultuur in de eerste plaats met de Afro-Amerikaanse en Afrikaanse cultuur waarbij het 'eigene' vooral werd gezocht in de Surinaamse taal, het Sranan tongo, en in de Surinaamse geschiedenis.</description>
+  <duration>P0DT6H14M50.001S</duration>
+  <locations>
+    <location urn="urn:vpro:media:location:54462040">
+      <programUrl>http://cgi.omroep.nl/cgi-bin/streams?/tv/human/humandonderdag/bb.20040701.rm?title=Wie eegie sanie - Onze eigen dingen</programUrl>
+      <avAttributes>
+        <avFileFormat>WM</avFileFormat>
+      </avAttributes>
+    </location>
+  </locations>
+  <scheduleEvents/>
+  <images/>
+  <segments/>
+</program>

@@ -1,0 +1,792 @@
+2017-04-18 00:00:48,153  Queued 2 (already queued: 0)
+2017-04-18 00:00:48,193  Publishing for VARA_101382514: VARA_101382514	CAPTION	nl (901 cues)
+2017-04-18 00:01:48,362  Subtitles publisher Committing transaction with 2
+2017-04-18 00:03:10,429  Queued 1 (already queued: 0)
+2017-04-18 00:04:10,690  Subtitles revoker Committing transaction with 1
+2017-04-18 00:21:04,754 ID-simpy04-omroep-nl-39221-1492086361284-0-105441 Incoming subtitles notify tt888 format: subtitle_POW_03375868_1_1.xml
+2017-04-18 00:21:17,499 ID-simpy04-omroep-nl-39221-1492086361284-0-105441 Saved /e/import/pomsstorage/miranda/tt/888/POW_03375868.txt, POW_03375868	CAPTION	nl
+2017-04-18 00:25:19,579  Queued 1 (already queued: 0)
+2017-04-18 00:26:19,924  Subtitles publisher Committing transaction with 1
+2017-04-18 00:32:47,084  Queued 1 (already queued: 0)
+2017-04-18 00:32:47,098  Publishing for POW_03375868: POW_03375868	CAPTION	nl (187 cues)
+2017-04-18 00:33:47,253  Subtitles publisher Committing transaction with 1
+2017-04-18 00:49:30,108  Queued 1 (already queued: 0)
+2017-04-18 00:49:30,585  Publishing for BNN_101383062: BNN_101383062	CAPTION	nl (767 cues)
+2017-04-18 00:50:31,269  Subtitles publisher Committing transaction with 1
+2017-04-18 01:03:08,459  Queued 1 (already queued: 0)
+2017-04-18 01:03:09,522  Publishing for VPWON_1267394: VPWON_1267394	CAPTION	nl (80 cues)
+2017-04-18 01:04:12,153  Subtitles publisher Committing transaction with 1
+2017-04-18 01:05:39,847  Queued 1 (already queued: 0)
+2017-04-18 01:05:39,877  Publishing for VPWON_1267394: VPWON_1267394	CAPTION	nl (80 cues)
+2017-04-18 01:06:40,567  Subtitles publisher Committing transaction with 1
+2017-04-18 04:37:02,906  Queued 7 (already queued: 0)
+2017-04-18 04:38:03,438  Subtitles revoker Committing transaction with 7
+2017-04-18 04:43:35,069  Queued 126 (already queued: 0)
+2017-04-18 04:44:36,378  Subtitles revoker Committing transaction with 126
+2017-04-18 06:39:11,029  Queued 1 (already queued: 0)
+2017-04-18 06:40:11,349  Subtitles publisher Committing transaction with 1
+2017-04-18 06:41:07,352 ID-simpy04-omroep-nl-39221-1492086361284-0-112877 Incoming subtitles notify tt888 format: subtitle_POW_03366501_1_1.xml
+2017-04-18 06:41:18,201 ID-simpy04-omroep-nl-39221-1492086361284-0-112877 Saved /e/import/pomsstorage/miranda/tt/888/POW_03366501.txt, POW_03366501	CAPTION	nl
+2017-04-18 06:41:21,128  Queued 1 (already queued: 0)
+2017-04-18 06:42:21,195  Subtitles publisher Committing transaction with 1
+2017-04-18 06:47:54,228  Queued 1 (already queued: 0)
+2017-04-18 06:47:54,237  Publishing for POW_03366501: POW_03366501	CAPTION	nl (72 cues)
+2017-04-18 06:48:03,314  Queued 1 (already queued: 0)
+2017-04-18 06:48:54,416  Subtitles publisher Committing transaction with 1
+2017-04-18 06:49:03,518  Subtitles revoker Committing transaction with 1
+2017-04-18 06:50:07,529  Queued 1 (already queued: 0)
+2017-04-18 06:50:07,622  Publishing for POW_00252744: POW_00252744	CAPTION	nl (148 cues)
+2017-04-18 06:51:07,786  Subtitles publisher Committing transaction with 1
+2017-04-18 06:56:45,684  Queued 1 (already queued: 0)
+2017-04-18 06:57:45,716  Subtitles revoker Committing transaction with 1
+2017-04-18 06:58:56,767  Queued 13 (already queued: 0)
+2017-04-18 06:59:57,350  Subtitles revoker Committing transaction with 13
+2017-04-18 07:03:13,594  Queued 1 (already queued: 0)
+2017-04-18 07:03:13,666  Publishing for VPWON_1272459: VPWON_1272459	CAPTION	nl (194 cues)
+2017-04-18 07:04:13,823  Subtitles publisher Committing transaction with 1
+2017-04-18 07:05:26,430  Queued 1 (already queued: 0)
+2017-04-18 07:05:26,439  Publishing for VPWON_1272459: VPWON_1272459	CAPTION	nl (194 cues)
+2017-04-18 07:06:26,623  Subtitles publisher Committing transaction with 1
+2017-04-18 07:07:43,666  Queued 4 (already queued: 0)
+2017-04-18 07:08:43,690  Subtitles revoker Committing transaction with 4
+2017-04-18 07:14:10,297  Queued 1 (already queued: 0)
+2017-04-18 07:14:18,190  Queued 11 (already queued: 0)
+2017-04-18 07:15:10,311  Subtitles publisher Committing transaction with 1
+2017-04-18 07:15:18,349  Subtitles revoker Committing transaction with 11
+2017-04-18 07:16:09,207 ID-simpy04-omroep-nl-39221-1492086361284-0-113972 Incoming subtitles notify tt888 format: subtitle_POW_03366762_1_1.xml
+2017-04-18 07:16:09,210 ID-simpy04-omroep-nl-39221-1492086361284-0-113976 Incoming subtitles notify tt888 format: subtitle_POW_03367023_1_1.xml
+2017-04-18 07:16:19,309 ID-simpy04-omroep-nl-39221-1492086361284-0-113972 Saved /e/import/pomsstorage/miranda/tt/888/POW_03366762.txt, POW_03366762	CAPTION	nl
+2017-04-18 07:16:22,110  Queued 2 (already queued: 0)
+2017-04-18 07:16:22,134  Publishing for POW_03366762: POW_03366762	CAPTION	nl (151 cues)
+2017-04-18 07:16:29,697  Queued 190 (already queued: 0)
+2017-04-18 07:17:22,292  Subtitles publisher Committing transaction with 2
+2017-04-18 07:17:22,304 ID-simpy04-omroep-nl-39221-1492086361284-0-113976 Saved /e/import/pomsstorage/miranda/tt/888/POW_03367023.txt, POW_03367023	CAPTION	nl
+2017-04-18 07:17:31,876  Subtitles revoker Committing transaction with 190
+2017-04-18 07:18:35,420  Queued 2 (already queued: 0)
+2017-04-18 07:18:35,455  Publishing for VPWON_1271551: VPWON_1271551	CAPTION	nl (252 cues)
+2017-04-18 07:18:35,692  Publishing for POW_03367023: POW_03367023	CAPTION	nl (151 cues)
+2017-04-18 07:18:45,800  Queued 3 (already queued: 0)
+2017-04-18 07:19:35,714  Subtitles publisher Committing transaction with 2
+2017-04-18 07:19:45,846  Subtitles revoker Committing transaction with 3
+2017-04-18 07:20:49,696  Queued 1 (already queued: 0)
+2017-04-18 07:20:49,719  Publishing for POW_03367023: POW_03367023	CAPTION	nl (151 cues)
+2017-04-18 07:20:57,042  Queued 187 (already queued: 0)
+2017-04-18 07:20:58,372  Revoking for VPWON_1271547: [VPWON_1271547	CAPTION	nl]
+2017-04-18 07:21:49,864  Subtitles publisher Committing transaction with 1
+2017-04-18 07:21:58,871  Subtitles revoker Committing transaction with 187
+2017-04-18 07:29:42,912  Queued 4 (already queued: 0)
+2017-04-18 07:30:43,427  Subtitles revoker Committing transaction with 4
+2017-04-18 07:31:09,856 ID-simpy04-omroep-nl-39221-1492086361284-0-114940 Incoming subtitles notify tt888 format: subtitle_POW_03436598_1_1.xml
+2017-04-18 07:31:19,925 ID-simpy04-omroep-nl-39221-1492086361284-0-114940 Saved /e/import/pomsstorage/miranda/tt/888/POW_03436598.txt, POW_03436598	CAPTION	nl
+2017-04-18 07:31:54,022  Queued 241 (already queued: 0)
+2017-04-18 07:32:55,639  Subtitles revoker Committing transaction with 241
+2017-04-18 07:36:10,789  Queued 1 (already queued: 0)
+2017-04-18 07:36:10,845  Publishing for POW_03436598: POW_03436598	CAPTION	nl (239 cues)
+2017-04-18 07:36:17,871  Queued 34 (already queued: 0)
+2017-04-18 07:37:11,077  Subtitles publisher Committing transaction with 1
+2017-04-18 07:37:18,528  Subtitles revoker Committing transaction with 34
+2017-04-18 07:38:22,287  Queued 3 (already queued: 0)
+2017-04-18 07:38:22,331  Publishing for POW_03429999: POW_03429999	CAPTION	nl (65 cues)
+2017-04-18 07:38:29,219  Queued 94 (already queued: 0)
+2017-04-18 07:39:22,511  Subtitles publisher Committing transaction with 3
+2017-04-18 07:39:30,275  Subtitles revoker Committing transaction with 94
+2017-04-18 07:40:33,926  Queued 1 (already queued: 0)
+2017-04-18 07:40:41,410  Queued 30 (already queued: 0)
+2017-04-18 07:41:10,831 ID-simpy04-omroep-nl-39221-1492086361284-0-115486 Incoming subtitles notify tt888 format: subtitle_POW_03367282_1_1.xml
+2017-04-18 07:41:10,833 ID-simpy04-omroep-nl-39221-1492086361284-0-115490 Incoming subtitles notify tt888 format: subtitle_POW_03367503_1_1.xml
+2017-04-18 07:41:33,980  Subtitles publisher Committing transaction with 1
+2017-04-18 07:41:34,019 ID-simpy04-omroep-nl-39221-1492086361284-0-115486 Saved /e/import/pomsstorage/miranda/tt/888/POW_03367282.txt, POW_03367282	CAPTION	nl
+2017-04-18 07:41:42,377  Subtitles revoker Committing transaction with 30
+2017-04-18 07:41:44,347 ID-simpy04-omroep-nl-39221-1492086361284-0-115490 Saved /e/import/pomsstorage/miranda/tt/888/POW_03367503.txt, POW_03367503	CAPTION	nl
+2017-04-18 07:47:07,510  Queued 3 (already queued: 0)
+2017-04-18 07:47:07,529  Publishing for POW_03367282: POW_03367282	CAPTION	nl (74 cues)
+2017-04-18 07:47:07,732  Publishing for POW_03331783: POW_03331783	CAPTION	nl (176 cues)
+2017-04-18 07:47:07,748  Publishing for POW_03367503: POW_03367503	CAPTION	nl (74 cues)
+2017-04-18 07:48:07,757  Subtitles publisher Committing transaction with 3
+2017-04-18 07:51:31,631  Queued 1 (already queued: 0)
+2017-04-18 07:51:31,642  Publishing for POW_03331783: POW_03331783	CAPTION	nl (176 cues)
+2017-04-18 07:52:31,859  Subtitles publisher Committing transaction with 1
+2017-04-18 08:00:15,737  Queued 1 (already queued: 0)
+2017-04-18 08:01:11,606 ID-simpy04-omroep-nl-39221-1492086361284-0-115695 Incoming subtitles notify tt888 format: subtitle_POW_03436816_1_1.xml
+2017-04-18 08:01:15,752  Subtitles publisher Committing transaction with 1
+2017-04-18 08:01:21,951 ID-simpy04-omroep-nl-39221-1492086361284-0-115695 Saved /e/import/pomsstorage/miranda/tt/888/POW_03436816.txt, POW_03436816	CAPTION	nl
+2017-04-18 08:02:25,708  Queued 1 (already queued: 0)
+2017-04-18 08:02:25,729  Publishing for POW_03428452: POW_03428452	CAPTION	nl (100 cues)
+2017-04-18 08:03:25,895  Subtitles publisher Committing transaction with 1
+2017-04-18 08:04:37,313  Queued 1 (already queued: 0)
+2017-04-18 08:04:37,323  Publishing for POW_03436816: POW_03436816	CAPTION	nl (210 cues)
+2017-04-18 08:05:37,488  Subtitles publisher Committing transaction with 1
+2017-04-18 08:11:11,493  Queued 1 (already queued: 0)
+2017-04-18 08:11:11,512  Publishing for POW_00657380: POW_00657380	CAPTION	nl (13 cues)
+2017-04-18 08:12:11,673  Subtitles publisher Committing transaction with 1
+2017-04-18 08:13:22,771  Queued 2 (already queued: 0)
+2017-04-18 08:14:22,809  Subtitles publisher Committing transaction with 2
+2017-04-18 08:15:32,843  Queued 1 (already queued: 0)
+2017-04-18 08:16:02,266 ID-simpy04-omroep-nl-39221-1492086361284-0-115861 Incoming subtitles notify tt888 format: subtitle_POW_03371041_1_1.xml
+2017-04-18 08:16:02,270 ID-simpy04-omroep-nl-39221-1492086361284-0-115865 Incoming subtitles notify tt888 format: subtitle_POW_03370780_1_1.xml
+2017-04-18 08:16:32,886  Subtitles publisher Committing transaction with 1
+2017-04-18 08:16:32,903 ID-simpy04-omroep-nl-39221-1492086361284-0-115861 Saved /e/import/pomsstorage/miranda/tt/888/POW_03371041.txt, POW_03371041	CAPTION	nl
+2017-04-18 08:16:43,155 ID-simpy04-omroep-nl-39221-1492086361284-0-115865 Saved /e/import/pomsstorage/miranda/tt/888/POW_03370780.txt, POW_03370780	CAPTION	nl
+2017-04-18 08:17:43,952  Queued 2 (already queued: 0)
+2017-04-18 08:17:43,964  Publishing for POW_03371041: POW_03371041	CAPTION	nl (156 cues)
+2017-04-18 08:17:44,171  Publishing for POW_03370780: POW_03370780	CAPTION	nl (156 cues)
+2017-04-18 08:18:44,193  Subtitles publisher Committing transaction with 2
+2017-04-18 08:24:18,988  Queued 1 (already queued: 0)
+2017-04-18 08:24:19,028  Publishing for POW_00815900: POW_00815900	CAPTION	nl (211 cues)
+2017-04-18 08:25:19,175  Subtitles publisher Committing transaction with 1
+2017-04-18 08:33:03,825  Queued 1 (already queued: 0)
+2017-04-18 08:34:03,840  Subtitles publisher Committing transaction with 1
+2017-04-18 08:36:03,544 ID-simpy04-omroep-nl-39221-1492086361284-0-116061 Incoming subtitles notify tt888 format: subtitle_POW_03436906_1_1.xml
+2017-04-18 08:36:13,594 ID-simpy04-omroep-nl-39221-1492086361284-0-116061 Saved /e/import/pomsstorage/miranda/tt/888/POW_03436906.txt, POW_03436906	CAPTION	nl
+2017-04-18 08:37:26,981  Queued 2 (already queued: 0)
+2017-04-18 08:38:27,001  Subtitles publisher Committing transaction with 2
+2017-04-18 08:39:37,829  Queued 1 (already queued: 0)
+2017-04-18 08:39:37,840  Publishing for POW_03436906: POW_03436906	CAPTION	nl (250 cues)
+2017-04-18 08:40:37,994  Subtitles publisher Committing transaction with 1
+2017-04-18 08:41:03,855 ID-simpy04-omroep-nl-39221-1492086361284-0-116147 Incoming subtitles notify tt888 format: subtitle_POW_03371303_1_1.xml
+2017-04-18 08:41:03,857 ID-simpy04-omroep-nl-39221-1492086361284-0-116151 Incoming subtitles notify tt888 format: subtitle_POW_03371587_1_1.xml
+2017-04-18 08:41:13,881 ID-simpy04-omroep-nl-39221-1492086361284-0-116147 Saved /e/import/pomsstorage/miranda/tt/888/POW_03371303.txt, POW_03371303	CAPTION	nl
+2017-04-18 08:41:24,111 ID-simpy04-omroep-nl-39221-1492086361284-0-116151 Saved /e/import/pomsstorage/miranda/tt/888/POW_03371587.txt, POW_03371587	CAPTION	nl
+2017-04-18 08:46:12,179  Queued 2 (already queued: 0)
+2017-04-18 08:46:12,188  Publishing for POW_03371303: POW_03371303	CAPTION	nl (73 cues)
+2017-04-18 08:46:12,348  Publishing for POW_03371587: POW_03371587	CAPTION	nl (73 cues)
+2017-04-18 08:47:12,360  Subtitles publisher Committing transaction with 2
+2017-04-18 08:50:35,818  Queued 1 (already queued: 0)
+2017-04-18 08:50:35,863  Publishing for POW_00384774: POW_00384774	CAPTION	nl (155 cues)
+2017-04-18 08:51:36,014  Subtitles publisher Committing transaction with 1
+2017-04-18 08:54:57,487  Queued 2 (already queued: 0)
+2017-04-18 08:55:57,526  Subtitles publisher Committing transaction with 2
+2017-04-18 08:56:04,420 ID-simpy04-omroep-nl-39221-1492086361284-0-116337 Incoming subtitles notify tt888 format: subtitle_POW_03519728_1_1.xml
+2017-04-18 08:56:04,421 ID-simpy04-omroep-nl-39221-1492086361284-0-116341 Incoming subtitles notify tt888 format: subtitle_POW_03353334_1_1.xml
+2017-04-18 08:56:04,423 ID-simpy04-omroep-nl-39221-1492086361284-0-116343 Incoming subtitles notify tt888 format: subtitle_POW_03353133_1_1.xml
+2017-04-18 08:56:14,640 ID-simpy04-omroep-nl-39221-1492086361284-0-116337 Saved /e/import/pomsstorage/miranda/tt/888/POW_03519728.txt, POW_03519728	CAPTION	nl
+2017-04-18 08:56:25,131 ID-simpy04-omroep-nl-39221-1492086361284-0-116341 Saved /e/import/pomsstorage/miranda/tt/888/POW_03353334.txt, POW_03353334	CAPTION	nl
+2017-04-18 08:56:35,315 ID-simpy04-omroep-nl-39221-1492086361284-0-116343 Saved /e/import/pomsstorage/miranda/tt/888/POW_03353133.txt, POW_03353133	CAPTION	nl
+2017-04-18 08:57:16,517  Queued 1 (already queued: 0)
+2017-04-18 08:57:16,519  Revoking for POW_03519728: [POW_03519728	CAPTION	nl]
+2017-04-18 08:58:16,679  Subtitles revoker Committing transaction with 1
+2017-04-18 08:59:21,250  Queued 3 (already queued: 0)
+2017-04-18 08:59:21,259  Publishing for POW_03353334: POW_03353334	CAPTION	nl (98 cues)
+2017-04-18 08:59:21,432  Publishing for POW_03353133: POW_03353133	CAPTION	nl (98 cues)
+2017-04-18 09:00:21,462  Subtitles publisher Committing transaction with 3
+2017-04-18 09:01:04,789 ID-simpy04-omroep-nl-39221-1492086361284-0-116496 Incoming subtitles notify tt888 format: subtitle_POW_03436996_1_1.xml
+2017-04-18 09:01:14,846 ID-simpy04-omroep-nl-39221-1492086361284-0-116496 Saved /e/import/pomsstorage/miranda/tt/888/POW_03436996.txt, POW_03436996	CAPTION	nl
+2017-04-18 09:01:34,802  Queued 1 (already queued: 0)
+2017-04-18 09:01:34,810  Publishing for POW_03353133: POW_03353133	CAPTION	nl (98 cues)
+2017-04-18 09:01:42,200  Queued 16 (already queued: 0)
+2017-04-18 09:02:34,953  Subtitles publisher Committing transaction with 1
+2017-04-18 09:02:42,275  Subtitles revoker Committing transaction with 16
+2017-04-18 09:03:47,075  Queued 1 (already queued: 0)
+2017-04-18 09:03:47,087  Publishing for POW_03436996: POW_03436996	CAPTION	nl (214 cues)
+2017-04-18 09:04:47,249  Subtitles publisher Committing transaction with 1
+2017-04-18 09:05:59,764  Queued 1 (already queued: 0)
+2017-04-18 09:05:59,774  Publishing for POW_03436996: POW_03436996	CAPTION	nl (214 cues)
+2017-04-18 09:06:59,929  Subtitles publisher Committing transaction with 1
+2017-04-18 09:08:10,399  Queued 1 (already queued: 0)
+2017-04-18 09:08:10,407  Publishing for POW_03353133: POW_03353133	CAPTION	nl (98 cues)
+2017-04-18 09:08:17,446  Queued 4 (already queued: 0)
+2017-04-18 09:09:10,577  Subtitles publisher Committing transaction with 1
+2017-04-18 09:09:17,954  Subtitles revoker Committing transaction with 4
+2017-04-18 09:12:34,133  Queued 2 (already queued: 0)
+2017-04-18 09:13:34,171  Subtitles publisher Committing transaction with 2
+2017-04-18 09:14:45,160  Queued 1 (already queued: 0)
+2017-04-18 09:15:45,181  Subtitles publisher Committing transaction with 1
+2017-04-18 09:16:05,373 ID-simpy04-omroep-nl-39221-1492086361284-0-116726 Incoming subtitles notify tt888 format: subtitle_POW_03372127_1_1.xml
+2017-04-18 09:16:05,375 ID-simpy04-omroep-nl-39221-1492086361284-0-116730 Incoming subtitles notify tt888 format: subtitle_POW_03371864_1_1.xml
+2017-04-18 09:16:15,436 ID-simpy04-omroep-nl-39221-1492086361284-0-116726 Saved /e/import/pomsstorage/miranda/tt/888/POW_03372127.txt, POW_03372127	CAPTION	nl
+2017-04-18 09:16:25,709 ID-simpy04-omroep-nl-39221-1492086361284-0-116730 Saved /e/import/pomsstorage/miranda/tt/888/POW_03371864.txt, POW_03371864	CAPTION	nl
+2017-04-18 09:16:55,838  Queued 2 (already queued: 0)
+2017-04-18 09:16:55,847  Publishing for POW_03372127: POW_03372127	CAPTION	nl (132 cues)
+2017-04-18 09:16:56,001  Publishing for POW_03371864: POW_03371864	CAPTION	nl (132 cues)
+2017-04-18 09:17:56,029  Subtitles publisher Committing transaction with 2
+2017-04-18 09:21:20,604  Queued 1 (already queued: 0)
+2017-04-18 09:21:20,631  Publishing for POW_03217598: POW_03217598	CAPTION	nl (141 cues)
+2017-04-18 09:22:20,783  Subtitles publisher Committing transaction with 1
+2017-04-18 09:23:37,806  Queued 50 (already queued: 0)
+2017-04-18 09:24:38,591  Subtitles revoker Committing transaction with 50
+2017-04-18 09:28:01,224  Queued 1 (already queued: 0)
+2017-04-18 09:29:01,850  Subtitles revoker Committing transaction with 1
+2017-04-18 09:32:15,803  Queued 1 (already queued: 0)
+2017-04-18 09:32:15,871  Publishing for POW_03406442: POW_03406442	CAPTION	nl (241 cues)
+2017-04-18 09:33:16,103  Subtitles publisher Committing transaction with 1
+2017-04-18 09:34:38,758  Queued 28 (already queued: 0)
+2017-04-18 09:35:39,434  Subtitles revoker Committing transaction with 28
+2017-04-18 09:36:49,381  Queued 194 (already queued: 0)
+2017-04-18 09:37:50,838  Subtitles revoker Committing transaction with 194
+2017-04-18 09:39:01,232  Queued 16 (already queued: 0)
+2017-04-18 09:40:01,830  Subtitles revoker Committing transaction with 16
+2017-04-18 09:43:15,840  Queued 1 (already queued: 0)
+2017-04-18 09:43:15,878  Publishing for KN_1689182: KN_1689182	CAPTION	nl (267 cues)
+2017-04-18 09:44:16,034  Subtitles publisher Committing transaction with 1
+2017-04-18 09:45:26,611  Queued 1 (already queued: 0)
+2017-04-18 09:45:26,622  Publishing for KN_1689182: KN_1689182	CAPTION	nl (267 cues)
+2017-04-18 09:46:26,774  Subtitles publisher Committing transaction with 1
+2017-04-18 09:49:48,824  Queued 1 (already queued: 0)
+2017-04-18 09:49:48,856  Publishing for POW_00990921: POW_00990921	CAPTION	nl (80 cues)
+2017-04-18 09:50:49,014  Subtitles publisher Committing transaction with 1
+2017-04-18 09:56:20,911  Queued 1 (already queued: 0)
+2017-04-18 09:56:20,936  Publishing for POW_03011714: POW_03011714	CAPTION	nl (94 cues)
+2017-04-18 09:57:21,114  Subtitles publisher Committing transaction with 1
+2017-04-18 09:58:31,669  Queued 1 (already queued: 0)
+2017-04-18 09:58:31,742  Publishing for POW_03405969: POW_03405969	CAPTION	nl (228 cues)
+2017-04-18 09:59:31,882  Subtitles publisher Committing transaction with 1
+2017-04-18 10:00:43,611  Queued 1 (already queued: 0)
+2017-04-18 10:00:43,620  Publishing for POW_03405969: POW_03405969	CAPTION	nl (228 cues)
+2017-04-18 10:01:08,037 ID-simpy04-omroep-nl-39221-1492086361284-0-117875 Incoming subtitles notify tt888 format: subtitle_AT_2067481_1_1.xml
+2017-04-18 10:01:18,074 ID-simpy04-omroep-nl-39221-1492086361284-0-117875 Saved /e/import/pomsstorage/miranda/tt/888/AT_2067481.txt, AT_2067481	CAPTION	nl
+2017-04-18 10:01:43,794  Subtitles publisher Committing transaction with 1
+2017-04-18 10:07:25,869  Queued 1 (already queued: 0)
+2017-04-18 10:07:25,870  Revoking for AT_2067481: [AT_2067481	CAPTION	nl]
+2017-04-18 10:08:26,475  Subtitles revoker Committing transaction with 1
+2017-04-18 10:11:40,133  Queued 1 (already queued: 0)
+2017-04-18 10:12:40,153  Subtitles publisher Committing transaction with 1
+2017-04-18 10:16:08,826 ID-simpy04-omroep-nl-39221-1492086361284-0-118239 Incoming subtitles notify tt888 format: subtitle_POW_03372387_1_1.xml
+2017-04-18 10:16:18,880 ID-simpy04-omroep-nl-39221-1492086361284-0-118239 Saved /e/import/pomsstorage/miranda/tt/888/POW_03372387.txt, POW_03372387	CAPTION	nl
+2017-04-18 10:18:11,844  Queued 1 (already queued: 0)
+2017-04-18 10:18:11,883  Publishing for POW_02934158: POW_02934158	CAPTION	nl (161 cues)
+2017-04-18 10:19:12,031  Subtitles publisher Committing transaction with 1
+2017-04-18 10:20:24,009  Queued 1 (already queued: 0)
+2017-04-18 10:20:24,017  Publishing for POW_02934158: POW_02934158	CAPTION	nl (161 cues)
+2017-04-18 10:21:09,035 ID-simpy04-omroep-nl-39221-1492086361284-0-118297 Incoming subtitles notify tt888 format: subtitle_VARA_101381834_1_1.xml
+2017-04-18 10:21:09,036 ID-simpy04-omroep-nl-39221-1492086361284-0-118301 Incoming subtitles notify tt888 format: subtitle_VPWON_1243169_1_1.xml
+2017-04-18 10:21:09,038 ID-simpy04-omroep-nl-39221-1492086361284-0-118303 Incoming subtitles notify tt888 format: subtitle_BNN_101382172_1_1.xml
+2017-04-18 10:21:19,121 ID-simpy04-omroep-nl-39221-1492086361284-0-118297 Saved /e/import/pomsstorage/miranda/tt/888/VARA_101381834.txt, VARA_101381834	CAPTION	nl
+2017-04-18 10:21:24,172  Subtitles publisher Committing transaction with 1
+2017-04-18 10:21:29,751 ID-simpy04-omroep-nl-39221-1492086361284-0-118301 Saved /e/import/pomsstorage/miranda/tt/888/VPWON_1243169.txt, VPWON_1243169	CAPTION	nl
+2017-04-18 10:21:40,442 ID-simpy04-omroep-nl-39221-1492086361284-0-118303 Saved /e/import/pomsstorage/miranda/tt/888/BNN_101382172.txt, BNN_101382172	CAPTION	nl
+2017-04-18 10:22:35,040  Queued 1 (already queued: 0)
+2017-04-18 10:22:35,049  Publishing for POW_03372387: POW_03372387	CAPTION	nl (143 cues)
+2017-04-18 10:22:41,938  Queued 70 (already queued: 0)
+2017-04-18 10:22:42,405  Revoking for VARA_101381834: [VARA_101381834	CAPTION	nl]
+2017-04-18 10:23:35,212  Subtitles publisher Committing transaction with 1
+2017-04-18 10:23:42,895  Subtitles revoker Committing transaction with 70
+2017-04-18 10:24:45,936  Queued 1 (already queued: 0)
+2017-04-18 10:24:45,967  Publishing for AT_2074678: AT_2074678	CAPTION	nl (136 cues)
+2017-04-18 10:25:46,110  Subtitles publisher Committing transaction with 1
+2017-04-18 10:27:03,176  Queued 2 (already queued: 0)
+2017-04-18 10:27:03,178  Revoking for BNN_101382172: [BNN_101382172	CAPTION	nl]
+2017-04-18 10:27:03,320  Revoking for VPWON_1243169: [VPWON_1243169	CAPTION	nl]
+2017-04-18 10:28:03,327  Subtitles revoker Committing transaction with 2
+2017-04-18 10:36:09,868 ID-simpy04-omroep-nl-39221-1492086361284-0-118819 Incoming subtitles notify tt888 format: subtitle_AT_2063288_1_1.xml
+2017-04-18 10:36:09,870 ID-simpy04-omroep-nl-39221-1492086361284-0-118823 Incoming subtitles notify tt888 format: subtitle_VPWON_1264696_1_1.xml
+2017-04-18 10:36:09,872 ID-simpy04-omroep-nl-39221-1492086361284-0-118825 Incoming subtitles notify tt888 format: subtitle_BNN_101381620_1_1.xml
+2017-04-18 10:36:09,874 ID-simpy04-omroep-nl-39221-1492086361284-0-118827 Incoming subtitles notify tt888 format: subtitle_AT_2055757_1_1.xml
+2017-04-18 10:36:09,875 ID-simpy04-omroep-nl-39221-1492086361284-0-118829 Incoming subtitles notify tt888 format: subtitle_AT_2070246_1_1.xml
+2017-04-18 10:36:09,877 ID-simpy04-omroep-nl-39221-1492086361284-0-118831 Incoming subtitles notify tt888 format: subtitle_AT_2011683_1_1.xml
+2017-04-18 10:36:09,879 ID-simpy04-omroep-nl-39221-1492086361284-0-118833 Incoming subtitles notify tt888 format: subtitle_VPWON_1264104_1_1.xml
+2017-04-18 10:36:09,880 ID-simpy04-omroep-nl-39221-1492086361284-0-118835 Incoming subtitles notify tt888 format: subtitle_AT_2063298_1_1.xml
+2017-04-18 10:36:19,903 ID-simpy04-omroep-nl-39221-1492086361284-0-118819 Saved /e/import/pomsstorage/miranda/tt/888/AT_2063288.txt, AT_2063288	CAPTION	nl
+2017-04-18 10:36:30,530 ID-simpy04-omroep-nl-39221-1492086361284-0-118823 Saved /e/import/pomsstorage/miranda/tt/888/VPWON_1264696.txt, VPWON_1264696	CAPTION	nl
+2017-04-18 10:36:40,663 ID-simpy04-omroep-nl-39221-1492086361284-0-118825 Saved /e/import/pomsstorage/miranda/tt/888/BNN_101381620.txt, BNN_101381620	CAPTION	nl
+2017-04-18 10:36:51,144 ID-simpy04-omroep-nl-39221-1492086361284-0-118827 Saved /e/import/pomsstorage/miranda/tt/888/AT_2055757.txt, AT_2055757	CAPTION	nl
+2017-04-18 10:37:01,649 ID-simpy04-omroep-nl-39221-1492086361284-0-118829 Saved /e/import/pomsstorage/miranda/tt/888/AT_2070246.txt, AT_2070246	CAPTION	nl
+2017-04-18 10:37:12,325 ID-simpy04-omroep-nl-39221-1492086361284-0-118831 Saved /e/import/pomsstorage/miranda/tt/888/AT_2011683.txt, AT_2011683	CAPTION	nl
+2017-04-18 10:37:23,126 ID-simpy04-omroep-nl-39221-1492086361284-0-118833 Saved /e/import/pomsstorage/miranda/tt/888/VPWON_1264104.txt, VPWON_1264104	CAPTION	nl
+2017-04-18 10:37:33,565 ID-simpy04-omroep-nl-39221-1492086361284-0-118835 Saved /e/import/pomsstorage/miranda/tt/888/AT_2063298.txt, AT_2063298	CAPTION	nl
+2017-04-18 10:37:52,804  Queued 3 (already queued: 0)
+2017-04-18 10:37:52,833  Publishing for VPWON_1272633: VPWON_1272633	CAPTION	nl (230 cues)
+2017-04-18 10:37:53,005  Publishing for AT_2011683: AT_2011683	CAPTION	nl (71 cues)
+2017-04-18 10:37:53,023  Publishing for VPWON_1264696: VPWON_1264696	CAPTION	nl (320 cues)
+2017-04-18 10:38:00,310  Queued 6 (already queued: 0)
+2017-04-18 10:38:00,313  Revoking for AT_2055757: [AT_2055757	CAPTION	nl]
+2017-04-18 10:38:00,461  Revoking for AT_2070246: [AT_2070246	CAPTION	nl]
+2017-04-18 10:38:00,469  Revoking for BNN_101381620: [BNN_101381620	CAPTION	nl]
+2017-04-18 10:38:00,497  Revoking for VPWON_1264104: [VPWON_1264104	CAPTION	nl]
+2017-04-18 10:38:00,505  Revoking for AT_2063288: [AT_2063288	CAPTION	nl]
+2017-04-18 10:38:00,512  Revoking for AT_2063298: [AT_2063298	CAPTION	nl]
+2017-04-18 10:38:53,033  Subtitles publisher Committing transaction with 3
+2017-04-18 10:39:00,518  Subtitles revoker Committing transaction with 6
+2017-04-18 10:59:50,641  Queued 1 (already queued: 0)
+2017-04-18 10:59:50,656  Revoking for POW_03292318: [POW_03292318	CAPTION	nl]
+2017-04-18 11:00:50,986  Subtitles revoker Committing transaction with 1
+2017-04-18 11:06:24,005  Queued 1 (already queued: 0)
+2017-04-18 11:06:24,065  Publishing for POW_03292322: POW_03292322	CAPTION	nl (351 cues)
+2017-04-18 11:07:24,224  Subtitles publisher Committing transaction with 1
+2017-04-18 11:10:46,513  Queued 1 (already queued: 0)
+2017-04-18 11:11:46,525  Subtitles publisher Committing transaction with 1
+2017-04-18 11:15:07,993  Queued 1 (already queued: 0)
+2017-04-18 11:15:08,003  Publishing for VPWON_1271468: VPWON_1271468	CAPTION	nl (151 cues)
+2017-04-18 11:16:01,665 ID-simpy04-omroep-nl-39221-1492086361284-0-119552 Incoming subtitles notify tt888 format: subtitle_POW_03372648_1_1.xml
+2017-04-18 11:16:08,157  Subtitles publisher Committing transaction with 1
+2017-04-18 11:16:11,742 ID-simpy04-omroep-nl-39221-1492086361284-0-119552 Saved /e/import/pomsstorage/miranda/tt/888/POW_03372648.txt, POW_03372648	CAPTION	nl
+2017-04-18 11:17:24,724  Queued 1 (already queued: 0)
+2017-04-18 11:17:24,726  Revoking for VPWON_1271463: [VPWON_1271463	CAPTION	nl]
+2017-04-18 11:18:24,888  Subtitles revoker Committing transaction with 1
+2017-04-18 11:21:42,254  Queued 1 (already queued: 0)
+2017-04-18 11:21:42,265  Publishing for POW_03372648: POW_03372648	CAPTION	nl (138 cues)
+2017-04-18 11:22:42,440  Subtitles publisher Committing transaction with 1
+2017-04-18 11:23:52,809  Queued 1 (already queued: 0)
+2017-04-18 11:23:52,839  Publishing for VPWON_1272827: VPWON_1272827	CAPTION	nl (137 cues)
+2017-04-18 11:24:52,994  Subtitles publisher Committing transaction with 1
+2017-04-18 11:26:03,916  Queued 1 (already queued: 0)
+2017-04-18 11:26:03,926  Publishing for VPWON_1272827: VPWON_1272827	CAPTION	nl (137 cues)
+2017-04-18 11:27:04,071  Subtitles publisher Committing transaction with 1
+2017-04-18 11:28:14,505  Queued 1 (already queued: 0)
+2017-04-18 11:28:14,555  Publishing for VPWON_1276565: VPWON_1276565	CAPTION	nl (876 cues)
+2017-04-18 11:29:14,713  Subtitles publisher Committing transaction with 1
+2017-04-18 11:30:25,487  Queued 1 (already queued: 0)
+2017-04-18 11:30:25,510  Publishing for VPWON_1276565: VPWON_1276565	CAPTION	nl (876 cues)
+2017-04-18 11:31:25,667  Subtitles publisher Committing transaction with 1
+2017-04-18 11:32:44,165  Queued 1 (already queued: 0)
+2017-04-18 11:32:44,167  Revoking for AT_2076761: [AT_2076761	CAPTION	nl]
+2017-04-18 11:33:44,329  Subtitles revoker Committing transaction with 1
+2017-04-18 11:36:03,085 ID-simpy04-omroep-nl-39221-1492086361284-0-119924 Incoming subtitles notify tt888 format: subtitle_VPWON_1269595_1_1.xml
+2017-04-18 11:36:13,236 ID-simpy04-omroep-nl-39221-1492086361284-0-119924 Saved /e/import/pomsstorage/miranda/tt/888/VPWON_1269595.txt, VPWON_1269595	CAPTION	nl
+2017-04-18 11:37:07,755  Queued 1 (already queued: 0)
+2017-04-18 11:37:07,757  Revoking for VPWON_1269595: [VPWON_1269595	CAPTION	nl]
+2017-04-18 11:38:08,218  Subtitles revoker Committing transaction with 1
+2017-04-18 11:43:40,072  Queued 1 (already queued: 0)
+2017-04-18 11:44:40,575  Subtitles revoker Committing transaction with 1
+2017-04-18 11:45:45,873  Queued 1 (already queued: 0)
+2017-04-18 11:46:45,887  Subtitles publisher Committing transaction with 1
+2017-04-18 11:47:57,124  Queued 1 (already queued: 0)
+2017-04-18 11:47:57,132  Publishing for AT_2076766: AT_2076766	CAPTION	nl (90 cues)
+2017-04-18 11:48:06,703  Queued 1 (already queued: 0)
+2017-04-18 11:48:06,704  Revoking for AT_2070483: [AT_2070483	CAPTION	nl]
+2017-04-18 11:48:57,282  Subtitles publisher Committing transaction with 1
+2017-04-18 11:49:06,854  Subtitles revoker Committing transaction with 1
+2017-04-18 11:51:03,631 ID-simpy04-omroep-nl-39221-1492086361284-0-120740 Incoming subtitles notify tt888 format: subtitle_KN_1689459_1_1.xml
+2017-04-18 11:51:13,675 ID-simpy04-omroep-nl-39221-1492086361284-0-120740 Saved /e/import/pomsstorage/miranda/tt/888/KN_1689459.txt, KN_1689459	CAPTION	nl
+2017-04-18 11:54:40,219  Queued 40 (already queued: 0)
+2017-04-18 11:54:40,906  Revoking for KN_1689459: [KN_1689459	CAPTION	nl]
+2017-04-18 11:55:41,096  Subtitles revoker Committing transaction with 40
+2017-04-18 11:56:13,915 ID-simpy04-omroep-nl-39221-1492086361284-0-120900 Incoming subtitles notify tt888 format: subtitle_AT_2077361_1_1.xml
+2017-04-18 11:56:13,917 ID-simpy04-omroep-nl-39221-1492086361284-0-120904 Incoming subtitles notify tt888 format: subtitle_VPWON_1275527_1_1.xml
+2017-04-18 11:56:13,919 ID-simpy04-omroep-nl-39221-1492086361284-0-120906 Incoming subtitles notify tt888 format: subtitle_POW_00370620_1_1.xml
+2017-04-18 11:56:13,920 ID-simpy04-omroep-nl-39221-1492086361284-0-120908 Incoming subtitles notify tt888 format: subtitle_POW_00815903_1_1.xml
+2017-04-18 11:56:13,922 ID-simpy04-omroep-nl-39221-1492086361284-0-120910 Incoming subtitles notify tt888 format: subtitle_POW_00252747_1_1.xml
+2017-04-18 11:56:13,923 ID-simpy04-omroep-nl-39221-1492086361284-0-120912 Incoming subtitles notify tt888 format: subtitle_POW_00751347_1_1.xml
+2017-04-18 11:56:13,925 ID-simpy04-omroep-nl-39221-1492086361284-0-120914 Incoming subtitles notify tt888 format: subtitle_AT_2076994_1_1.xml
+2017-04-18 11:56:13,927 ID-simpy04-omroep-nl-39221-1492086361284-0-120916 Incoming subtitles notify tt888 format: subtitle_AT_2077364_1_1.xml
+2017-04-18 11:56:13,928 ID-simpy04-omroep-nl-39221-1492086361284-0-120918 Incoming subtitles notify tt888 format: subtitle_VPWON_1271447_1_1.xml
+2017-04-18 11:56:13,930 ID-simpy04-omroep-nl-39221-1492086361284-0-120920 Incoming subtitles notify tt888 format: subtitle_VPWON_1225282_1_1.xml
+2017-04-18 11:56:13,932 ID-simpy04-omroep-nl-39221-1492086361284-0-120922 Incoming subtitles notify tt888 format: subtitle_VPWON_1273690_1_1.xml
+2017-04-18 11:56:13,933 ID-simpy04-omroep-nl-39221-1492086361284-0-120924 Incoming subtitles notify tt888 format: subtitle_POW_03405972_1_1.xml
+2017-04-18 11:56:13,935 ID-simpy04-omroep-nl-39221-1492086361284-0-120926 Incoming subtitles notify tt888 format: subtitle_POW_00657383_1_1.xml
+2017-04-18 11:56:13,936 ID-simpy04-omroep-nl-39221-1492086361284-0-120928 Incoming subtitles notify tt888 format: subtitle_POW_02934250_1_1.xml
+2017-04-18 11:56:13,938 ID-simpy04-omroep-nl-39221-1492086361284-0-120930 Incoming subtitles notify tt888 format: subtitle_VPWON_1260289_1_1.xml
+2017-04-18 11:56:13,939 ID-simpy04-omroep-nl-39221-1492086361284-0-120932 Incoming subtitles notify tt888 format: subtitle_POW_00365664_1_1.xml
+2017-04-18 11:56:13,941 ID-simpy04-omroep-nl-39221-1492086361284-0-120934 Incoming subtitles notify tt888 format: subtitle_VPWON_1260290_1_1.xml
+2017-04-18 11:56:13,942 ID-simpy04-omroep-nl-39221-1492086361284-0-120936 Incoming subtitles notify tt888 format: subtitle_POW_03317955_1_1.xml
+2017-04-18 11:56:23,960 ID-simpy04-omroep-nl-39221-1492086361284-0-120900 Saved /e/import/pomsstorage/miranda/tt/888/AT_2077361.txt, AT_2077361	CAPTION	nl
+2017-04-18 11:56:34,213 ID-simpy04-omroep-nl-39221-1492086361284-0-120904 Saved /e/import/pomsstorage/miranda/tt/888/VPWON_1275527.txt, VPWON_1275527	CAPTION	nl
+2017-04-18 11:56:44,565 ID-simpy04-omroep-nl-39221-1492086361284-0-120906 Saved /e/import/pomsstorage/miranda/tt/888/POW_00370620.txt, POW_00370620	CAPTION	nl
+2017-04-18 11:56:55,830 ID-simpy04-omroep-nl-39221-1492086361284-0-120908 Saved /e/import/pomsstorage/miranda/tt/888/POW_00815903.txt, POW_00815903	CAPTION	nl
+2017-04-18 11:57:06,347 ID-simpy04-omroep-nl-39221-1492086361284-0-120910 Saved /e/import/pomsstorage/miranda/tt/888/POW_00252747.txt, POW_00252747	CAPTION	nl
+2017-04-18 11:57:16,980 ID-simpy04-omroep-nl-39221-1492086361284-0-120912 Saved /e/import/pomsstorage/miranda/tt/888/POW_00751347.txt, POW_00751347	CAPTION	nl
+2017-04-18 11:57:27,154 ID-simpy04-omroep-nl-39221-1492086361284-0-120914 Saved /e/import/pomsstorage/miranda/tt/888/AT_2076994.txt, AT_2076994	CAPTION	nl
+2017-04-18 11:57:37,389 ID-simpy04-omroep-nl-39221-1492086361284-0-120916 Saved /e/import/pomsstorage/miranda/tt/888/AT_2077364.txt, AT_2077364	CAPTION	nl
+2017-04-18 11:57:47,599 ID-simpy04-omroep-nl-39221-1492086361284-0-120918 Saved /e/import/pomsstorage/miranda/tt/888/VPWON_1271447.txt, VPWON_1271447	CAPTION	nl
+2017-04-18 11:57:57,845 ID-simpy04-omroep-nl-39221-1492086361284-0-120920 Saved /e/import/pomsstorage/miranda/tt/888/VPWON_1225282.txt, VPWON_1225282	CAPTION	nl
+2017-04-18 11:58:08,187 ID-simpy04-omroep-nl-39221-1492086361284-0-120922 Saved /e/import/pomsstorage/miranda/tt/888/VPWON_1273690.txt, VPWON_1273690	CAPTION	nl
+2017-04-18 11:58:18,474 ID-simpy04-omroep-nl-39221-1492086361284-0-120924 Saved /e/import/pomsstorage/miranda/tt/888/POW_03405972.txt, POW_03405972	CAPTION	nl
+2017-04-18 11:58:28,687 ID-simpy04-omroep-nl-39221-1492086361284-0-120926 Saved /e/import/pomsstorage/miranda/tt/888/POW_00657383.txt, POW_00657383	CAPTION	nl
+2017-04-18 11:58:39,184 ID-simpy04-omroep-nl-39221-1492086361284-0-120928 Saved /e/import/pomsstorage/miranda/tt/888/POW_02934250.txt, POW_02934250	CAPTION	nl
+2017-04-18 11:58:49,556 ID-simpy04-omroep-nl-39221-1492086361284-0-120930 Saved /e/import/pomsstorage/miranda/tt/888/VPWON_1260289.txt, VPWON_1260289	CAPTION	nl
+2017-04-18 11:58:54,062  Queued 2 (already queued: 0)
+2017-04-18 11:58:54,074  Publishing for POW_00370620: POW_00370620	CAPTION	nl (157 cues)
+2017-04-18 11:58:54,234  Publishing for KN_1689892: KN_1689892	CAPTION	nl (235 cues)
+2017-04-18 11:58:59,787 ID-simpy04-omroep-nl-39221-1492086361284-0-120932 Saved /e/import/pomsstorage/miranda/tt/888/POW_00365664.txt, POW_00365664	CAPTION	nl
+2017-04-18 11:59:00,835  Queued 14 (already queued: 0)
+2017-04-18 11:59:00,837  Revoking for POW_00751347: [POW_00751347	CAPTION	nl]
+2017-04-18 11:59:00,991  Revoking for AT_2077361: [AT_2077361	CAPTION	nl]
+2017-04-18 11:59:01,004  Revoking for POW_03405972: [POW_03405972	CAPTION	nl]
+2017-04-18 11:59:01,019  Revoking for AT_2076994: [AT_2076994	CAPTION	nl]
+2017-04-18 11:59:01,027  Revoking for POW_02934250: [POW_02934250	CAPTION	nl]
+2017-04-18 11:59:01,041  Revoking for VPWON_1260289: [VPWON_1260289	CAPTION	nl]
+2017-04-18 11:59:01,050  Revoking for VPWON_1273690: [VPWON_1273690	CAPTION	nl]
+2017-04-18 11:59:01,061  Revoking for AT_2077364: [AT_2077364	CAPTION	nl]
+2017-04-18 11:59:01,075  Revoking for VPWON_1275527: [VPWON_1275527	CAPTION	nl]
+2017-04-18 11:59:01,085  Revoking for POW_00252747: [POW_00252747	CAPTION	nl]
+2017-04-18 11:59:01,095  Revoking for POW_00815903: [POW_00815903	CAPTION	nl]
+2017-04-18 11:59:01,104  Revoking for VPWON_1271447: [VPWON_1271447	CAPTION	nl]
+2017-04-18 11:59:01,114  Revoking for VPWON_1225282: [VPWON_1225282	CAPTION	nl]
+2017-04-18 11:59:01,123  Revoking for POW_00657383: [POW_00657383	CAPTION	nl]
+2017-04-18 11:59:10,660 ID-simpy04-omroep-nl-39221-1492086361284-0-120934 Saved /e/import/pomsstorage/miranda/tt/888/VPWON_1260290.txt, VPWON_1260290	CAPTION	nl
+2017-04-18 11:59:20,947 ID-simpy04-omroep-nl-39221-1492086361284-0-120936 Saved /e/import/pomsstorage/miranda/tt/888/POW_03317955.txt, POW_03317955	CAPTION	nl
+2017-04-18 11:59:54,244  Subtitles publisher Committing transaction with 2
+2017-04-18 12:00:01,131  Subtitles revoker Committing transaction with 14
+2017-04-18 12:01:04,694 ID-simpy04-omroep-nl-39221-1492086361284-0-121067 Incoming subtitles notify tt888 format: subtitle_POW_00240536_1_1.xml
+2017-04-18 12:01:04,696 ID-simpy04-omroep-nl-39221-1492086361284-0-121071 Incoming subtitles notify tt888 format: subtitle_POW_02191785_1_1.xml
+2017-04-18 12:01:04,698 ID-simpy04-omroep-nl-39221-1492086361284-0-121073 Incoming subtitles notify tt888 format: subtitle_AT_2077365_1_1.xml
+2017-04-18 12:01:04,700 ID-simpy04-omroep-nl-39221-1492086361284-0-121075 Incoming subtitles notify tt888 format: subtitle_POW_03292325_1_1.xml
+2017-04-18 12:01:04,702 ID-simpy04-omroep-nl-39221-1492086361284-0-121077 Incoming subtitles notify tt888 format: subtitle_POW_02934161_1_1.xml
+2017-04-18 12:01:04,703 ID-simpy04-omroep-nl-39221-1492086361284-0-121079 Incoming subtitles notify tt888 format: subtitle_VPWON_1271589_1_1.xml
+2017-04-18 12:01:04,705 ID-simpy04-omroep-nl-39221-1492086361284-0-121081 Incoming subtitles notify tt888 format: subtitle_POW_00074468_1_1.xml
+2017-04-18 12:01:04,706 ID-simpy04-omroep-nl-39221-1492086361284-0-121083 Incoming subtitles notify tt888 format: subtitle_VPWON_1264696_1_1.xml
+2017-04-18 12:01:04,708 ID-simpy04-omroep-nl-39221-1492086361284-0-121085 Incoming subtitles notify tt888 format: subtitle_KN_1689895_1_1.xml
+2017-04-18 12:01:04,710 ID-simpy04-omroep-nl-39221-1492086361284-0-121087 Incoming subtitles notify tt888 format: subtitle_VPWON_1272976_1_1.xml
+2017-04-18 12:01:04,711 ID-simpy04-omroep-nl-39221-1492086361284-0-121089 Incoming subtitles notify tt888 format: subtitle_VPWON_1233680_1_1.xml
+2017-04-18 12:01:04,713 ID-simpy04-omroep-nl-39221-1492086361284-0-121091 Incoming subtitles notify tt888 format: subtitle_POW_00457267_1_1.xml
+2017-04-18 12:01:04,714 ID-simpy04-omroep-nl-39221-1492086361284-0-121093 Incoming subtitles notify tt888 format: subtitle_POW_03384221_1_1.xml
+2017-04-18 12:01:04,820  Queued 1 (already queued: 0)
+2017-04-18 12:01:04,830  Publishing for KN_1689892: KN_1689892	CAPTION	nl (235 cues)
+2017-04-18 12:01:12,560  Queued 1 (already queued: 0)
+2017-04-18 12:01:12,561  Revoking for POW_00365664: [POW_00365664	CAPTION	nl]
+2017-04-18 12:01:14,796 ID-simpy04-omroep-nl-39221-1492086361284-0-121067 Saved /e/import/pomsstorage/miranda/tt/888/POW_00240536.txt, POW_00240536	CAPTION	nl
+2017-04-18 12:01:25,356 ID-simpy04-omroep-nl-39221-1492086361284-0-121071 Saved /e/import/pomsstorage/miranda/tt/888/POW_02191785.txt, POW_02191785	CAPTION	nl
+2017-04-18 12:01:35,519 ID-simpy04-omroep-nl-39221-1492086361284-0-121073 Saved /e/import/pomsstorage/miranda/tt/888/AT_2077365.txt, AT_2077365	CAPTION	nl
+2017-04-18 12:01:45,793 ID-simpy04-omroep-nl-39221-1492086361284-0-121075 Saved /e/import/pomsstorage/miranda/tt/888/POW_03292325.txt, POW_03292325	CAPTION	nl
+2017-04-18 12:01:56,163 ID-simpy04-omroep-nl-39221-1492086361284-0-121077 Saved /e/import/pomsstorage/miranda/tt/888/POW_02934161.txt, POW_02934161	CAPTION	nl
+2017-04-18 12:02:04,972  Subtitles publisher Committing transaction with 1
+2017-04-18 12:02:06,357 ID-simpy04-omroep-nl-39221-1492086361284-0-121079 Saved /e/import/pomsstorage/miranda/tt/888/VPWON_1271589.txt, VPWON_1271589	CAPTION	nl
+2017-04-18 12:02:12,718  Subtitles revoker Committing transaction with 1
+2017-04-18 12:02:16,630 ID-simpy04-omroep-nl-39221-1492086361284-0-121081 Saved /e/import/pomsstorage/miranda/tt/888/POW_00074468.txt, POW_00074468	CAPTION	nl
+2017-04-18 12:02:26,995 ID-simpy04-omroep-nl-39221-1492086361284-0-121083 Saved /e/import/pomsstorage/miranda/tt/888/VPWON_1264696.txt, VPWON_1264696	CAPTION	nl
+2017-04-18 12:02:37,129 ID-simpy04-omroep-nl-39221-1492086361284-0-121085 Saved /e/import/pomsstorage/miranda/tt/888/KN_1689895.txt, KN_1689895	CAPTION	nl
+2017-04-18 12:02:47,386 ID-simpy04-omroep-nl-39221-1492086361284-0-121087 Saved /e/import/pomsstorage/miranda/tt/888/VPWON_1272976.txt, VPWON_1272976	CAPTION	nl
+2017-04-18 12:02:57,652 ID-simpy04-omroep-nl-39221-1492086361284-0-121089 Saved /e/import/pomsstorage/miranda/tt/888/VPWON_1233680.txt, VPWON_1233680	CAPTION	nl
+2017-04-18 12:03:08,160 ID-simpy04-omroep-nl-39221-1492086361284-0-121091 Saved /e/import/pomsstorage/miranda/tt/888/POW_00457267.txt, POW_00457267	CAPTION	nl
+2017-04-18 12:03:17,318  Queued 2 (already queued: 0)
+2017-04-18 12:03:17,332  Publishing for POW_00074468: POW_00074468	CAPTION	nl (196 cues)
+2017-04-18 12:03:17,506  Publishing for VPWON_1264696: VPWON_1264696	CAPTION	nl (320 cues)
+2017-04-18 12:03:18,846 ID-simpy04-omroep-nl-39221-1492086361284-0-121093 Saved /e/import/pomsstorage/miranda/tt/888/POW_03384221.txt, POW_03384221	CAPTION	nl
+2017-04-18 12:03:26,452  Queued 4 (already queued: 0)
+2017-04-18 12:03:26,453  Revoking for POW_02191785: [POW_02191785	CAPTION	nl]
+2017-04-18 12:03:26,623  Revoking for POW_00240536: [POW_00240536	CAPTION	nl]
+2017-04-18 12:03:26,630  Revoking for POW_02934161: [POW_02934161	CAPTION	nl]
+2017-04-18 12:03:26,636  Revoking for POW_00457267: [POW_00457267	CAPTION	nl]
+2017-04-18 12:04:17,518  Subtitles publisher Committing transaction with 2
+2017-04-18 12:04:26,642  Subtitles revoker Committing transaction with 4
+2017-04-18 12:05:31,790  Queued 1 (already queued: 0)
+2017-04-18 12:05:31,805  Publishing for POW_01046878: POW_01046878	CAPTION	nl (84 cues)
+2017-04-18 12:05:39,217  Queued 28 (already queued: 0)
+2017-04-18 12:05:39,741  Revoking for POW_03317955: [POW_03317955	CAPTION	nl]
+2017-04-18 12:05:39,889  Revoking for VPWON_1233680: [VPWON_1233680	CAPTION	nl]
+2017-04-18 12:05:39,928  Revoking for POW_03384221: [POW_03384221	CAPTION	nl]
+2017-04-18 12:05:39,935  Revoking for VPWON_1271589: [VPWON_1271589	CAPTION	nl]
+2017-04-18 12:05:39,996  Revoking for POW_03292325: [POW_03292325	CAPTION	nl]
+2017-04-18 12:05:40,040  Revoking for KN_1689895: [KN_1689895	CAPTION	nl]
+2017-04-18 12:05:40,052  Revoking for VPWON_1272976: [VPWON_1272976	CAPTION	nl]
+2017-04-18 12:05:40,074  Revoking for VPWON_1260290: [VPWON_1260290	CAPTION	nl]
+2017-04-18 12:05:40,092  Revoking for AT_2077365: [AT_2077365	CAPTION	nl]
+2017-04-18 12:06:05,157 ID-simpy04-omroep-nl-39221-1492086361284-0-121317 Incoming subtitles notify tt888 format: subtitle_KN_1690368_1_1.xml
+2017-04-18 12:06:15,220 ID-simpy04-omroep-nl-39221-1492086361284-0-121317 Saved /e/import/pomsstorage/miranda/tt/888/KN_1690368.txt, KN_1690368	CAPTION	nl
+2017-04-18 12:06:31,953  Subtitles publisher Committing transaction with 1
+2017-04-18 12:06:40,099  Subtitles revoker Committing transaction with 28
+2017-04-18 12:10:01,604  Queued 1 (already queued: 0)
+2017-04-18 12:11:01,676  Subtitles revoker Committing transaction with 1
+2017-04-18 12:11:05,433 ID-simpy04-omroep-nl-39221-1492086361284-0-121509 Incoming subtitles notify tt888 format: subtitle_VPWON_1267395_1_1.xml
+2017-04-18 12:11:15,466 ID-simpy04-omroep-nl-39221-1492086361284-0-121509 Saved /e/import/pomsstorage/miranda/tt/888/VPWON_1267395.txt, VPWON_1267395	CAPTION	nl
+2017-04-18 12:12:12,368  Queued 39 (already queued: 0)
+2017-04-18 12:12:12,479  Revoking for KN_1690368: [KN_1690368	CAPTION	nl]
+2017-04-18 12:13:12,780  Subtitles revoker Committing transaction with 39
+2017-04-18 12:16:35,143  Queued 81 (already queued: 0)
+2017-04-18 12:17:35,761  Subtitles revoker Committing transaction with 81
+2017-04-18 12:18:49,125  Queued 293 (already queued: 0)
+2017-04-18 12:18:50,446  Revoking for VPWON_1267395: [VPWON_1267395	CAPTION	nl]
+2017-04-18 12:18:52,101  Revoking for POW_02934242: [POW_02934242	CAPTION	nl]
+2017-04-18 12:19:52,163  Subtitles revoker Committing transaction with 293
+2017-04-18 12:21:01,141  Queued 3 (already queued: 0)
+2017-04-18 12:21:06,121 ID-simpy04-omroep-nl-39221-1492086361284-0-122641 Incoming subtitles notify tt888 format: subtitle_POW_03372968_1_1.xml
+2017-04-18 12:21:16,214 ID-simpy04-omroep-nl-39221-1492086361284-0-122641 Saved /e/import/pomsstorage/miranda/tt/888/POW_03372968.txt, POW_03372968	CAPTION	nl
+2017-04-18 12:22:01,181  Subtitles revoker Committing transaction with 3
+2017-04-18 12:23:13,046  Queued 247 (already queued: 0)
+2017-04-18 12:24:14,957  Subtitles revoker Committing transaction with 247
+2017-04-18 12:25:16,971  Queued 1 (already queued: 0)
+2017-04-18 12:25:16,983  Publishing for POW_03372968: POW_03372968	CAPTION	nl (211 cues)
+2017-04-18 12:26:06,679 ID-simpy04-omroep-nl-39221-1492086361284-0-123139 Incoming subtitles notify tt888 format: subtitle_POW_03437043_1_1.xml
+2017-04-18 12:26:16,772 ID-simpy04-omroep-nl-39221-1492086361284-0-123139 Saved /e/import/pomsstorage/miranda/tt/888/POW_03437043.txt, POW_03437043	CAPTION	nl
+2017-04-18 12:26:17,132  Subtitles publisher Committing transaction with 1
+2017-04-18 12:27:35,309  Queued 75 (already queued: 0)
+2017-04-18 12:28:36,458  Subtitles revoker Committing transaction with 75
+2017-04-18 12:29:39,480  Queued 1 (already queued: 0)
+2017-04-18 12:29:39,511  Publishing for POW_02191782: POW_02191782	CAPTION	nl (149 cues)
+2017-04-18 12:30:39,662  Subtitles publisher Committing transaction with 1
+2017-04-18 12:31:57,498  Queued 1 (already queued: 0)
+2017-04-18 12:31:57,500  Revoking for POW_03437043: [POW_03437043	CAPTION	nl]
+2017-04-18 12:32:57,652  Subtitles revoker Committing transaction with 1
+2017-04-18 12:38:28,443  Queued 1 (already queued: 0)
+2017-04-18 12:38:28,488  Publishing for POW_02934247: POW_02934247	CAPTION	nl (179 cues)
+2017-04-18 12:39:28,643  Subtitles publisher Committing transaction with 1
+2017-04-18 12:45:01,610  Queued 1 (already queued: 0)
+2017-04-18 12:45:01,658  Publishing for POW_00892963: POW_00892963	CAPTION	nl (183 cues)
+2017-04-18 12:46:01,820  Subtitles publisher Committing transaction with 1
+2017-04-18 12:47:14,222  Queued 1 (already queued: 0)
+2017-04-18 12:47:14,239  Publishing for AT_2076992: AT_2076992	CAPTION	nl (66 cues)
+2017-04-18 12:48:14,381  Subtitles publisher Committing transaction with 1
+2017-04-18 12:53:59,325  Queued 1 (already queued: 0)
+2017-04-18 12:53:59,327  Revoking for AT_2072969: [AT_2072969	CAPTION	nl]
+2017-04-18 12:54:59,619  Subtitles revoker Committing transaction with 1
+2017-04-18 12:56:08,114 ID-simpy04-omroep-nl-39221-1492086361284-0-123581 Incoming subtitles notify tt888 format: subtitle_POW_02191783_1_1.xml
+2017-04-18 12:56:08,116 ID-simpy04-omroep-nl-39221-1492086361284-0-123585 Incoming subtitles notify tt888 format: subtitle_POW_03292323_1_1.xml
+2017-04-18 12:56:08,118 ID-simpy04-omroep-nl-39221-1492086361284-0-123587 Incoming subtitles notify tt888 format: subtitle_POW_00074466_1_1.xml
+2017-04-18 12:56:08,119 ID-simpy04-omroep-nl-39221-1492086361284-0-123589 Incoming subtitles notify tt888 format: subtitle_POW_00892964_1_1.xml
+2017-04-18 12:56:08,120 ID-simpy04-omroep-nl-39221-1492086361284-0-123591 Incoming subtitles notify tt888 format: subtitle_VPWON_1271736_1_1.xml
+2017-04-18 12:56:08,123 ID-simpy04-omroep-nl-39221-1492086361284-0-123593 Incoming subtitles notify tt888 format: subtitle_POW_00665225_1_1.xml
+2017-04-18 12:56:08,127 ID-simpy04-omroep-nl-39221-1492086361284-0-123595 Incoming subtitles notify tt888 format: subtitle_POW_03430000_1_1.xml
+2017-04-18 12:56:08,129 ID-simpy04-omroep-nl-39221-1492086361284-0-123597 Incoming subtitles notify tt888 format: subtitle_POW_03217599_1_1.xml
+2017-04-18 12:56:18,216 ID-simpy04-omroep-nl-39221-1492086361284-0-123581 Saved /e/import/pomsstorage/miranda/tt/888/POW_02191783.txt, POW_02191783	CAPTION	nl
+2017-04-18 12:56:28,491 ID-simpy04-omroep-nl-39221-1492086361284-0-123585 Saved /e/import/pomsstorage/miranda/tt/888/POW_03292323.txt, POW_03292323	CAPTION	nl
+2017-04-18 12:56:38,876 ID-simpy04-omroep-nl-39221-1492086361284-0-123587 Saved /e/import/pomsstorage/miranda/tt/888/POW_00074466.txt, POW_00074466	CAPTION	nl
+2017-04-18 12:56:49,264 ID-simpy04-omroep-nl-39221-1492086361284-0-123589 Saved /e/import/pomsstorage/miranda/tt/888/POW_00892964.txt, POW_00892964	CAPTION	nl
+2017-04-18 12:56:59,441 ID-simpy04-omroep-nl-39221-1492086361284-0-123591 Saved /e/import/pomsstorage/miranda/tt/888/VPWON_1271736.txt, VPWON_1271736	CAPTION	nl
+2017-04-18 12:57:09,840 ID-simpy04-omroep-nl-39221-1492086361284-0-123593 Saved /e/import/pomsstorage/miranda/tt/888/POW_00665225.txt, POW_00665225	CAPTION	nl
+2017-04-18 12:57:20,506 ID-simpy04-omroep-nl-39221-1492086361284-0-123595 Saved /e/import/pomsstorage/miranda/tt/888/POW_03430000.txt, POW_03430000	CAPTION	nl
+2017-04-18 12:57:30,905 ID-simpy04-omroep-nl-39221-1492086361284-0-123597 Saved /e/import/pomsstorage/miranda/tt/888/POW_03217599.txt, POW_03217599	CAPTION	nl
+2017-04-18 12:58:14,919  Queued 1 (already queued: 0)
+2017-04-18 12:58:14,928  Publishing for POW_00074466: POW_00074466	CAPTION	nl (200 cues)
+2017-04-18 12:58:15,072  Subtitles publisher Committing transaction with 1
+2017-04-18 12:58:21,954  Queued 8 (already queued: 0)
+2017-04-18 12:58:21,955  Revoking for POW_02191783: [POW_02191783	CAPTION	nl]
+2017-04-18 12:58:22,101  Revoking for VPWON_1271736: [VPWON_1271736	CAPTION	nl]
+2017-04-18 12:58:22,107  Revoking for POW_00665225: [POW_00665225	CAPTION	nl]
+2017-04-18 12:58:22,115  Revoking for POW_00892964: [POW_00892964	CAPTION	nl]
+2017-04-18 12:58:22,122  Revoking for POW_03292323: [POW_03292323	CAPTION	nl]
+2017-04-18 12:58:22,129  Revoking for POW_03430000: [POW_03430000	CAPTION	nl]
+2017-04-18 12:58:22,136  Revoking for POW_03384259: [POW_03384259	CAPTION	nl]
+2017-04-18 12:58:22,142  Revoking for POW_03217599: [POW_03217599	CAPTION	nl]
+2017-04-18 12:59:22,148  Subtitles revoker Committing transaction with 8
+2017-04-18 13:04:47,375  Queued 1 (already queued: 0)
+2017-04-18 13:04:47,400  Publishing for POW_03384255: POW_03384255	CAPTION	nl (36 cues)
+2017-04-18 13:05:47,545  Subtitles publisher Committing transaction with 1
+2017-04-18 13:15:41,009  Queued 1 (already queued: 0)
+2017-04-18 13:15:41,038  Publishing for POW_00457264: POW_00457264	CAPTION	nl (129 cues)
+2017-04-18 13:16:41,184  Subtitles publisher Committing transaction with 1
+2017-04-18 13:20:05,636  Queued 1 (already queued: 0)
+2017-04-18 13:21:05,653  Subtitles publisher Committing transaction with 1
+2017-04-18 13:21:09,975 ID-simpy04-omroep-nl-39221-1492086361284-0-124082 Incoming subtitles notify tt888 format: subtitle_POW_03373733_1_1.xml
+2017-04-18 13:21:09,976 ID-simpy04-omroep-nl-39221-1492086361284-0-124086 Incoming subtitles notify tt888 format: subtitle_POW_03373365_1_1.xml
+2017-04-18 13:21:20,006 ID-simpy04-omroep-nl-39221-1492086361284-0-124082 Saved /e/import/pomsstorage/miranda/tt/888/POW_03373733.txt, POW_03373733	CAPTION	nl
+2017-04-18 13:21:30,227 ID-simpy04-omroep-nl-39221-1492086361284-0-124086 Saved /e/import/pomsstorage/miranda/tt/888/POW_03373365.txt, POW_03373365	CAPTION	nl
+2017-04-18 13:24:27,682  Queued 3 (already queued: 0)
+2017-04-18 13:24:27,702  Publishing for POW_00240534: POW_00240534	CAPTION	nl (118 cues)
+2017-04-18 13:24:27,879  Publishing for POW_03373733: POW_03373733	CAPTION	nl (170 cues)
+2017-04-18 13:24:27,906  Publishing for POW_03373365: POW_03373365	CAPTION	nl (170 cues)
+2017-04-18 13:25:27,942  Subtitles publisher Committing transaction with 3
+2017-04-18 13:26:10,202 ID-simpy04-omroep-nl-39221-1492086361284-0-124164 Incoming subtitles notify tt888 format: subtitle_VPWON_1264697_1_1.xml
+2017-04-18 13:26:20,261 ID-simpy04-omroep-nl-39221-1492086361284-0-124164 Saved /e/import/pomsstorage/miranda/tt/888/VPWON_1264697.txt, VPWON_1264697	CAPTION	nl
+2017-04-18 13:26:38,620  Queued 2 (already queued: 0)
+2017-04-18 13:27:38,640  Subtitles publisher Committing transaction with 2
+2017-04-18 13:31:07,265  Queued 1 (already queued: 0)
+2017-04-18 13:31:07,266  Revoking for VPWON_1264697: [VPWON_1264697	CAPTION	nl]
+2017-04-18 13:31:10,411 ID-simpy04-omroep-nl-39221-1492086361284-0-124240 Incoming subtitles notify tt888 format: subtitle_POW_00252651_1_1.xml
+2017-04-18 13:31:10,413 ID-simpy04-omroep-nl-39221-1492086361284-0-124244 Incoming subtitles notify tt888 format: subtitle_POW_03331784_1_1.xml
+2017-04-18 13:31:10,414 ID-simpy04-omroep-nl-39221-1492086361284-0-124246 Incoming subtitles notify tt888 format: subtitle_POW_00474235_1_1.xml
+2017-04-18 13:31:10,416 ID-simpy04-omroep-nl-39221-1492086361284-0-124248 Incoming subtitles notify tt888 format: subtitle_VPWON_1271569_1_1.xml
+2017-04-18 13:31:10,417 ID-simpy04-omroep-nl-39221-1492086361284-0-124250 Incoming subtitles notify tt888 format: subtitle_POW_00995205_1_1.xml
+2017-04-18 13:31:10,419 ID-simpy04-omroep-nl-39221-1492086361284-0-124252 Incoming subtitles notify tt888 format: subtitle_POW_03292324_1_1.xml
+2017-04-18 13:31:10,420 ID-simpy04-omroep-nl-39221-1492086361284-0-124254 Incoming subtitles notify tt888 format: subtitle_POW_00360866_1_1.xml
+2017-04-18 13:31:10,422 ID-simpy04-omroep-nl-39221-1492086361284-0-124256 Incoming subtitles notify tt888 format: subtitle_POW_00319330_1_1.xml
+2017-04-18 13:31:10,423 ID-simpy04-omroep-nl-39221-1492086361284-0-124258 Incoming subtitles notify tt888 format: subtitle_POW_00073762_1_1.xml
+2017-04-18 13:31:10,425 ID-simpy04-omroep-nl-39221-1492086361284-0-124260 Incoming subtitles notify tt888 format: subtitle_POW_00074467_1_1.xml
+2017-04-18 13:31:10,426 ID-simpy04-omroep-nl-39221-1492086361284-0-124262 Incoming subtitles notify tt888 format: subtitle_AT_2074680_1_1.xml
+2017-04-18 13:31:10,428 ID-simpy04-omroep-nl-39221-1492086361284-0-124264 Incoming subtitles notify tt888 format: subtitle_POW_03373733_1_1.xml
+2017-04-18 13:31:20,606 ID-simpy04-omroep-nl-39221-1492086361284-0-124240 Saved /e/import/pomsstorage/miranda/tt/888/POW_00252651.txt, POW_00252651	CAPTION	nl
+2017-04-18 13:31:31,627 ID-simpy04-omroep-nl-39221-1492086361284-0-124244 Saved /e/import/pomsstorage/miranda/tt/888/POW_03331784.txt, POW_03331784	CAPTION	nl
+2017-04-18 13:31:42,123 ID-simpy04-omroep-nl-39221-1492086361284-0-124246 Saved /e/import/pomsstorage/miranda/tt/888/POW_00474235.txt, POW_00474235	CAPTION	nl
+2017-04-18 13:31:52,825 ID-simpy04-omroep-nl-39221-1492086361284-0-124248 Saved /e/import/pomsstorage/miranda/tt/888/VPWON_1271569.txt, VPWON_1271569	CAPTION	nl
+2017-04-18 13:32:03,093 ID-simpy04-omroep-nl-39221-1492086361284-0-124250 Saved /e/import/pomsstorage/miranda/tt/888/POW_00995205.txt, POW_00995205	CAPTION	nl
+2017-04-18 13:32:07,582  Subtitles revoker Committing transaction with 1
+2017-04-18 13:32:13,741 ID-simpy04-omroep-nl-39221-1492086361284-0-124252 Saved /e/import/pomsstorage/miranda/tt/888/POW_03292324.txt, POW_03292324	CAPTION	nl
+2017-04-18 13:32:24,144 ID-simpy04-omroep-nl-39221-1492086361284-0-124254 Saved /e/import/pomsstorage/miranda/tt/888/POW_00360866.txt, POW_00360866	CAPTION	nl
+2017-04-18 13:32:35,057 ID-simpy04-omroep-nl-39221-1492086361284-0-124256 Saved /e/import/pomsstorage/miranda/tt/888/POW_00319330.txt, POW_00319330	CAPTION	nl
+2017-04-18 13:32:45,977 ID-simpy04-omroep-nl-39221-1492086361284-0-124258 Saved /e/import/pomsstorage/miranda/tt/888/POW_00073762.txt, POW_00073762	CAPTION	nl
+2017-04-18 13:32:56,706 ID-simpy04-omroep-nl-39221-1492086361284-0-124260 Saved /e/import/pomsstorage/miranda/tt/888/POW_00074467.txt, POW_00074467	CAPTION	nl
+2017-04-18 13:33:07,387 ID-simpy04-omroep-nl-39221-1492086361284-0-124262 Saved /e/import/pomsstorage/miranda/tt/888/AT_2074680.txt, AT_2074680	CAPTION	nl
+2017-04-18 13:33:12,082  Queued 1 (already queued: 0)
+2017-04-18 13:33:18,839 ID-simpy04-omroep-nl-39221-1492086361284-0-124264 Saved /e/import/pomsstorage/miranda/tt/888/POW_03373733.txt, POW_03373733	CAPTION	nl
+2017-04-18 13:33:21,044  Queued 2 (already queued: 0)
+2017-04-18 13:33:21,046  Revoking for POW_00474235: [POW_00474235	CAPTION	nl]
+2017-04-18 13:33:21,190  Revoking for VPWON_1271569: [VPWON_1271569	CAPTION	nl]
+2017-04-18 13:34:12,159  Subtitles publisher Committing transaction with 1
+2017-04-18 13:34:21,197  Subtitles revoker Committing transaction with 2
+2017-04-18 13:35:25,156  Queued 1 (already queued: 0)
+2017-04-18 13:35:25,165  Publishing for POW_03373733: POW_03373733	CAPTION	nl (170 cues)
+2017-04-18 13:36:11,404 ID-simpy04-omroep-nl-39221-1492086361284-0-124432 Incoming subtitles notify tt888 format: subtitle_VPWON_1268424_1_1.xml
+2017-04-18 13:36:11,405 ID-simpy04-omroep-nl-39221-1492086361284-0-124436 Incoming subtitles notify tt888 format: subtitle_POW_03373733_1_1.xml
+2017-04-18 13:36:21,452 ID-simpy04-omroep-nl-39221-1492086361284-0-124432 Saved /e/import/pomsstorage/miranda/tt/888/VPWON_1268424.txt, VPWON_1268424	CAPTION	nl
+2017-04-18 13:36:25,315  Subtitles publisher Committing transaction with 1
+2017-04-18 13:36:31,685 ID-simpy04-omroep-nl-39221-1492086361284-0-124436 Saved /e/import/pomsstorage/miranda/tt/888/POW_03373733.txt, POW_03373733	CAPTION	nl
+2017-04-18 13:37:36,134  Queued 4 (already queued: 0)
+2017-04-18 13:37:36,141  Publishing for POW_00995205: POW_00995205	CAPTION	nl (14 cues)
+2017-04-18 13:37:36,301  Publishing for POW_00073762: POW_00073762	CAPTION	nl (59 cues)
+2017-04-18 13:37:36,322  Publishing for POW_03373733: POW_03373733	CAPTION	nl (170 cues)
+2017-04-18 13:37:36,369  Publishing for POW_00074467: POW_00074467	CAPTION	nl (157 cues)
+2017-04-18 13:37:43,246  Queued 6 (already queued: 0)
+2017-04-18 13:37:43,248  Revoking for POW_00252651: [POW_00252651	CAPTION	nl]
+2017-04-18 13:37:43,396  Revoking for POW_00360866: [POW_00360866	CAPTION	nl]
+2017-04-18 13:37:43,410  Revoking for POW_03331784: [POW_03331784	CAPTION	nl]
+2017-04-18 13:37:43,425  Revoking for POW_00319330: [POW_00319330	CAPTION	nl]
+2017-04-18 13:37:43,440  Revoking for POW_03292324: [POW_03292324	CAPTION	nl]
+2017-04-18 13:37:43,460  Revoking for AT_2074680: [AT_2074680	CAPTION	nl]
+2017-04-18 13:38:36,388  Subtitles publisher Committing transaction with 4
+2017-04-18 13:38:43,476  Subtitles revoker Committing transaction with 6
+2017-04-18 13:41:01,629 ID-simpy04-omroep-nl-39221-1492086361284-0-124490 Incoming subtitles notify tt888 format: subtitle_BNN_101382726_1_1.xml
+2017-04-18 13:41:01,631 ID-simpy04-omroep-nl-39221-1492086361284-0-124494 Incoming subtitles notify tt888 format: subtitle_BNN_101382412_1_1.xml
+2017-04-18 13:41:11,684 ID-simpy04-omroep-nl-39221-1492086361284-0-124490 Saved /e/import/pomsstorage/miranda/tt/888/BNN_101382726.txt, BNN_101382726	CAPTION	nl
+2017-04-18 13:41:21,959 ID-simpy04-omroep-nl-39221-1492086361284-0-124494 Saved /e/import/pomsstorage/miranda/tt/888/BNN_101382412.txt, BNN_101382412	CAPTION	nl
+2017-04-18 13:42:05,469  Queued 1 (already queued: 0)
+2017-04-18 13:42:05,471  Revoking for VPWON_1268424: [VPWON_1268424	CAPTION	nl]
+2017-04-18 13:43:05,677  Subtitles revoker Committing transaction with 1
+2017-04-18 13:46:11,871 ID-simpy04-omroep-nl-39221-1492086361284-0-124548 Incoming subtitles notify tt888 format: subtitle_POW_00360867_1_1.xml
+2017-04-18 13:46:11,873 ID-simpy04-omroep-nl-39221-1492086361284-0-124552 Incoming subtitles notify tt888 format: subtitle_POW_00995206_1_1.xml
+2017-04-18 13:46:11,875 ID-simpy04-omroep-nl-39221-1492086361284-0-124554 Incoming subtitles notify tt888 format: subtitle_VPWON_1267692_1_1.xml
+2017-04-18 13:46:11,877 ID-simpy04-omroep-nl-39221-1492086361284-0-124556 Incoming subtitles notify tt888 format: subtitle_AT_2074681_1_1.xml
+2017-04-18 13:46:11,878 ID-simpy04-omroep-nl-39221-1492086361284-0-124558 Incoming subtitles notify tt888 format: subtitle_POW_01046881_1_1.xml
+2017-04-18 13:46:11,880 ID-simpy04-omroep-nl-39221-1492086361284-0-124560 Incoming subtitles notify tt888 format: subtitle_POW_02977227_1_1.xml
+2017-04-18 13:46:11,882 ID-simpy04-omroep-nl-39221-1492086361284-0-124562 Incoming subtitles notify tt888 format: subtitle_POW_00252652_1_1.xml
+2017-04-18 13:46:11,883 ID-simpy04-omroep-nl-39221-1492086361284-0-124564 Incoming subtitles notify tt888 format: subtitle_VPWON_1271447_1_1.xml
+2017-04-18 13:46:22,018 ID-simpy04-omroep-nl-39221-1492086361284-0-124548 Saved /e/import/pomsstorage/miranda/tt/888/POW_00360867.txt, POW_00360867	CAPTION	nl
+2017-04-18 13:46:33,082 ID-simpy04-omroep-nl-39221-1492086361284-0-124552 Saved /e/import/pomsstorage/miranda/tt/888/POW_00995206.txt, POW_00995206	CAPTION	nl
+2017-04-18 13:46:43,507 ID-simpy04-omroep-nl-39221-1492086361284-0-124554 Saved /e/import/pomsstorage/miranda/tt/888/VPWON_1267692.txt, VPWON_1267692	CAPTION	nl
+2017-04-18 13:46:53,825 ID-simpy04-omroep-nl-39221-1492086361284-0-124556 Saved /e/import/pomsstorage/miranda/tt/888/AT_2074681.txt, AT_2074681	CAPTION	nl
+2017-04-18 13:47:04,374 ID-simpy04-omroep-nl-39221-1492086361284-0-124558 Saved /e/import/pomsstorage/miranda/tt/888/POW_01046881.txt, POW_01046881	CAPTION	nl
+2017-04-18 13:47:14,977 ID-simpy04-omroep-nl-39221-1492086361284-0-124560 Saved /e/import/pomsstorage/miranda/tt/888/POW_02977227.txt, POW_02977227	CAPTION	nl
+2017-04-18 13:47:25,568 ID-simpy04-omroep-nl-39221-1492086361284-0-124562 Saved /e/import/pomsstorage/miranda/tt/888/POW_00252652.txt, POW_00252652	CAPTION	nl
+2017-04-18 13:47:36,118 ID-simpy04-omroep-nl-39221-1492086361284-0-124564 Saved /e/import/pomsstorage/miranda/tt/888/VPWON_1271447.txt, VPWON_1271447	CAPTION	nl
+2017-04-18 13:48:31,735  Queued 2 (already queued: 0)
+2017-04-18 13:48:31,745  Publishing for POW_01046881: POW_01046881	CAPTION	nl (75 cues)
+2017-04-18 13:48:31,906  Publishing for KN_1689183: KN_1689183	CAPTION	nl (281 cues)
+2017-04-18 13:48:40,422  Queued 7 (already queued: 0)
+2017-04-18 13:48:40,423  Revoking for POW_00995206: [POW_00995206	CAPTION	nl]
+2017-04-18 13:48:40,586  Revoking for POW_02977227: [POW_02977227	CAPTION	nl]
+2017-04-18 13:48:40,598  Revoking for POW_00252652: [POW_00252652	CAPTION	nl]
+2017-04-18 13:48:40,612  Revoking for BNN_101382726: [BNN_101382726	CAPTION	nl]
+2017-04-18 13:48:40,620  Revoking for POW_00360867: [POW_00360867	CAPTION	nl]
+2017-04-18 13:48:40,629  Revoking for BNN_101382412: [BNN_101382412	CAPTION	nl]
+2017-04-18 13:48:40,636  Revoking for VPWON_1271447: [VPWON_1271447	CAPTION	nl]
+2017-04-18 13:49:31,920  Subtitles publisher Committing transaction with 2
+2017-04-18 13:49:40,647  Subtitles revoker Committing transaction with 7
+2017-04-18 13:50:44,467  Queued 1 (already queued: 0)
+2017-04-18 13:50:44,476  Publishing for KN_1689183: KN_1689183	CAPTION	nl (281 cues)
+2017-04-18 13:51:02,176 ID-simpy04-omroep-nl-39221-1492086361284-0-124668 Incoming subtitles notify tt888 format: subtitle_VPWON_1267823_1_1.xml
+2017-04-18 13:51:12,214 ID-simpy04-omroep-nl-39221-1492086361284-0-124668 Saved /e/import/pomsstorage/miranda/tt/888/VPWON_1267823.txt, VPWON_1267823	CAPTION	nl
+2017-04-18 13:51:44,639  Subtitles publisher Committing transaction with 1
+2017-04-18 13:53:01,639  Queued 3 (already queued: 0)
+2017-04-18 13:53:01,641  Revoking for VPWON_1267692: [VPWON_1267692	CAPTION	nl]
+2017-04-18 13:53:01,830  Revoking for AT_2074681: [AT_2074681	CAPTION	nl]
+2017-04-18 13:53:01,838  Revoking for VPWON_1267823: [VPWON_1267823	CAPTION	nl]
+2017-04-18 13:54:01,844  Subtitles revoker Committing transaction with 3
+2017-04-18 14:06:08,762  Queued 1 (already queued: 0)
+2017-04-18 14:06:08,785  Publishing for POW_00360865: POW_00360865	CAPTION	nl (169 cues)
+2017-04-18 14:07:08,962  Subtitles publisher Committing transaction with 1
+2017-04-18 14:10:36,238  Queued 1 (already queued: 0)
+2017-04-18 14:10:36,267  Revoking for VPWON_1271544: [VPWON_1271544	CAPTION	nl]
+2017-04-18 14:11:37,116  Subtitles revoker Committing transaction with 1
+2017-04-18 14:14:51,266  Queued 1 (already queued: 0)
+2017-04-18 14:14:51,348  Publishing for VPWON_1271547: VPWON_1271547	CAPTION	nl (268 cues)
+2017-04-18 14:15:51,494  Subtitles publisher Committing transaction with 1
+2017-04-18 14:16:03,622 ID-simpy04-omroep-nl-39221-1492086361284-0-124975 Incoming subtitles notify tt888 format: subtitle_KN_1690185_1_1.xml
+2017-04-18 14:16:13,654 ID-simpy04-omroep-nl-39221-1492086361284-0-124975 Saved /e/import/pomsstorage/miranda/tt/888/KN_1690185.txt, KN_1690185	CAPTION	nl
+2017-04-18 14:19:24,954  Queued 2 (already queued: 0)
+2017-04-18 14:19:25,019  Revoking for KN_1690185: [KN_1690185	CAPTION	nl]
+2017-04-18 14:20:25,170  Subtitles revoker Committing transaction with 2
+2017-04-18 14:26:04,029 ID-simpy04-omroep-nl-39221-1492086361284-0-125067 Incoming subtitles notify tt888 format: subtitle_VPWON_1267692_1_1.xml
+2017-04-18 14:26:14,077 ID-simpy04-omroep-nl-39221-1492086361284-0-125067 Saved /e/import/pomsstorage/miranda/tt/888/VPWON_1267692.txt, VPWON_1267692	CAPTION	nl
+2017-04-18 14:28:09,958  Queued 1 (already queued: 0)
+2017-04-18 14:28:09,959  Revoking for VPWON_1267692: [VPWON_1267692	CAPTION	nl]
+2017-04-18 14:29:10,108  Subtitles revoker Committing transaction with 1
+2017-04-18 14:30:13,897  Queued 23 (already queued: 0)
+2017-04-18 14:30:13,992  Publishing for POW_00441390: POW_00441390	CAPTION	nl (332 cues)
+2017-04-18 14:30:14,250  Publishing for POW_00441393: POW_00441393	CAPTION	nl (399 cues)
+2017-04-18 14:30:14,473  Publishing for POW_00441398: POW_00441398	CAPTION	nl (369 cues)
+2017-04-18 14:30:14,574  Publishing for POW_00441380: POW_00441380	CAPTION	nl (393 cues)
+2017-04-18 14:30:14,687  Publishing for POW_00441400: POW_00441400	CAPTION	nl (342 cues)
+2017-04-18 14:30:14,765  Publishing for POW_00441388: POW_00441388	CAPTION	nl (393 cues)
+2017-04-18 14:30:14,891  Publishing for POW_00441379: POW_00441379	CAPTION	nl (302 cues)
+2017-04-18 14:30:14,953  Publishing for POW_00441389: POW_00441389	CAPTION	nl (347 cues)
+2017-04-18 14:30:15,028  Publishing for POW_00441387: POW_00441387	CAPTION	nl (370 cues)
+2017-04-18 14:30:15,099  Publishing for POW_00441384: POW_00441384	CAPTION	nl (307 cues)
+2017-04-18 14:30:15,157  Publishing for POW_00441399: POW_00441399	CAPTION	nl (369 cues)
+2017-04-18 14:30:15,230  Publishing for POW_00441392: POW_00441392	CAPTION	nl (331 cues)
+2017-04-18 14:30:15,315  Publishing for POW_00441383: POW_00441383	CAPTION	nl (324 cues)
+2017-04-18 14:30:15,375  Publishing for POW_00441395: POW_00441395	CAPTION	nl (343 cues)
+2017-04-18 14:30:15,430  Publishing for POW_00441396: POW_00441396	CAPTION	nl (410 cues)
+2017-04-18 14:30:15,463  Publishing for POW_00441394: POW_00441394	CAPTION	nl (360 cues)
+2017-04-18 14:30:15,582  Publishing for POW_00441391: POW_00441391	CAPTION	nl (367 cues)
+2017-04-18 14:30:15,683  Publishing for POW_00441386: POW_00441386	CAPTION	nl (345 cues)
+2017-04-18 14:30:15,794  Publishing for POW_00441401: POW_00441401	CAPTION	nl (375 cues)
+2017-04-18 14:30:15,903  Publishing for POW_00441385: POW_00441385	CAPTION	nl (291 cues)
+2017-04-18 14:30:15,970  Publishing for POW_00441381: POW_00441381	CAPTION	nl (355 cues)
+2017-04-18 14:30:16,028  Publishing for POW_00441397: POW_00441397	CAPTION	nl (343 cues)
+2017-04-18 14:30:16,073  Publishing for POW_00441382: POW_00441382	CAPTION	nl (354 cues)
+2017-04-18 14:31:04,220 ID-simpy04-omroep-nl-39221-1492086361284-0-125257 Incoming subtitles notify tt888 format: subtitle_KN_1689398_1_1.xml
+2017-04-18 14:31:14,266 ID-simpy04-omroep-nl-39221-1492086361284-0-125257 Saved /e/import/pomsstorage/miranda/tt/888/KN_1689398.txt, KN_1689398	CAPTION	nl
+2017-04-18 14:31:16,086  Subtitles publisher Committing transaction with 23
+2017-04-18 14:34:35,216  Queued 15 (already queued: 0)
+2017-04-18 14:34:35,282  Publishing for POW_00751345: POW_00751345	CAPTION	nl (108 cues)
+2017-04-18 14:35:35,581  Subtitles publisher Committing transaction with 15
+2017-04-18 14:36:04,788 ID-simpy04-omroep-nl-39221-1492086361284-0-125387 Incoming subtitles notify tt888 format: subtitle_KN_1689398_1_1.xml
+2017-04-18 14:36:14,852 ID-simpy04-omroep-nl-39221-1492086361284-0-125387 Saved /e/import/pomsstorage/miranda/tt/888/KN_1689398.txt, KN_1689398	CAPTION	nl
+2017-04-18 14:36:52,584  Queued 1 (already queued: 0)
+2017-04-18 14:36:52,585  Revoking for KN_1689398: [KN_1689398	CAPTION	nl]
+2017-04-18 14:37:52,729  Subtitles revoker Committing transaction with 1
+2017-04-18 14:41:04,989 ID-simpy04-omroep-nl-39221-1492086361284-0-125411 Incoming subtitles notify tt888 format: subtitle_KN_1690186_1_1.xml
+2017-04-18 14:41:04,991 ID-simpy04-omroep-nl-39221-1492086361284-0-125415 Incoming subtitles notify tt888 format: subtitle_VPWON_1272634_1_1.xml
+2017-04-18 14:41:14,070  Queued 1 (already queued: 0)
+2017-04-18 14:41:15,032 ID-simpy04-omroep-nl-39221-1492086361284-0-125411 Saved /e/import/pomsstorage/miranda/tt/888/KN_1690186.txt, KN_1690186	CAPTION	nl
+2017-04-18 14:41:25,326 ID-simpy04-omroep-nl-39221-1492086361284-0-125415 Saved /e/import/pomsstorage/miranda/tt/888/VPWON_1272634.txt, VPWON_1272634	CAPTION	nl
+2017-04-18 14:42:14,574  Subtitles revoker Committing transaction with 1
+2017-04-18 14:47:48,778  Queued 2 (already queued: 0)
+2017-04-18 14:47:48,782  Revoking for KN_1690186: [KN_1690186	CAPTION	nl]
+2017-04-18 14:47:49,429  Revoking for VPWON_1272634: [VPWON_1272634	CAPTION	nl]
+2017-04-18 14:48:49,446  Subtitles revoker Committing transaction with 2
+2017-04-18 14:49:53,463  Queued 1 (already queued: 0)
+2017-04-18 14:49:53,481  Publishing for POW_00252650: POW_00252650	CAPTION	nl (156 cues)
+2017-04-18 14:50:53,638  Subtitles publisher Committing transaction with 1
+2017-04-18 14:51:05,424 ID-simpy04-omroep-nl-39221-1492086361284-0-125501 Incoming subtitles notify tt888 format: subtitle_VPWON_1276322_1_1.xml
+2017-04-18 14:51:15,487 ID-simpy04-omroep-nl-39221-1492086361284-0-125501 Saved /e/import/pomsstorage/miranda/tt/888/VPWON_1276322.txt, VPWON_1276322	CAPTION	nl
+2017-04-18 14:52:11,776  Queued 1 (already queued: 0)
+2017-04-18 14:52:11,778  Revoking for VPWON_1276322: [VPWON_1276322	CAPTION	nl]
+2017-04-18 14:53:11,937  Subtitles revoker Committing transaction with 1
+2017-04-18 14:58:44,377  Queued 14 (already queued: 0)
+2017-04-18 14:59:44,908  Subtitles revoker Committing transaction with 14
+2017-04-18 15:03:09,518  Queued 1 (already queued: 0)
+2017-04-18 15:03:09,519  Revoking for AVRO_1211533: [AVRO_1211533	CAPTION	nl]
+2017-04-18 15:04:10,179  Subtitles revoker Committing transaction with 1
+2017-04-18 15:11:06,844 ID-simpy04-omroep-nl-39221-1492086361284-0-125720 Incoming subtitles notify tt888 format: subtitle_POW_03451551_1_1.xml
+2017-04-18 15:11:16,905 ID-simpy04-omroep-nl-39221-1492086361284-0-125720 Saved /e/import/pomsstorage/miranda/tt/888/POW_03451551.txt, POW_03451551	CAPTION	nl
+2017-04-18 15:13:55,641  Queued 1 (already queued: 0)
+2017-04-18 15:13:55,655  Publishing for POW_03451551: POW_03451551	CAPTION	nl (708 cues)
+2017-04-18 15:14:55,828  Subtitles publisher Committing transaction with 1
+2017-04-18 15:16:05,727  Queued 1 (already queued: 0)
+2017-04-18 15:16:05,747  Publishing for POW_03451551: POW_03451551	CAPTION	nl (708 cues)
+2017-04-18 15:17:05,938  Subtitles publisher Committing transaction with 1
+2017-04-18 15:20:29,210  Queued 1 (already queued: 0)
+2017-04-18 15:20:29,242  Publishing for AVRO_1211537: AVRO_1211537	CAPTION	nl (368 cues)
+2017-04-18 15:21:29,395  Subtitles publisher Committing transaction with 1
+2017-04-18 15:24:50,847  Queued 1 (already queued: 0)
+2017-04-18 15:24:50,903  Publishing for POW_00319329: POW_00319329	CAPTION	nl (140 cues)
+2017-04-18 15:25:51,054  Subtitles publisher Committing transaction with 1
+2017-04-18 15:26:08,241 ID-simpy04-omroep-nl-39221-1492086361284-0-125850 Incoming subtitles notify tt888 format: subtitle_POW_03374113_1_1.xml
+2017-04-18 15:26:18,330 ID-simpy04-omroep-nl-39221-1492086361284-0-125850 Saved /e/import/pomsstorage/miranda/tt/888/POW_03374113.txt, POW_03374113	CAPTION	nl
+2017-04-18 15:31:09,177 ID-simpy04-omroep-nl-39221-1492086361284-0-125904 Incoming subtitles notify tt888 format: subtitle_POW_03430001_1_1.xml
+2017-04-18 15:31:19,231 ID-simpy04-omroep-nl-39221-1492086361284-0-125904 Saved /e/import/pomsstorage/miranda/tt/888/POW_03430001.txt, POW_03430001	CAPTION	nl
+2017-04-18 15:31:23,506  Queued 1 (already queued: 0)
+2017-04-18 15:31:23,514  Publishing for POW_03374113: POW_03374113	CAPTION	nl (225 cues)
+2017-04-18 15:32:23,664  Subtitles publisher Committing transaction with 1
+2017-04-18 15:33:25,188  Publishing for POW_03372956: POW_03372956	CAPTION	nl (198 cues)
+2017-04-18 15:35:48,148  Queued 1 (already queued: 0)
+2017-04-18 15:35:48,192  Publishing for POW_00240647: POW_00240647	CAPTION	nl (152 cues)
+2017-04-18 15:35:55,033  Queued 1 (already queued: 0)
+2017-04-18 15:35:55,035  Revoking for POW_03430001: [POW_03430001	CAPTION	nl]
+2017-04-18 15:36:48,351  Subtitles publisher Committing transaction with 1
+2017-04-18 15:36:55,179  Subtitles revoker Committing transaction with 1
+2017-04-18 15:51:11,332 ID-simpy04-omroep-nl-39221-1492086361284-0-126048 Incoming subtitles notify tt888 format: subtitle_KN_1689337_1_1.xml
+2017-04-18 15:51:21,382 ID-simpy04-omroep-nl-39221-1492086361284-0-126048 Saved /e/import/pomsstorage/miranda/tt/888/KN_1689337.txt, KN_1689337	CAPTION	nl
+2017-04-18 15:56:11,689 ID-simpy04-omroep-nl-39221-1492086361284-0-126078 Incoming subtitles notify tt888 format: subtitle_POW_03430002_1_1.xml
+2017-04-18 15:56:21,719 ID-simpy04-omroep-nl-39221-1492086361284-0-126078 Saved /e/import/pomsstorage/miranda/tt/888/POW_03430002.txt, POW_03430002	CAPTION	nl
+2017-04-18 15:57:49,353  Queued 2 (already queued: 0)
+2017-04-18 15:57:49,355  Revoking for KN_1689337: [KN_1689337	CAPTION	nl]
+2017-04-18 15:57:49,521  Revoking for POW_03430002: [POW_03430002	CAPTION	nl]
+2017-04-18 15:58:49,543  Subtitles revoker Committing transaction with 2
+2017-04-18 15:59:53,523  Queued 1 (already queued: 0)
+2017-04-18 16:00:53,540  Subtitles publisher Committing transaction with 1
+2017-04-18 16:01:02,284 ID-simpy04-omroep-nl-39221-1492086361284-0-126127 Incoming subtitles notify tt888 format: subtitle_POW_00384775_1_1.xml
+2017-04-18 16:01:12,424 ID-simpy04-omroep-nl-39221-1492086361284-0-126127 Saved /e/import/pomsstorage/miranda/tt/888/POW_00384775.txt, POW_00384775	CAPTION	nl
+2017-04-18 16:02:12,337  Queued 1 (already queued: 0)
+2017-04-18 16:02:12,339  Revoking for POW_00384775: [POW_00384775	CAPTION	nl]
+2017-04-18 16:03:12,497  Subtitles revoker Committing transaction with 1
+2017-04-18 16:04:18,403  Queued 1 (already queued: 0)
+2017-04-18 16:05:18,415  Subtitles publisher Committing transaction with 1
+2017-04-18 16:08:50,588  Queued 1 (already queued: 0)
+2017-04-18 16:09:50,597  Subtitles revoker Committing transaction with 1
+2017-04-18 16:10:54,448  Queued 1 (already queued: 0)
+2017-04-18 16:10:57,820  Publishing for POW_00474234: POW_00474234	CAPTION	nl (428 cues)
+2017-04-18 16:11:02,781 ID-simpy04-omroep-nl-39221-1492086361284-0-126385 Incoming subtitles notify tt888 format: subtitle_POW_03374405_1_1.xml
+2017-04-18 16:11:12,851 ID-simpy04-omroep-nl-39221-1492086361284-0-126385 Saved /e/import/pomsstorage/miranda/tt/888/POW_03374405.txt, POW_03374405	CAPTION	nl
+2017-04-18 16:11:59,214  Subtitles publisher Committing transaction with 1
+2017-04-18 16:13:04,865  Queued 1 (already queued: 0)
+2017-04-18 16:13:04,871  Publishing for POW_03374405: POW_03374405	CAPTION	nl (63 cues)
+2017-04-18 16:14:05,155  Subtitles publisher Committing transaction with 1

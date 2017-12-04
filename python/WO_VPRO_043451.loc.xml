@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<location xmlns="urn:vpro:media:update:2009" publishStart="2015-11-11T14:54:43Z">
+  <programUrl>http://download.omroep.nl/vpro/transcoded/31/83/98/2/WO_VPRO_043451.mp4</programUrl>
+  <avAttributes>
+    <bitrate>427002</bitrate>
+    <avFileFormat>MP4</avFileFormat>
+    <videoAttributes height="264" width="352">
+      <aspectRatio>4:3</aspectRatio>
+    </videoAttributes>
+  </avAttributes>
+  <duration>P0DT0H17M18.000S</duration>
+</location>

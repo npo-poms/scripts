@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<program avType="AUDIO" embeddable="true" mid="RBX_VPRO_676977" type="BROADCAST" urn="urn:vpro:media:program:46515475" xmlns="urn:vpro:media:update:2009" xmlns:media="urn:vpro:media:2009" xmlns:shared="urn:vpro:shared:2009">
+  <crid>crid://broadcast.radiobox2/303480</crid>
+  <broadcaster>VPRO</broadcaster>
+  <title type="MAIN">Nooit Meer Slapen!!</title>
+  <description type="MAIN">Pieter van der Wielen presenteert elke werkdag vanaf middernacht twee uur lang Nooit Meer Slapen. Met in het eerste uur een gast uit de wereld van de cultuur of de actualiteit. In het tweede uur reportages over literatuur, beeldende kunst, theater en film, én een dagelijkse beschouwing van een auteur die de realiteit benadert vanuit een fictief verhaal. Op vrijdagavond wijkt de programmering van het eerste uur af. Dan begint Nooit Meer Slapen vanwege het hoorspel rond 0.30 uur.</description>
+  <credits>
+    <person role="PRESENTER">
+      <givenName>Pieter</givenName>
+      <familyName>van der Wielen</familyName>
+    </person>
+  </credits>
+  <ageRating>6</ageRating>
+  <locations/>
+  <scheduleEvents>
+    <scheduleEvent channel="RAD1">
+      <start>2015-11-24T00:00:00+01:00</start>
+      <duration>P0DT2H0M0.000S</duration>
+    </scheduleEvent>
+  </scheduleEvents>
+  <images/>
+  <episodeOf highlighted="false" position="1">RBX_S_VPRO_554445</episodeOf>
+  <segments>
+    <segment avType="AUDIO" embeddable="true" mid="RBX_VPRO_2325082" midRef="RBX_VPRO_676977" urn="urn:vpro:media:segment:54461300">
+      <crid>crid://item.radiobox2/322828</crid>
+      <broadcaster>VPRO</broadcaster>
+      <title type="MAIN">Maartje Wortel</title>
+      <tag>Maartje Wortel</tag>
+      <tag>das mag</tag>
+      <duration>P0DT0H50M0.000S</duration>
+      <locations/>
+      <scheduleEvents/>
+      <images/>
+      <start>P0DT0H5M0.000S</start>
+    </segment>
+  </segments>
+</program>
