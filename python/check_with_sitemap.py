@@ -84,6 +84,9 @@ if clean:
 log.info("API: %s, profile: %s" % (api.url, profile))
 
 
+def file_in_target(file: str) -> str:
+    return os.path.join(target_directory, file)
+
 def get_urls_from_api_search() -> set:
     offset = 0
     new_urls = set()
@@ -127,7 +130,7 @@ def get_urls_from_api_iterate() -> set:
 
 
 def get_urls() -> list:
-    url_file = "/tmp/" + profile + ".p"
+    url_file = file_in_target("data." + profile + ".p")
     if use_database or (os.path.exists(url_file) and not clean):
         new_urls = pickle.load(open(url_file, "rb"))
     else:
@@ -135,7 +138,7 @@ def get_urls() -> list:
         new_urls = get_urls_from_api_iterate()
         pickle.dump(new_urls, open(url_file, "wb"))
 
-    dest_file = os.path.join(target_directory, profile + ".txt")
+    dest_file = file_in_target("data." + profile + ".txt")
     with io.open(dest_file, 'w', encoding="utf-8") as f:
         f.write('\n'.join(sorted(new_urls)))
     log.info("Wrote %s (%d entries)", dest_file, len(new_urls))
@@ -166,14 +169,14 @@ def get_sitemap_from_xml() -> list:
 
 
 def get_sitemap() -> list:
-    sitemap_file = "/tmp/" + profile + ".sitemap.p"
+    sitemap_file = file_in_target("data." + profile + ".sitemap.p")
     if use_database or (os.path.exists(sitemap_file) and not clean):
         new_urls = pickle.load(open(sitemap_file, "rb"))
     else:
         new_urls = get_sitemap_from_xml()
         pickle.dump(new_urls, open(sitemap_file, "wb"))
 
-    dest_file = os.path.join(target_directory, profile + ".sitemap.txt")
+    dest_file = file_in_target("data." + profile + ".sitemap.txt")
     with io.open(dest_file, 'w', encoding="utf-8") as f:
         f.write('\n'.join(sorted(new_urls)))
     log.info("Wrote %s (%d entries)", dest_file, len(new_urls))
@@ -203,8 +206,7 @@ def clean_from_api(
         api_urls: list,
         mapped_sitemap_urls: list):
     """Explores what needs to be cleaned from the API, and (optionally) also tries to do that."""
-    filename = "in_" + profile + "_but_not_in_sitemap.txt"
-    dest_file = os.path.join(target_directory, filename)
+    dest_file = file_in_target("report." + profile + "in_api_but_not_in_sitemap.txt")
 
     if not os.path.exists(dest_file) or clean:
         log.info("Calculating what needs to be removed from api")
@@ -223,19 +225,29 @@ def clean_from_api(
     log.info("In api but not in sitemap: %s" % len(not_in_sitemap))
 
     if delete_from_api:
+        clean_from_es = file_in_target("todo." + profile + "_should_be_removed_from_es.txt")
+        remove_from_api = file_in_target("done." + profile + "_removed_from_api.txt")
         log.info("Deleting from api")
-        for idx, url in enumerate(not_in_sitemap):
-            status = http_status(url)
-            if status == 404 or status == 301:
-                log.info("Deleting %s", url)
-                backend.delete(url)
-            else:
-                result = backend.get(url)
-                if not result is None:
-                    page = poms.CreateFromDocument(result)
-                    log.info("In api, not in sitemap, but not giving 404 (but %s) url %s: %s", str(status), url, str(page.lastPublished))
-                else:
-                    log.info("In api, not giving 404 (but %s), but not found in publisher %s", str(status), url)
+        with io.open(clean_from_es, 'w', encoding='utf-8') as f_clean_from_es:
+            with io.open(remove_from_api, 'w', encoding='utf-8') as f_remove_from_api:
+
+                for idx, url in enumerate(not_in_sitemap):
+                    status = http_status(url)
+                    if status == 404 or status == 301:
+                        log.info("(%d/%d) Deleting %s", idx, len(not_in_sitemap), url)
+                        response = backend.delete(url)
+                        log.info("%s" % response)
+                        if response == "NOTFOUND":
+                            f_clean_from_es.write(url + '\n')
+                        else :
+                            f_remove_from_api.write(url + '\n')
+                    else:
+                        result = backend.get(url)
+                        if not result is None:
+                            page = poms.CreateFromDocument(result)
+                            log.info("(%d/%d) In api, not in sitemap, but not giving 404 (but %s) url %s: %s", idx, len(not_in_sitemap), str(status), url, str(page.lastPublished))
+                        else:
+                            log.info("(%d/%d) In api, not giving 404 (but %s), but not found in publisher %s", idx, len(not_in_sitemap), str(status), url)
     else:
         log.info("No actual deletes requested")
 
@@ -246,10 +258,9 @@ def add_to_api(
         mapped_sitemap_urls: list,
         sitemap_urls:list):
     """Explores what needs to be added to the API"""
-    filename = "in_sitemap_but_not_in_" + profile + ".txt"
-    dest_file = os.path.join(target_directory, filename)
+    dest_file = file_in_target("report." + profile + "_in_sitemap_but_not_in_api.txt")
     not_in_api = ()
-    if  not os.path.exists(filename) or clean:
+    if  not os.path.exists(dest_file) or clean:
         log.info("Calculating what needs to be added to the api")
         mapped_not_in_api = set(mapped_sitemap_urls) - set(mapped_api_urls)
         not_in_api = sorted(list(set(map(lambda url: unmap(mapped_sitemap_urls, sitemap_urls, url), mapped_not_in_api))))
