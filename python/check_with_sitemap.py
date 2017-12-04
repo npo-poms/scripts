@@ -135,9 +135,10 @@ def get_urls() -> list:
         new_urls = get_urls_from_api_iterate()
         pickle.dump(new_urls, open(url_file, "wb"))
 
-    with io.open(os.path.join(target_directory, profile + ".txt"), 'w', encoding="utf-8") as f:
+    dest_file = os.path.join(target_directory, profile + ".txt")
+    with io.open(dest_file, 'w', encoding="utf-8") as f:
         f.write('\n'.join(sorted(new_urls)))
-    log.info("Wrote %s (%d entries)", profile + ".txt", len(new_urls))
+    log.info("Wrote %s (%d entries)", dest_file, len(new_urls))
     return list(new_urls)
 
 
@@ -172,9 +173,10 @@ def get_sitemap() -> list:
         new_urls = get_sitemap_from_xml()
         pickle.dump(new_urls, open(sitemap_file, "wb"))
 
-    with io.open(os.path.join(target_directory, profile + ".sitemap.txt"), 'w', encoding="utf-8") as f:
+    dest_file = os.path.join(target_directory, profile + ".sitemap.txt")
+    with io.open(dest_file, 'w', encoding="utf-8") as f:
         f.write('\n'.join(sorted(new_urls)))
-    log.info("Wrote %s (%d entries)", profile + ".sitemap.txt", len(new_urls))
+    log.info("Wrote %s (%d entries)", dest_file, len(new_urls))
 
     return new_urls
 
@@ -202,19 +204,19 @@ def clean_from_api(
         mapped_sitemap_urls: list):
     """Explores what needs to be cleaned from the API, and (optionally) also tries to do that."""
     filename = "in_" + profile + "_but_not_in_sitemap.txt"
+    dest_file = os.path.join(target_directory, filename)
 
-
-    if not os.path.exists(filename) or clean:
+    if not os.path.exists(dest_file) or clean:
         log.info("Calculating what needs to be removed from api")
         mapped_not_in_sitemap = set(mapped_api_urls) - set(mapped_sitemap_urls)
         # translate to actual urls
         not_in_sitemap = sorted(list(set(map(lambda url: unmap(mapped_api_urls, api_urls, url), mapped_not_in_sitemap))))
 
-        with io.open(filename, 'w', encoding='utf-8') as f:
+        with io.open(dest_file, 'w', encoding='utf-8') as f:
             f.write('\n'.join(sorted(list(not_in_sitemap))))
-            log.info("Wrote to %s" % f.name)
+            log.info("Wrote to %s" % dest_file)
     else:
-        with io.open(filename, 'r', encoding='utf-8') as f:
+        with io.open(dest_file, 'r', encoding='utf-8') as f:
             not_in_sitemap = f.read().splitlines()
             log.info("Read from %s" % f.name)
 
@@ -245,18 +247,19 @@ def add_to_api(
         sitemap_urls:list):
     """Explores what needs to be added to the API"""
     filename = "in_sitemap_but_not_in_" + profile + ".txt"
+    dest_file = os.path.join(target_directory, filename)
     not_in_api = ()
     if  not os.path.exists(filename) or clean:
         log.info("Calculating what needs to be added to the api")
         mapped_not_in_api = set(mapped_sitemap_urls) - set(mapped_api_urls)
         not_in_api = sorted(list(set(map(lambda url: unmap(mapped_sitemap_urls, sitemap_urls, url), mapped_not_in_api))))
 
-        with io.open(filename, 'w', encoding='utf-8') as f:
+        with io.open(dest_file, 'w', encoding='utf-8') as f:
             f.write('\n'.join(not_in_api))
             print("Wrote to %s" % f.name)
 
     else:
-        with io.open(filename, 'r', encoding='utf-8') as f:
+        with io.open(dest_file, 'r', encoding='utf-8') as f:
             not_in_api = f.read().splitlines()
             log.info("Read from %s" % f.name)
 
