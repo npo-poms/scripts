@@ -206,7 +206,7 @@ def clean_from_api(
         api_urls: list,
         mapped_sitemap_urls: list):
     """Explores what needs to be cleaned from the API, and (optionally) also tries to do that."""
-    dest_file = file_in_target("report." + profile + "in_api_but_not_in_sitemap.txt")
+    dest_file = file_in_target("report." + profile + ".in_api_but_not_in_sitemap.txt")
 
     if not os.path.exists(dest_file) or clean:
         log.info("Calculating what needs to be removed from api")
@@ -225,22 +225,23 @@ def clean_from_api(
     log.info("In api but not in sitemap: %s" % len(not_in_sitemap))
 
     if delete_from_api:
-        clean_from_es = file_in_target("todo." + profile + "_should_be_removed_from_es.txt")
-        remove_from_api = file_in_target("done." + profile + "_removed_from_api.txt")
+        clean_from_es = file_in_target("todo." + profile + ".should_be_removed_from_es.txt")
+        remove_from_api = file_in_target("done." + profile + ".removed_from_api.txt")
         log.info("Deleting from api")
         with io.open(clean_from_es, 'w', encoding='utf-8') as f_clean_from_es:
-            with io.open(remove_from_api, 'w', encoding='utf-8') as f_remove_from_api:
+            with io.open(remove_from_api, 'w', encoding='utf-8') as f_removed_from_api:
 
                 for idx, url in enumerate(not_in_sitemap):
                     status = http_status(url)
                     if status == 404 or status == 301:
                         log.info("(%d/%d) Deleting %s", idx, len(not_in_sitemap), url)
                         response = backend.delete(url)
-                        log.info("%s" % response)
                         if response == "NOTFOUND":
+                            log.info("Backend gave 404 for delete call: %s", url)
                             f_clean_from_es.write(url + '\n')
-                        else :
-                            f_remove_from_api.write(url + '\n')
+                        else:
+                            log.info("%s" % response)
+                            f_removed_from_api.write(url + '\n')
                     else:
                         result = backend.get(url)
                         if not result is None:
@@ -258,7 +259,7 @@ def add_to_api(
         mapped_sitemap_urls: list,
         sitemap_urls:list):
     """Explores what needs to be added to the API"""
-    dest_file = file_in_target("report." + profile + "_in_sitemap_but_not_in_api.txt")
+    dest_file = file_in_target("report." + profile + ".in_sitemap_but_not_in_api.txt")
     not_in_api = ()
     if  not os.path.exists(dest_file) or clean:
         log.info("Calculating what needs to be added to the api")
