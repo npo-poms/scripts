@@ -34,7 +34,7 @@ human:
 		--clean \
 		--target_directory ~/integrity-check-results \
 		--post_process "lambda url: re.sub(r'^https://www.human.nl/speel[~\.](.*?)[~\.](.*)', r'https://www.human.nl/speel~\1~.html', url)" \
-		$(magnolia1) /human/sitemap.xml \
+		$(magnolia1)/human/sitemap.xml \
 		human
 
 
