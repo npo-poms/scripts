@@ -26,7 +26,7 @@ vpro:
 3voor12:
 	$(check) \
 		-e prod --http_to_https \
-		# --clean \
+		 --clean \
 		--target_directory $(target) \
 		--post_process "lambda url: re.sub(r'^https://3voor12.vpro.nl(.*)/update[~\.](.*?)[~\.](.*)', r'https://3voor12.vpro.nl/update~\2~.html', url)" \
 		$(magnolia1)/3v12/sitemap.xml \
