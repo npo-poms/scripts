@@ -130,15 +130,20 @@ def get_urls_from_api_iterate() -> set:
 
 
 def get_urls() -> list:
-    url_file = file_in_target("data." + profile + ".p")
+    url_file = file_in_target("data." + profile + ".api.p")
     if use_database or (os.path.exists(url_file) and not clean):
         new_urls = pickle.load(open(url_file, "rb"))
     else:
+        if os.path.exists(url_file):
+            if clean:
+                log.info("Ignoring %s because of clean parameter" % url_file)
+        else:
+            log.info("No %s found, creating it now" % url_file)
         # new_urls = get_urls_from_api_search()
         new_urls = get_urls_from_api_iterate()
         pickle.dump(new_urls, open(url_file, "wb"))
 
-    dest_file = file_in_target("data." + profile + ".txt")
+    dest_file = file_in_target("data." + profile + ".api.txt")
     with io.open(dest_file, 'w', encoding="utf-8") as f:
         f.write('\n'.join(sorted(new_urls)))
     log.info("Wrote %s (%d entries)", dest_file, len(new_urls))
@@ -233,7 +238,7 @@ def clean_from_api(
             for idx, url in enumerate(not_in_sitemap):
                 status = http_status(url)
                 if status == 404 or status == 301:
-                    log.info("(%d/%d) Deleting %s", idx, len(not_in_sitemap), url)
+                    log.info("(%d/%d) Deleting %s (http status: %d)", idx, len(not_in_sitemap), url, status)
                     response = backend.delete(url)
                     if response == "NOTFOUND":
                         log.info("Backend gave 404 for delete call: %s", url)
@@ -312,8 +317,15 @@ def main():
     log.info("Post processing")
     # list of all urls as they are present in the page api, but post processed. Should be used for comparing, not for operations
     mapped_api_urls = list(map(lambda url: post_process(post_process_api(schema_mapper(url))), api_urls))
+
+    mapped_file = file_in_target("mappeddata." + profile + ".api.txt")
+    with io.open(mapped_file, 'w', encoding="utf-8") as f:
+        f.write('\n'.join(sorted(mapped_api_urls)))
     # list of all urls as they are present in the sitemap, but post processed. Should be used for comparing, not for operations
     mapped_sitemap_urls = list(map(lambda url: post_process(post_process_sitemap(schema_mapper(url))), sitemap_urls))
+    mapped_file = file_in_target("mappeddata." + profile + ".sitemap.txt")
+    with io.open(mapped_file, 'w', encoding="utf-8") as f:
+        f.write('\n'.join(sorted(mapped_sitemap_urls)))
     log.info(".")
 
     clean_from_api(
