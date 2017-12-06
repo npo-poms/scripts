@@ -120,12 +120,15 @@ def get_urls_from_api_iterate() -> set:
     today = now.replace(hour=6, minute=0, second=0, microsecond=0)
     dateRange = API.dateRangeMatcherType(end=today)
     form.searches.creationDates.append(dateRange)
+    total = api.to_object(api.search(profile=profile, form=form, limit=0, accept="application/xml")).total
     pages = api.iterate(profile=profile, form=form)
     for page in pages:
         new_urls.add(page['url'])
         if len(new_urls) % 100 == 0:
-            log.info("API: Found %s urls for profile %s", len(new_urls), profile)
+            log.info("API: Found %d/%d urls for profile %s" % (len(new_urls), total, profile))
 
+    if new_urls < total:
+        log.error("Not found enough URL. %d < %d" % (len(new_urls), total))
     return new_urls
 
 
