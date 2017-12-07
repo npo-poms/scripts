@@ -127,7 +127,7 @@ def get_urls_from_api_iterate() -> set:
         if len(new_urls) % 100 == 0:
             log.info("API: Found %d/%d urls for profile %s" % (len(new_urls), total, profile))
 
-    if new_urls < total:
+    if len(new_urls) < total:
         log.error("Not found enough URL. %d < %d" % (len(new_urls), total))
     return new_urls
 
