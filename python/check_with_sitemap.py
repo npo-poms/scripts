@@ -200,7 +200,7 @@ def http_status(url):
         resp = requests.head(url, allow_redirects=False)
         return resp.status_code
     except Exception as e:
-        api.logg.info("%e", str(e))
+        log.info("%s" % str(e))
         return 404
 
 
@@ -238,6 +238,7 @@ def clean_from_api(
         clean_from_es = file_in_target("todo." + profile + ".should_be_removed_from_es.txt")
         remove_from_api = file_in_target("done." + profile + ".removed_from_api.txt")
         log.info("Deleting from api")
+        todo_delete_from_es = 0
         with io.open(clean_from_es, 'w', encoding='utf-8') as f_clean_from_es, \
             io.open(remove_from_api, 'w', encoding='utf-8') as f_removed_from_api:
             for idx, url in enumerate(not_in_sitemap):
@@ -248,6 +249,7 @@ def clean_from_api(
                     if response == "NOTFOUND":
                         log.info("Backend gave 404 for delete call: %s", url)
                         f_clean_from_es.write(url + '\n')
+                        todo_delete_from_es += 1
                     else:
                         log.info("%s" % response)
                         f_removed_from_api.write(url + '\n')
@@ -258,6 +260,12 @@ def clean_from_api(
                         log.info("(%d/%d) In api, not in sitemap, but not giving 404 (but %s) url %s: %s", idx, len(not_in_sitemap), str(status), url, str(page.lastPublished))
                     else:
                         log.info("(%d/%d) In api, not giving 404 (but %s), but not found in publisher %s", idx, len(not_in_sitemap), str(status), url)
+        if todo_delete_from_es > 0:
+            log.info("""
+Some things could not be removed from api (gave 404). Wrote to %s. You may want to run
+clean_from_es.sh %s
+""" % (clean_from_es, clean_from_es))
+
     else:
         log.info("No actual deletes requested")
 
@@ -284,7 +292,7 @@ def add_to_api(
             not_in_api = f.read().splitlines()
             log.info("Read from %s" % f.name)
 
-    log.info("In sitemap but not in api: %s" % len(not_in_api))
+    log.info("In sitemap but not in api: %s urls. E.g.:" % len(not_in_api))
 
     for url in not_in_api[:10]:
         print(url)
