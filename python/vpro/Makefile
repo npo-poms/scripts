@@ -9,9 +9,7 @@ all: clean vpro 3voor12 human report
 
 
 report:
-	@for f in `ls $(target)/report.*.txt` ; do wc -l $$f ; done
-	@for f in `ls $(target)/done.*.txt` ; do wc -l $$f ; done
-	@for f in `ls $(target)/todo.*.txt` ; do wc -l $$f ; done
+	@for f in `find $(target) -type f '(' -iname 'report.*.txt' -or -iname 'done.*.txt' -or -iname 'todo.*.txt' ')'`; do wc -l $$f ; done
 
 vpro:
 	$(check) \
