@@ -2,6 +2,7 @@
 check := ../check_with_sitemap.py
 magnolia1 := https://magnolia1-frontend1-prod.vpro.nl/
 target := ~/integrity-check-results
+reportdir = $(target)/reports/`date +'%FT%H'`
 
 .PHONY: vpro 3voor12 human vpro-clean-api 3voor12-clean-api human-clean-api report clean
 
@@ -9,7 +10,9 @@ all: clean vpro 3voor12 human report
 
 
 report:
-	@for f in `find $(target) -type f '(' -iname 'report.*.txt' -or -iname 'done.*.txt' -or -iname 'todo.*.txt' ')'`; do wc -l $$f ; done
+	@for f in `find $(target) -type f '(' -iname 'report.*.txt' -or -iname 'done.*.txt' -or -iname 'todo.*.txt' ')'`; do wc -l  $$f ; done
+	@mkdir -p $(reportdir)
+	@cp $(target)/report.*.txt $(reportdir)
 
 vpro:
 	$(check) \
