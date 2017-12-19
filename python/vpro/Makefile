@@ -10,7 +10,7 @@ all: clean vpro 3voor12 human report
 
 
 report:
-	@for f in `find $(target) -depth 1 -type f '(' -iname 'report.*.txt' -or -iname 'done.*.txt' -or -iname 'todo.*.txt' ')'`; do wc -l  $$f ; done
+	@for f in `find $(target) -maxdepth 2 -type f '(' -iname 'report.*.txt' -or -iname 'done.*.txt' -or -iname 'todo.*.txt' ')'`; do wc -l  $$f ; done
 	@mkdir -p $(reportdir)
 	@cp $(target)/report.*.txt $(reportdir)
 
