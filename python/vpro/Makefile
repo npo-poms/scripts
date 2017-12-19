@@ -1,7 +1,7 @@
 
 check := ../check_with_sitemap.py
 magnolia1 := https://magnolia1-frontend1-prod.vpro.nl/
-target := ~/integrity-check-results
+target := $(HOME)/integrity-check-results
 reportdir = $(target)/reports/`date +'%FT%H'`
 
 .PHONY: vpro 3voor12 human vpro-clean-api 3voor12-clean-api human-clean-api report clean
@@ -10,7 +10,7 @@ all: clean vpro 3voor12 human report
 
 
 report:
-	@for f in `find $(target) -type f '(' -iname 'report.*.txt' -or -iname 'done.*.txt' -or -iname 'todo.*.txt' ')'`; do wc -l  $$f ; done
+	@for f in `find $(target) -depth 1 -type f '(' -iname 'report.*.txt' -or -iname 'done.*.txt' -or -iname 'todo.*.txt' ')'`; do wc -l  $$f ; done
 	@mkdir -p $(reportdir)
 	@cp $(target)/report.*.txt $(reportdir)
 
@@ -54,6 +54,14 @@ vpro-clean-api:
 
 human-clean-api:
 	$(check) --use_database --target_directory $(target) -D $(magnolia1)/human/sitemap.xml human
+
+
+vpro-plot:
+	cd $(target) ; for i in `ls reports/*/report.vpro-predictions.in_sitemap*.txt`; do wc -l $$i  ; done | awk '{print $$2"/"$$1}' | awk -F '/' '{print $$2","$$4}' > $(target)/gnuplot.vpro.toolittle.data
+	cd $(target) ; for i in `ls reports/*/report.vpro-predictions.in_api*.txt`; do wc -l $$i  ; done | awk '{print $$2"/"$$1}' | awk -F '/' '{print $$2","$$4}' > $(target)/gnuplot.vpro.toomuch.data
+	gnuplot -e "files='$(target)/gnuplot.vpro'" plot.gp
+
+
 
 
 clean:
