@@ -9,8 +9,12 @@ from tempfile import gettempdir
 # some imports handy for the exec call
 # noinspection PyUnresolvedReferences
 import npoapi.xml.mediaupdate
-# noinspection PyUnresolvedReferences
-from dateutil.parser import parse
+
+try:
+    from dateutil.parser import parse
+except ImportError:
+    pass
+
 from npoapi import MediaBackend, MediaBackendUtil as MU
 
 
