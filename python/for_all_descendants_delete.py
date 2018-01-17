@@ -20,7 +20,7 @@ from npoapi import MediaBackend, MediaBackendUtil as MU
 
 
 def init(processor=None, filter=None):
-    global api
+
     api = MediaBackend().command_line_client()
     api.add_argument('mid', type=str, nargs=1, help='The mid  of the object to handle')
     api.add_argument('-C', '--clean', action='store_true', default=False)
@@ -36,14 +36,19 @@ type(member) == npoapi.xml.mediaupdate.programUpdateType
 member.type == 'CLIP'
 'kort!' in short_title.lower()
 """)
+    return api
 
 
-def main(processor=None, filter=None):
-
+def main(api, processor=None, filter=None):
     args = api.parse_args()
-    log = api.logger
     mid = args.mid[0]
     clean = args.clean
+    do_work(api, mid, clean, segments=args.segments, episodes=args.episodes, filter=args.filter, dryrun=args.dryrun, include_self=args.include_self)
+
+
+def do_work(api, mid, clean=False, segments=True, episodes=True, filter=None, dryrun=True, include_self=True):
+
+    log = api.logger
 
 
     tempfilename = os.path.splitext(os.path.basename(sys.argv[0]))[0]
@@ -55,7 +60,7 @@ def main(processor=None, filter=None):
     else:
         if not clean:
             log.info("Not found " + cache)
-        MU.descendants(api, mid, batch=200, target=members, segments=args.segments, episodes=args.episodes, log_progress=True)
+        MU.descendants(api, mid, batch=200, target=members, segments=segments, episodes=episodes, log_progress=True)
         pickle.dump(members, open(cache, "wb"))
 
     log.info("Found " + str(len(members)) + " objects")
@@ -75,7 +80,7 @@ def main(processor=None, filter=None):
                 log.debug("Skipping %s, %s %s because of filter %s", str(type(member)), str(member.type) if hasattr(member, "type") else '?', member_mid, filter)
                 continue
 
-        if not args.dryrun:
+        if not dryrun:
             log.info("%s Deleting %s", str(idx), member_mid)
             api.delete(member_mid)
         else:
@@ -83,8 +88,8 @@ def main(processor=None, filter=None):
 
         deletes += 1
 
-    if args.include_self:
-        if not args.dryrun:
+    if include_self:
+        if not dryrun:
             log.info("Deleting %s", mid)
             api.delete(mid)
         else:
@@ -95,8 +100,8 @@ def main(processor=None, filter=None):
 
 
 if __name__ == "__main__":
-    init()
-    main()
+    api = init()
+    main(api)
 
 
 
