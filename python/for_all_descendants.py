@@ -14,7 +14,6 @@ from dateutil.parser import parse
 from npoapi import MediaBackend, MediaBackendUtil as MU
 
 
-
 class ForAllDescendants:
 
     def __init__(self, mid = None, clean=False, segments=False, episodes=False, filter=None, dryrun=False, include_self=False, processor = None):
@@ -30,7 +29,6 @@ class ForAllDescendants:
         self.mid = mid
         self.logger = self.api.logger
         self.processor = processor
-
 
     def command_line(self):
         api = self.api
@@ -73,7 +71,6 @@ member.publishStop=parse("2018-12-31")
 
     def do_one(self, member, idx):
         self.api.post(member)
-
 
     def do_all(self):
         log = self.api.logger
@@ -118,10 +115,12 @@ member.publishStop=parse("2018-12-31")
 
         if self.include_self:
             if not self.dryrun:
-                log.info("Deleting %s", self.mid)
-                self.do_one(self.api.get(self.mid), None)
+                log.info("%s %s", self.description, self.mid)
+                object = self.api.get_object(self.mid)
+                log.info("Found %s", str(object))
+                self.do_one(object, None)
             else:
-                log.info("Dry run deleting %s", self.mid)
+                log.info("Dry run %s %s", self.description, self.mid)
             count += 1
 
         log.info("Ready. %s %s object from POMS", self.description, str(count))
@@ -153,7 +152,6 @@ member.publishStop=parse("2018-12-31")
     def main(self):
         self.parse_args()
         self.do_all()
-
 
 
 if __name__ == "__main__":

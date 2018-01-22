@@ -12,6 +12,7 @@ class ForAllDescendantsDelete(ForAllDescendants):
     def do_one(self, member, idx):
         self.api.delete(member.mid)
 
+
 if __name__ == "__main__":
     for_all = ForAllDescendantsDelete()
     for_all.command_line()

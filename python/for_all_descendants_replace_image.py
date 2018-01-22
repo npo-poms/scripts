@@ -37,14 +37,22 @@ class ForAllDescendantsReplaceImage(ForAllDescendants):
 
     def do_one(self, member, idx):
         new_image = None
+        total = 0
         for image in member.images.image:
-            if image.title[0] != self.image_title:
+            total += 1
+            if image.title != self.image_title:
                 image.publishStop = NOW
+                self.logger.info("Setting offline %s", image.title)
             else:
                 new_image = image
+                self.logger.info("Found new image %s", new_image.title)
+
         if not new_image:
             new_image = MU.create_image(self.image_file)
-        print(self.image_type)
+            self.logger.info("Creating new image %s", str(new_image))
+
+        self.logger.info("handled %s images", str(total))
+
         MU.set_image_fields(new_image, title=self.image_title, source=self.image_source, source_name=self.image_source_name, credits=self.image_credits, image_type=self.image_type)
 
         member.images.image.append(new_image)
