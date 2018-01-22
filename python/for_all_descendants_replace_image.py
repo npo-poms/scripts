@@ -1,58 +1,63 @@
 #!/usr/bin/env python3
 from npoapi.xml.mediaupdate import programUpdateType
 
-import for_all_descendants
+from for_all_descendants import ForAllDescendants
 import datetime
 from npoapi import MediaBackendUtil as MU
 
 NOW = datetime.datetime.utcnow()
 
+class ForAllDescendantsReplaceImage(ForAllDescendants):
 
-def add_image(member, idx):
-    new_image = None
-    for image in member.images.image:
-        if image.title[0] != image_title:
-            image.publishStop = NOW
-        else:
-            new_image = image
-    if not new_image:
-        new_image = MU.create_image(image_file)
-    print(image_type)
-    MU.set_image_fields(new_image, title=image_title, source=image_source, source_name=image_source_name, credits=image_credits, image_type=image_type)
+    def __init__(self):
+        super().__init__(processor = self.nope)
+        self.description = "Replacing image"
 
-    member.images.image.append(new_image)
+    def command_line(self):
+        super().command_line()
+        self.api.add_argument("image_file", type=str, nargs=1, help='image file name')
 
+        self.api.add_argument("image_title", type=str, nargs=1, help='image title')
+        self.api.add_argument("--image_credits", type=str, help='image credits')
+        self.api.add_argument("--image_source_name", type=str, help='image source name')
+        self.api.add_argument("--image_source", type=str, help='image source')
+        self.api.add_argument("--image_type", type=str, default='PICTURE', help='image type')
 
+    def parse_args(self):
+        super().parse_args()
+        args = self.api.parse_args()
+        self.image_file = args.image_file[0]
+        self.image_title = args.image_title[0]
 
-def filter_image(member, ids):
-    return type(member) == programUpdateType
+        self.image_credits = args.image_credits
+        print(self.image_credits)
+        self.image_source_name = args.image_source_name
+        self.image_source = args.image_source
+        self.image_type = args.image_type
+
+    def do_one(self, member, idx):
+        new_image = None
+        for image in member.images.image:
+            if image.title[0] != self.image_title:
+                image.publishStop = NOW
+            else:
+                new_image = image
+        if not new_image:
+            new_image = MU.create_image(self.image_file)
+        print(self.image_type)
+        MU.set_image_fields(new_image, title=self.image_title, source=self.image_source, source_name=self.image_source_name, credits=self.image_credits, image_type=self.image_type)
+
+        member.images.image.append(new_image)
+        super().do_one(member, idx)
+
+    def filter_image(self, member, ids):
+        return type(member) == programUpdateType
 
 
 if __name__ == "__main__":
-    for_all_descendants.init(add_image, filter_image)
-    for_all_descendants.api.add_argument("image_file", type=str, nargs=1, help='image file name')
-    for_all_descendants.api.add_argument("image_title", type=str, nargs=1, help='image title')
-    for_all_descendants.api.add_argument("--image_credits", type=str, help='image credits')
-    for_all_descendants.api.add_argument("--image_source_name", type=str,  help='image source name')
-    for_all_descendants.api.add_argument("--image_source", type=str, help='image source')
-    for_all_descendants.api.add_argument("--image_type", type=str, help='image type')
-
-    args = for_all_descendants.api.parse_args()
-    global image_file
-    image_file = args.image_file[0]
-    global image_title
-    image_title = args.image_title[0]
-    global image_credits
-    image_credits = args.image_credits
-    print(image_credits)
-    global image_source_name
-    image_source_name = args.image_source_name
-    global image_source
-    image_source = args.image_source
-    global image_type
-    image_type = args.image_type
-
-    for_all_descendants.main(add_image, filter_image)
+    for_all = ForAllDescendantsReplaceImage()
+    for_all.command_line()
+    for_all.main()
 
 
 
