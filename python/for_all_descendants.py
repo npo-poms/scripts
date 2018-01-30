@@ -16,7 +16,7 @@ from npoapi import MediaBackend, MediaBackendUtil as MU
 
 class ForAllDescendants:
 
-    def __init__(self, mid = None, clean=False, segments=False, episodes=False, filter=None, dryrun=False, include_self=False, processor = None):
+    def __init__(self, mid = None, clean=False, segments=False, episodes=False, filter=None, dryrun=False, include_self=False, processor = None, processor_description= None, filter_description = None):
 
         self.api = MediaBackend().command_line_client()
         self.description = "Doing for all"
@@ -29,6 +29,8 @@ class ForAllDescendants:
         self.mid = mid
         self.logger = self.api.logger
         self.processor = processor
+        self.processor_description = processor_description
+        self.filter_description = filter_description
 
     def command_line(self):
         api = self.api
@@ -60,8 +62,10 @@ member.publishStop=parse("2018-12-31")
     def parse_args(self):
         args = self.api.parse_args()
 
-        self.processor = self.function_or_arg(self.processor, args, "process", self.logger)
-        self.filter = self.function_or_arg(self.filter, args, "filter", self.logger)
+        self.processor = ForAllDescendants.function_or_arg(self.processor, args, "process", self.logger)
+        self.filter = ForAllDescendants.function_or_arg(self.filter, args, "filter", self.logger)
+        self.processor_description = ForAllDescendants.function_description(self.processor_description, args, "process")
+        self.filter_description = ForAllDescendants.function_description(self.filter_description, args, "filter")
         self.mid = args.mid[0]
         self.clean = args.clean or self.clean
         self.segments = args.segments or self.segments
@@ -71,6 +75,14 @@ member.publishStop=parse("2018-12-31")
 
     def do_one(self, member, idx):
         self.api.post(member)
+
+
+    def process(self, member, idx):
+        needs_post = self.processor(member, idx)
+        if needs_post is None:
+            needs_post = True
+        self.logger.debug(" needs post %s", str(needs_post))
+        return needs_post
 
     def do_all(self):
         log = self.api.logger
@@ -83,6 +95,7 @@ member.publishStop=parse("2018-12-31")
         else:
             if not self.clean:
                 log.info("Not found " + cache)
+
             MU.descendants(self.api, self.mid, batch=200, target=members, segments=self.segments, episodes=self.episodes,
                            log_progress=True)
             pickle.dump(members, open(cache, "wb"))
@@ -96,20 +109,29 @@ member.publishStop=parse("2018-12-31")
             main_title = MU.title(member, "MAIN")
             # noinspection PyUnusedLocal
             short_title = MU.title(member, "SHORT")
+            member_type = MU.mediatype(member)
+            string = "%s %s (%s)" % (member_type, member_mid, main_title)
+
             if self.filter:
                 result = self.filter(member, idx)
-                log.debug("%s Execed %s result %s", str(idx), str(self.filter), str(result))
+                log.debug("%s Execed %s result %s", str(idx), self.filter_description, str(result))
                 if not result:
-                    log.debug("Skipping %s, %s %s because of filter %s", str(type(member)),
-                              str(member.type) if hasattr(member, "type") else '?', member_mid, self.filter)
+                    log.info("%s Skipping %s because of filter %s", str(idx), string, self.filter_description)
                     continue
 
-            self.processor(member, idx)
-            if not self.dryrun:
-                log.info("%s %s %s", str(idx), self.description, member_mid)
-                self.do_one(member, idx)
+            needs_post = self.process(member, idx)
+            if needs_post is None:
+                needs_post = True
+            log.debug(" needs post %s", str(needs_post))
+            if needs_post:
+                if not self.dryrun:
+                    log.info("%s Execed %s for %s and posting", str(idx), self.processor_description, string)
+                    self.do_one(member, idx)
+                else:
+                    log.info("%s Execed %s for %s (not posting because of dryrun parameter)", str(idx),
+                         self.processor_description, string)
             else:
-                log.info("%s Dry run %s %s", str(idx), self.description, member_mid)
+                log.info("%s Skipping %s for %s", str(idx), self.processor_description, string)
 
             count += 1
 
@@ -126,7 +148,8 @@ member.publishStop=parse("2018-12-31")
         log.info("Ready. %s %s object from POMS", self.description, str(count))
         return count
 
-    def function_or_arg(self, given_function, args, attr, log):
+    @staticmethod
+    def function_or_arg(given_function, args, attr, log):
         if given_function is None:
             to_exec = getattr(args, attr)
 
@@ -145,6 +168,16 @@ member.publishStop=parse("2018-12-31")
                 given_function = None
 
         return given_function
+
+    @staticmethod
+    def function_description(given_function_description, args, attr):
+        if given_function_description is None:
+            if hasattr(args, attr):
+                given_function_description = getattr(args, attr)
+            else:
+                given_function_description = ""
+
+        return given_function_description
 
     def nope(self, *args):
         """"""
