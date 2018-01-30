@@ -1,6 +1,4 @@
-set xdata time
-set timefmt '%Y-%m-%dT%H'
+load 'plot-settings.gp'
 
-set term png
 set output dest
 plot file  using 1:2 with lines title title
