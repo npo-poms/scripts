@@ -6,7 +6,7 @@ reportdir = $(target)/reports/`date +'%FT%H'`
 
 .PHONY: vpro 3voor12 human vpro-clean-api 3voor12-clean-api human-clean-api report clean
 
-all: clean vpro 3voor12 human report
+all: clean vpro 3voor12 human report vpro-predictions-plot human-plot 3voor12-plot
 
 
 report:
@@ -56,10 +56,11 @@ human-clean-api:
 	$(check) --use_database --target_directory $(target) -D $(magnolia1)/human/sitemap.xml human
 
 
-vpro-plot:
-	cd $(target) ; for i in `ls reports/*/report.vpro-predictions.in_sitemap*.txt`; do wc -l $$i  ; done | awk '{print $$2"/"$$1}' | awk -F '/' '{print $$2","$$4}' > $(target)/gnuplot.vpro.toolittle.data
-	cd $(target) ; for i in `ls reports/*/report.vpro-predictions.in_api*.txt`; do wc -l $$i  ; done | awk '{print $$2"/"$$1}' | awk -F '/' '{print $$2","$$4}' > $(target)/gnuplot.vpro.toomuch.data
-	gnuplot -e "files='$(target)/gnuplot.vpro'" plot.gp
+%-plot:
+	cd $(target) ; for i in `ls reports/*/report.$*.in_sitemap*.txt`; do wc -l $$i  ; done | awk '{print $$2"/"$$1}' | awk -F '/' '{print $$2" "$$4}' > $(target)/gnuplot.$*.toolittle.data
+	cd $(target) ; for i in `ls reports/*/report.$*.in_api*.txt`; do wc -l $$i  ; done | awk '{print $$2"/"$$1}' | awk -F '/' '{print $$2" "$$4}' > $(target)/gnuplot.$*.toomuch.data
+	gnuplot -e "file='$(target)/gnuplot.$*.toolittle.data';title='$* not in api';dest='$(target)/$*-not-in-api.png'" plot.gp
+	gnuplot -e "file='$(target)/gnuplot.$*.toomuch.data';title='$* not in sitemap';dest='$(target)/$*-not-in-sitemap.png'" plot.gp
 
 
 
