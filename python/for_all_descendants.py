@@ -150,14 +150,13 @@ member.publishStop=parse("2018-12-31")
         """"""
 
     def main(self):
+        self.command_line()
         self.parse_args()
         self.do_all()
 
 
 if __name__ == "__main__":
-    for_all = ForAllDescendants()
-    for_all.command_line()
-    for_all.main()
+    ForAllDescendants().main()
 
 
 

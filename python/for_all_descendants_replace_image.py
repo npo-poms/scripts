@@ -9,19 +9,25 @@ NOW = datetime.datetime.utcnow()
 
 class ForAllDescendantsReplaceImage(ForAllDescendants):
 
-    def __init__(self):
-        super().__init__(processor = self.nope)
+    def __init__(self, file = None, credits = None, title = None, source_name = None, image_source = None, image_type = 'PICTURE', **kwargs):
+        super().__init__(processor = self.nope, **kwargs)
         self.description = "Replacing image"
+        self.image_file = file
+        self.image_title = title
+        self.image_credits = credits
+        self.image_source_name = source_name
+        self.image_source = image_source
+        self.image_type = image_type
 
     def command_line(self):
         super().command_line()
         self.api.add_argument("image_file", type=str, nargs=1, help='image file name')
 
         self.api.add_argument("image_title", type=str, nargs=1, help='image title')
-        self.api.add_argument("--image_credits", type=str, help='image credits')
-        self.api.add_argument("--image_source_name", type=str, help='image source name')
-        self.api.add_argument("--image_source", type=str, help='image source')
-        self.api.add_argument("--image_type", type=str, default='PICTURE', help='image type')
+        self.api.add_argument("--image_credits", type=str, default=self.image_credits, help='image credits')
+        self.api.add_argument("--image_source_name", type=str, default=self.image_source_name, help='image source name')
+        self.api.add_argument("--image_source", type=str, default=self.image_source, help='image source')
+        self.api.add_argument("--image_type", type=str, default=self.image_type, help='image type')
 
     def parse_args(self):
         super().parse_args()
@@ -30,7 +36,6 @@ class ForAllDescendantsReplaceImage(ForAllDescendants):
         self.image_title = args.image_title[0]
 
         self.image_credits = args.image_credits
-        print(self.image_credits)
         self.image_source_name = args.image_source_name
         self.image_source = args.image_source
         self.image_type = args.image_type
@@ -58,14 +63,13 @@ class ForAllDescendantsReplaceImage(ForAllDescendants):
         member.images.image.append(new_image)
         super().do_one(member, idx)
 
-    def filter_image(self, member, ids):
+    @staticmethod
+    def filter_image(member, ids):
         return type(member) == programUpdateType
 
 
 if __name__ == "__main__":
-    for_all = ForAllDescendantsReplaceImage()
-    for_all.command_line()
-    for_all.main()
+    ForAllDescendantsReplaceImage().main()
 
 
 
