@@ -6,7 +6,7 @@ reportdir = $(target)/reports/`date +'%FT%H'`
 
 .PHONY: vpro 3voor12 human vpro-clean-api 3voor12-clean-api human-clean-api report clean
 
-all: clean vpro 3voor12 human report vpro-predictions-plot human-plot 3voor12-plot
+all: clean vpro 3voor12 human report $(target)/plots/plot-all.png
 
 
 report:
