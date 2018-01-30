@@ -57,10 +57,11 @@ human-clean-api:
 
 
 %-plot:
+	mkdir -p $(target)/plots
 	cd $(target) ; for i in `ls reports/*/report.$*.in_sitemap*.txt`; do wc -l $$i  ; done | awk '{print $$2"/"$$1}' | awk -F '/' '{print $$2" "$$4}' > $(target)/gnuplot.$*.toolittle.data
 	cd $(target) ; for i in `ls reports/*/report.$*.in_api*.txt`; do wc -l $$i  ; done | awk '{print $$2"/"$$1}' | awk -F '/' '{print $$2" "$$4}' > $(target)/gnuplot.$*.toomuch.data
-	gnuplot -e "file='$(target)/gnuplot.$*.toolittle.data';title='$* not in api';dest='$(target)/$*-not-in-api.png'" plot.gp
-	gnuplot -e "file='$(target)/gnuplot.$*.toomuch.data';title='$* not in sitemap';dest='$(target)/$*-not-in-sitemap.png'" plot.gp
+	gnuplot -e "file='$(target)/gnuplot.$*.toolittle.data';title='$* not in api';dest='$(target)/plots/$*-not-in-api.png'" plot.gp
+	gnuplot -e "file='$(target)/gnuplot.$*.toomuch.data';title='$* not in sitemap';dest='$(target)/plots/$*-not-in-sitemap.png'" plot.gp
 
 
 
