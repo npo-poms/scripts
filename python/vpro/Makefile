@@ -2,7 +2,9 @@
 check := ../check_with_sitemap.py
 magnolia1 := https://magnolia1-frontend1-prod.vpro.nl/
 target := $(HOME)/integrity-check-results
-reportdir = $(target)/reports/`date +'%FT%H'`
+reportdir := $(target)/reports/`date +'%FT%H'`
+lastmonth := $(shell python3 -c 'from datetime import datetime, timedelta; print((datetime.now() - timedelta(days=31)).strftime("%Y-%m-%dT%H"))')
+now := $(shell python3 -c 'from datetime import datetime, timedelta; print((datetime.now()).strftime("%Y-%m-%dT%H"))')
 
 .PHONY: vpro 3voor12 human vpro-clean-api 3voor12-clean-api human-clean-api report clean
 
@@ -60,12 +62,12 @@ human-clean-api:
 	mkdir -p $(target)/plots
 	cd $(target) ; for i in `ls reports/*/report.$*.in_sitemap*.txt`; do wc -l $$i  ; done | awk '{print $$2"/"$$1}' | awk -F '/' '{print $$2" "$$4}' > $(target)/$*.not-in-api.data
 	cd $(target) ; for i in `ls reports/*/report.$*.in_api*.txt`; do wc -l $$i  ; done | awk '{print $$2"/"$$1}' | awk -F '/' '{print $$2" "$$4}' > $(target)/$*.not-in-sitemap.data
-	gnuplot -e "file='$(target)/$*.not-in-api.data';title='$* not in api';dest='$(target)/plots/$*-not-in-api.png'" plot.gp
-	gnuplot -e "file='$(target)/$*.not-in-sitemap.data';title='$* not in sitemap';dest='$(target)/plots/$*-not-in-sitemap.png'" plot.gp
+	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';file='$(target)/$*.not-in-api.data';title='$* not in api';dest='$(target)/plots/$*-not-in-api.png'" plot.gp
+	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';file='$(target)/$*.not-in-sitemap.data';title='$* not in sitemap';dest='$(target)/plots/$*-not-in-sitemap.png'" plot.gp
 
 
 $(target)/plots/plot-all.png: vpro-predictions-plot human-plot 3voor12-plot
-	gnuplot -e "destdir='$(target)/'" plot-all.gp
+	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';destdir='$(target)/'" plot-all.gp
 
 
 
