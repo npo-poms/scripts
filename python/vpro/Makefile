@@ -6,9 +6,11 @@ reportdir := $(target)/reports/`date +'%FT%H'`
 lastmonth := $(shell python3 -c 'from datetime import datetime, timedelta; print((datetime.now() - timedelta(days=31)).strftime("%Y-%m-%dT%H"))')
 now := $(shell python3 -c 'from datetime import datetime, timedelta; print((datetime.now()).strftime("%Y-%m-%dT%H"))')
 
-.PHONY: vpro 3voor12 human vpro-clean-api 3voor12-clean-api human-clean-api report clean
+.PHONY: vpro 3voor12 human vpro-clean-api 3voor12-clean-api human-clean-api report clean plots
 
-all: clean vpro 3voor12 human report $(target)/plots/plot-all.png
+all: clean vpro 3voor12 human plots
+
+plots: report $(target)/plots/plot-all.png
 
 
 report:
