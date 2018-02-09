@@ -6,9 +6,11 @@ reportdir := $(target)/reports/`date +'%FT%H'`
 lastmonth := $(shell python3 -c 'from datetime import datetime, timedelta; print((datetime.now() - timedelta(days=31)).strftime("%Y-%m-%dT%H"))')
 now := $(shell python3 -c 'from datetime import datetime, timedelta; print((datetime.now()).strftime("%Y-%m-%dT%H"))')
 
-.PHONY: vpro 3voor12 human vpro-clean-api 3voor12-clean-api human-clean-api report clean
+.PHONY: vpro 3voor12 human vpro-clean-api 3voor12-clean-api human-clean-api report clean plots
 
-all: clean vpro 3voor12 human report $(target)/plots/plot-all.png
+all: clean vpro 3voor12 human plots
+
+plots: report $(target)/plots/plot-all.png
 
 
 report:
@@ -60,7 +62,6 @@ human-clean-api:
 
 %-plot:
 	mkdir -p $(target)/plots
-	rm -rf $(target)/plots/*
 	cd $(target) ; for i in `ls reports/*/report.$*.in_sitemap*.txt`; do wc -l $$i  ; done | awk '{print $$2"/"$$1}' | awk -F '/' '{print $$2" "$$4}' > $(target)/$*.not-in-api.data
 	cd $(target) ; for i in `ls reports/*/report.$*.in_api*.txt`; do wc -l $$i  ; done | awk '{print $$2"/"$$1}' | awk -F '/' '{print $$2" "$$4}' > $(target)/$*.not-in-sitemap.data
 	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';file='$(target)/$*.not-in-api.data';title='$* not in api';dest='$(target)/plots/$*-not-in-api.svg'" plot.gp
@@ -73,4 +74,5 @@ $(target)/plots/plot-all.png: vpro-predictions-plot human-plot 3voor12-plot
 
 
 clean:
+	rm -rf $(target)/plots/*
 	rm -f $(target)/*.p $(target)/*.txt
