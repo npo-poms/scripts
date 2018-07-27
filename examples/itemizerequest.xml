@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <itemize xmlns="urn:vpro:media:update:2009" xmlns:shared="urn:vpro:shared:2009" xmlns:media="urn:vpro:media:2009"
-         mid="AT_2073522">
+         mid="AT_2073522"
+         >
+  <!-- The mid attribute may be optional if posting to https://api.poms.omroep.nl/media/media/<mid>/itemize -->
     <start>PT0S</start>
     <stop>PT10S</stop>
 </itemize>
