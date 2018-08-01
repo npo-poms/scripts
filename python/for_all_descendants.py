@@ -113,10 +113,14 @@ member.publishStop=parse("2018-12-31")
             string = "%s %s (%s)" % (member_type, member_mid, main_title)
 
             if self.filter:
-                result = self.filter(member, idx)
-                log.debug("%s Execed %s result %s", str(idx), self.filter_description, str(result))
-                if not result:
-                    log.info("%s Skipping %s because of filter %s", str(idx), string, self.filter_description)
+                try :
+                    result = self.filter(member, idx)
+                    log.debug("%s Execed %s result %s", str(idx), self.filter_description, str(result))
+                    if not result:
+                        log.info("%s Skipping %s because of filter %s", str(idx), string, self.filter_description)
+                        continue
+                except Exception as e:
+                    log.warn("%s %s", str(member.mid), str(e))
                     continue
 
             needs_post = self.process(member, idx)
