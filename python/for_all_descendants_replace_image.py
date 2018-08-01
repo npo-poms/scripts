@@ -8,10 +8,14 @@ from npoapi import MediaBackendUtil as MU
 
 NOW = datetime.datetime.utcnow()
 
+
 class ForAllDescendantsReplaceImage(ForAllDescendants):
 
     def __init__(self, file = None, credits = None, title = None, source_name = None, image_source = None, image_type = 'PICTURE', **kwargs):
-        super().__init__(processor = self.nope, filter = self.filter_image,  filter_description= "Should be program or segment", **kwargs)
+        super().__init__(
+            processor = self.nope,
+            filter = self.filter_image,
+            filter_description= "Should be program or segment", **kwargs)
         self.description = "Replacing image"
         self.image_file = file
         self.image_title = title
@@ -22,12 +26,16 @@ class ForAllDescendantsReplaceImage(ForAllDescendants):
 
     def command_line(self):
         super().command_line()
-        self.api.add_argument("image_file", type=str, nargs=1, help='image file name')
+        self.api.add_argument("image_file", type=str, nargs=1, help='image file name(s)')
         self.api.add_argument("image_title", type=str, nargs=1, help='image title')
         self.api.add_argument("--image_credits", type=str, default=self.image_credits, help='image credits')
         self.api.add_argument("--image_source_name", type=str, default=self.image_source_name, help='image source name')
         self.api.add_argument("--image_source", type=str, default=self.image_source, help='image source')
+        self.api.add_argument("--image_license", type=str, default='COPYRIGHTED', help='image license')
         self.api.add_argument("--image_type", type=str, default=self.image_type, help='image type')
+        self.api.add_argument("--filter", type=str, default=None, help="""
+Filter. A piece of python code to filter. E.g. "memberType == npoapi.xml.mediaupdate.programUpdateType" or "member.type == 'PROMO'"
+""")
 
     def parse_args(self):
         super().parse_args()
@@ -38,6 +46,12 @@ class ForAllDescendantsReplaceImage(ForAllDescendants):
         self.image_source_name = args.image_source_name
         self.image_source = args.image_source
         self.image_type = args.image_type
+        self.image_license = args.image_license
+        f  = args.filter
+        if not f is None:
+            self.filter = lambda member, idx: eval(f)
+            self.filter_description = "specified on command line"
+
 
     def process(self, member, idx):
         new_image = None
@@ -54,15 +68,21 @@ class ForAllDescendantsReplaceImage(ForAllDescendants):
                 new_image = image
                 self.logger.debug("%s Found existing new image %s", str(idx), new_image.title)
 
+
         if not new_image:
+            image_files = self.image_file.split(",")
+            image_file_to_use = image_files[idx % len(image_files)]
             total_new += 1
-            new_image = MU.create_image(self.image_file)
+            new_image = MU.create_image(image_file_to_use)
             needs_post = True
             MU.set_image_fields(
                 new_image,
                 title=self.image_title, source=self.image_source,
-                source_name=self.image_source_name, credits=self.image_credits, image_type=self.image_type)
-            self.logger.info("%s Creating new image %s", str(idx), str(new_image.title))
+                source_name=self.image_source_name,
+                credits=self.image_credits,
+                license=self.image_license,
+                image_type=self.image_type)
+            self.logger.info("%s Creating new image %s %s", str(idx), str(new_image.title), image_file_to_use)
             member.images.image.append(new_image)
 
         self.logger.info("%s handled %s existing images, and created %s", str(idx), str(total_existing), str(total_new))
