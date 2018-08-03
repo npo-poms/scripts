@@ -84,7 +84,8 @@ Filter. A piece of python code to filter. E.g. "memberType == npoapi.xml.mediaup
             needs_post = True
             MU.set_image_fields(
                 new_image,
-                title=self.image_title, source=self.image_source,
+                title=self.image_title,
+                source=self.image_source,
                 source_name=self.image_source_name,
                 credits=self.image_credits,
                 license=self.image_license,
