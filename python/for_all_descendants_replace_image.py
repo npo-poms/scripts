@@ -58,7 +58,8 @@ Filter. A piece of python code to filter. E.g. "memberType == npoapi.xml.mediaup
         needs_post = False
         total_existing = 0
         total_new = 0
-        for image in member.images.image:
+        needs_reinsert = False
+        for num, image in enumerate(member.images.image, start = 0):
             if image.title != self.image_title:
                 total_existing += 1
                 self.logger.debug("%s, %s != %s", str(idx), image.title, self.image_title)
@@ -66,8 +67,14 @@ Filter. A piece of python code to filter. E.g. "memberType == npoapi.xml.mediaup
                 needs_post = True
             else:
                 new_image = image
+                needs_reinsert = num != 0
+                needs_post = needs_post or needs_reinsert
                 self.logger.debug("%s Found existing new image %s", str(idx), new_image.title)
 
+        if needs_reinsert:
+            self.logger.info("Moved image %s to position 0", new_image.title)
+            member.images.image.remove(new_image)
+            member.images.image.insert(0, new_image)
 
         if not new_image:
             image_files = self.image_file.split(",")
@@ -83,7 +90,7 @@ Filter. A piece of python code to filter. E.g. "memberType == npoapi.xml.mediaup
                 license=self.image_license,
                 image_type=self.image_type)
             self.logger.info("%s Creating new image %s %s", str(idx), str(new_image.title), image_file_to_use)
-            member.images.image.append(new_image)
+            member.images.image.insert(0, new_image)
 
         self.logger.info("%s handled %s existing images, and created %s", str(idx), str(total_existing), str(total_new))
 
