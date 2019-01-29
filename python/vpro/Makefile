@@ -6,9 +6,9 @@ reportdir := $(target)/reports/`date +'%FT%H'`
 lastmonth := $(shell python3 -c 'from datetime import datetime, timedelta; print((datetime.now() - timedelta(days=31)).strftime("%Y-%m-%dT%H"))')
 now := $(shell python3 -c 'from datetime import datetime, timedelta; print((datetime.now()).strftime("%Y-%m-%dT%H"))')
 
-.PHONY: vpro 3voor12 human vpro-clean-api 3voor12-clean-api human-clean-api report clean plots
+.PHONY: vpro 3voor12 human npodoc vpro-clean-api 3voor12-clean-api human-clean-api report clean plots
 
-all: clean vpro 3voor12 human plots
+all: clean vpro 3voor12 human npodoc plots
 
 plots: report $(target)/plots/plot-all.png
 
@@ -45,6 +45,18 @@ human:
 		--post_process "lambda url: re.sub(r'^https://www.human.nl/speel[~\.](.*?)[~\.](.*)', r'https://www.human.nl/speel~\1~.html', url)" \
 		$(magnolia1)/human/sitemap.xml \
 		human
+
+
+
+npodoc:
+	$(check) \
+		-e prod --http_to_https \
+		--clean \
+		--target_directory $(target) \
+		--post_process "lambda url: re.sub(r'^https://www.2doc.nl/speel[~\.](.*?)[~\.](.*)', r'https://www.2doc.nl/speel~\1~.html', url)" \
+		$(magnolia1)/npodoc/sitemap.xml \
+		npodoc
+
 
 
 clean-api: vpro-clean-api 3voor12-clean-api human-clean-api
