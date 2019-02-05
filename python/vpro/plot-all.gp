@@ -1,6 +1,6 @@
 load 'plot-settings.gp'
 
-profiles="vpro-predictions human 3voor12"
+profiles="vpro-predictions human 3voor12 npodoc"
 set output destdir.'plots/plot-all.svg'
 plot for [profile in profiles] \
      destdir.profile.'.not-in-api.data' using 1:2 with linespoints title profile." not in api", \
