@@ -80,7 +80,7 @@ human-clean-api:
 	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';file='$(target)/$*.not-in-sitemap.data';title='$* not in sitemap';dest='$(target)/plots/$*-not-in-sitemap.svg'" plot.gp
 
 
-$(target)/plots/plot-all.png: vpro-predictions-plot human-plot 3voor12-plot
+$(target)/plots/plot-all.png: vpro-predictions-plot human-plot 3voor12-plot npodoc-plot
 	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';destdir='$(target)/'" plot-all.gp
 
 
