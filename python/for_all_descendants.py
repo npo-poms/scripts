@@ -4,6 +4,7 @@
 import pickle
 import os
 import sys
+import ast
 from tempfile import gettempdir
 
 # some imports handy for the exec call
@@ -120,7 +121,7 @@ member.publishStop=parse("2018-12-31")
                         log.info("%s Skipping %s because of filter %s", str(idx), string, self.filter_description)
                         continue
                 except Exception as e:
-                    log.warn("%s %s", str(member.mid), str(e))
+                    log.warning("%s %s", str(member.mid), str(e))
                     continue
 
             needs_post = self.process(member, idx)
@@ -165,8 +166,7 @@ member.publishStop=parse("2018-12-31")
                     to_exec = open(to_exec).read()
 
                 def exec_string(member, idx):
-                    exec(to_exec)
-
+                    return ForAllDescendants.exec_then_eval(to_exec, {}, locals())
                 given_function = exec_string
             else:
                 given_function = None
@@ -185,6 +185,16 @@ member.publishStop=parse("2018-12-31")
 
     def nope(self, *args):
         """"""
+
+    @staticmethod
+    def exec_then_eval(code, globals, locals):
+        block = ast.parse(code, mode='exec')
+
+        # assumes last node is an expression
+        last = ast.Expression(block.body.pop().value)
+
+        exec(compile(block, '<string>', mode='exec'), globals, locals)
+        return eval(compile(last, '<string>', mode='eval'), globals, locals)
 
     def main(self):
         self.command_line()
