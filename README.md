@@ -18,9 +18,11 @@ crid://bds.tv/9876,crid://tmp.fragment.mmbase.vpro.nl/1234
 michiel@baleno:~/github/npo-poms/scripts/python$ 
 ```
 
+This is quite straight forward and was later improved to be an actual (python library)[https://github.com/npo-poms/pyapi]. Some scripts in the python directory of this project make use of that library.
+
 Groovy/Java
 -----------
-Since POMS is written in Java, it is actually feasible to use its domain objects in your scripts. A rest client in java is available and is in use at VPRO. At request we can make this client available as well.
+Since POMS is written in Java, it is actually feasible to use its domain objects in your scripts. [Rest clients](https://github.com/npo-poms/api-clients) are available, which use these domain objects directly.
 ```java
 MediaRestClient client = new MediaRestClient();
 client.setUrl(mediaRsUrl);
@@ -36,6 +38,8 @@ group.setPublishStart(onlineDate);
 client.set(group);
 
 ```
+In the directory `java` of this project we appear code that (temporary) used these clients.
+
 
 Bash/XSLT
 ---------
