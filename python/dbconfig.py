@@ -1,11 +1,12 @@
 #!/usr/bin/python
 from configparser import ConfigParser
+import os
 
-
-def db_config(filename='database.ini', section='postgresql'):
+def db_config(filename='~/conf/database.ini', section='postgresql-test'):
 
     parser = ConfigParser()
-    parser.read(filename)
+    fullpath = os.path.expanduser(filename)
+    parser.read(fullpath)
 
     db = {}
     if parser.has_section(section):
