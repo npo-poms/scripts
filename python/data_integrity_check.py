@@ -8,19 +8,21 @@ from config import db_config
 
 def check_duplicates_schedules():
 
-    duplicateScheduleEvents = """
+    duplicate_scheduleevents = """
         select maintitle(id), start, max(mid), min(mid), count(*) as duplicates
         from mediaobject  m join scheduleevent e on m.id = e.mediaobject_id
         where mediatype(id) = 'BROADCAST'
         and createdby_principalid = 'prepr-service'
         group by maintitle(id), start having count(*) > 1 order by start desc
         """
-    count_duplicateScheduleEvents = f"select count(*) from ({duplicateScheduleEvents}) as t"
+    count_duplicate_schedulesevents = "select count(*) from (" + duplicate_scheduleevents + ") as t"
 
-    nr_of_duplicates = execute(count_duplicateScheduleEvents)
+    nr_of_duplicates = execute(count_duplicate_schedulesevents)
 
     if nr_of_duplicates > 0:
-        return AssertionError(f'We found {nr_of_duplicates} duplicates. Execute the following query for extra details: [{duplicateScheduleEvents}]')
+        return AssertionError("We found " + str(nr_of_duplicates)
+                              + "   duplicates. Execute the following query for extra details: ["
+                              + duplicate_scheduleevents + "  ]")
 
 
 def check_gaps_in_crids():
@@ -31,12 +33,13 @@ def check_gaps_in_crids():
     ) as t
     where t.maxIndex <> count
     """
-    count_gaps = f"select count(*) from ({find_crids_gaps}) as t"
+    count_gaps = "select count(*) from (" + find_crids_gaps + "  ) as t"
 
     nr_of_gaps = execute(count_gaps)
 
     if nr_of_gaps > 0:
-        return AssertionError(f'We found {nr_of_gaps} gaps. Execute the following query for extra details: [{find_crids_gaps}]')
+        return AssertionError("We found " + nr_of_gaps +
+                              "   gaps. Execute the following query for extra details: [" + find_crids_gaps + " ]")
 
 
 def execute(sql):
