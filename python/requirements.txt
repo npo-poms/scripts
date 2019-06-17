@@ -1,0 +1,7 @@
+ijson==2.3
+NPO-API==5.11.0.dev1
+python-dateutil==2.8.0
+pytz==2018.9
+PyXB==1.2.6
+six==1.12.0
+psycopg2==2.8.2
