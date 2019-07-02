@@ -65,4 +65,27 @@ posting WO_VPRO_430113 to https://api-test.poms.omroep.nl/media/media?lookupcrid
 ```
 poms.py
 -------
+
 This is deprecated. It can be imported in the other scripts, to have basic api functionality available. It also takes care of command line parsing and a database of credentials. The simplest example is 'post.sh', which simply posts an existing file.
+
+data_integrity_check.py
+-----------------------
+Allow to run sanity check queries directly on the database. Run in his very own Jenkins job for now
+Configured as:
+```
+cd python
+
+python3.4 -m venv venv
+source venv/bin/activate
+
+pip install setuptools --upgrade
+pip install --upgrade pip
+pip install -r requirements.txt 
+
+# https://gist.github.com/scy/6781836
+ssh -f -o ExitOnForwardFailure=yes -L 35432:poms2madb:5432 vpro05ap@upload-sites.omroep.nl sleep 10 
+python data_integrity_check.py prod
+
+ssh -f -o ExitOnForwardFailure=yes -L 25432:poms2madb:5432 upload-poms sleep 10 
+python data_integrity_check.py test
+```
