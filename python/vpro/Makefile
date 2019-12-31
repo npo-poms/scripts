@@ -6,7 +6,7 @@ reportdir := $(target)/reports/`date +'%FT%H'`
 lastmonth := $(shell python3 -c 'from datetime import datetime, timedelta; print((datetime.now() - timedelta(days=31)).strftime("%Y-%m-%dT%H"))')
 now := $(shell python3 -c 'from datetime import datetime, timedelta; print((datetime.now()).strftime("%Y-%m-%dT%H"))')
 
-.PHONY: vpro 3voor12 human npodoc vpro-clean-api 3voor12-clean-api human-clean-api report clean plots
+.PHONY: vpro 3voor12 human npodoc vprobroadcast vpro-clean-api 3voor12-clean-api human-clean-api report clean plots
 
 all: clean vpro 3voor12 human npodoc plots
 
@@ -56,6 +56,14 @@ npodoc:
 		--post_process "lambda url: re.sub(r'^https://www.2doc.nl/speel[~\.](.*?)[~\.](.*)', r'https://www.2doc.nl/speel~\1~.html', url)" \
 		$(magnolia1)/npodoc/sitemap.xml \
 		npodoc
+
+vprobroadcast:
+	$(check) \
+		-e prod  \
+		--clean \
+		--target_directory $(target) \
+		$(magnolia1)/international/sitemap.xml \
+		vprobroadcast
 
 
 
