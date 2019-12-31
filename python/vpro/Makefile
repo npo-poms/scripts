@@ -59,7 +59,7 @@ npodoc:
 
 
 
-clean-api: vpro-clean-api 3voor12-clean-api human-clean-api
+clean-api: vpro-clean-api 3voor12-clean-api human-clean-api npodoc-clean-api
 
 vpro-clean-api:
 	$(check) --use_database --target_directory $(target) -D $(magnolia1)/vpronl/sitemap.xml vpro-predictions
@@ -71,6 +71,9 @@ vpro-clean-api:
 human-clean-api:
 	$(check) --use_database --target_directory $(target) -D $(magnolia1)/human/sitemap.xml human
 
+npodoc-clean-api:
+	$(check) --use_database --target_directory $(target) -D $(magnolia1)/npodoc/sitemap.xml npodoc
+
 
 %-plot:
 	mkdir -p $(target)/plots
@@ -80,7 +83,7 @@ human-clean-api:
 	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';file='$(target)/$*.not-in-sitemap.data';title='$* not in sitemap';dest='$(target)/plots/$*-not-in-sitemap.svg'" plot.gp
 
 
-$(target)/plots/plot-all.png: vpro-predictions-plot human-plot 3voor12-plot
+$(target)/plots/plot-all.png: vpro-predictions-plot human-plot 3voor12-plot npodoc-plot
 	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';destdir='$(target)/'" plot-all.gp
 
 
