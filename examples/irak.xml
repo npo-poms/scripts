@@ -1,0 +1,67 @@
+<program xmlns="urn:vpro:media:update:2009" xmlns:media="urn:vpro:media:2009" xmlns:shared="urn:vpro:shared:2009" type="CLIP" avType="VIDEO" embeddable="true">
+    <crid>crid://amara.translation/NkIksyL7budA/nl</crid>
+    <broadcaster>VPRO</broadcaster>
+    <portal>NETINNL</portal>
+    <exclusive>NETINNL</exclusive>
+    <title type="MAIN">De puinhopen van Irak </title>
+    <title type="SUB"> Het paradijs van mijn opa</title>
+    <description type="MAIN">Sakir Khader groeide op in twee werelden: Vlaardingen en Palestina. Sakirs opa noemde Irak het paradijs van de Arabieren. Wat is er waar van het paradijs dat hij voor ogen had?</description>
+    <genre>3.0.1.8</genre>
+    <duration>P0DT0H25M7.326S</duration>
+    <memberOf position="1" highlighted="false">POMS_S_VPRO_3512033</memberOf>
+    <ageRating>12</ageRating>
+    <locations>
+        <location>
+            <programUrl>mid://netinnederland.nl/VPWON_1299255</programUrl>
+            <avAttributes>
+                <bitrate>10000</bitrate>
+                <avFileFormat>UNKNOWN</avFileFormat>
+            </avAttributes>
+        </location>
+    </locations>
+    <scheduleEvents/>
+    <relation type="TRANSLATION_SOURCE" broadcaster="VPRO">VPWON_1299255</relation>
+    <images>
+        <image type="PICTURE" highlighted="true">
+            <title>puinhopen irak</title>
+            <description>puinhopen irak</description>
+            <width>1200</width>
+            <height>699</height>
+            <urn>urn:vpro:image:1315337</urn>
+        </image>
+        <image type="STILL" highlighted="false">
+            <title>De puinhopen van Irak</title>
+            <description>Sakir Khader groeide op in twee werelden: Vlaardingen en Palestina. Sakirs opa noemde Irak het paradijs van de Arabieren. Wat is er waar van het paradijs dat hij voor ogen had?</description>
+            <sourceName>VPRO</sourceName>
+            <width>1920</width>
+            <height>1080</height>
+            <credits>Still De puinhopen van Irak / Het paradijs van mijn opa</credits>
+            <date>2020</date>
+            <offset>P0DT0H1M0.000S</offset>
+            <urn>urn:vpro:image:1316479</urn>
+        </image>
+        <image type="STILL" highlighted="false">
+            <title>De puinhopen van Irak</title>
+            <description>Sakir Khader groeide op in twee werelden: Vlaardingen en Palestina. Sakirs opa noemde Irak het paradijs van de Arabieren. Wat is er waar van het paradijs dat hij voor ogen had?</description>
+            <sourceName>VPRO</sourceName>
+            <width>1920</width>
+            <height>1080</height>
+            <credits>Still De puinhopen van Irak / Het paradijs van mijn opa</credits>
+            <date>2020</date>
+            <offset>P0DT0H2M0.000S</offset>
+            <urn>urn:vpro:image:1316480</urn>
+        </image>
+        <image type="STILL" highlighted="false">
+            <title>De puinhopen van Irak</title>
+            <description>Sakir Khader groeide op in twee werelden: Vlaardingen en Palestina. Sakirs opa noemde Irak het paradijs van de Arabieren. Wat is er waar van het paradijs dat hij voor ogen had?</description>
+            <sourceName>VPRO</sourceName>
+            <width>1920</width>
+            <height>1080</height>
+            <credits>Still De puinhopen van Irak / Het paradijs van mijn opa</credits>
+            <date>2020</date>
+            <offset>P0DT0H3M0.000S</offset>
+            <urn>urn:vpro:image:1316481</urn>
+        </image>
+    </images>
+    <segments/>
+</program>
