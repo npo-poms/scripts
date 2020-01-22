@@ -130,11 +130,11 @@ member.publishStop=parse("2018-12-31")
             log.debug(" needs post %s", str(needs_post))
             if needs_post:
                 if not self.dryrun:
-                    log.info("%s Execed %s for %s and posting", str(idx), self.processor_description, string)
+                    log.debug("%s Execed %s for %s and doing", str(idx), self.processor_description, string)
                     self.do_one(member, idx)
                 else:
                     log.info("%s Execed %s for %s (not posting because of dryrun parameter)", str(idx),
-                         self.processor_description, string)
+                    self.processor_description, string)
             else:
                 log.info("%s Skipping %s for %s", str(idx), self.processor_description, string)
 

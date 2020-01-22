@@ -67,7 +67,7 @@ vprobroadcast:
 
 
 
-clean-api: vpro-clean-api 3voor12-clean-api human-clean-api
+clean-api: vpro-clean-api 3voor12-clean-api human-clean-api npodoc-clean-api
 
 vpro-clean-api:
 	$(check) --use_database --target_directory $(target) -D $(magnolia1)/vpronl/sitemap.xml vpro-predictions
@@ -78,6 +78,9 @@ vpro-clean-api:
 
 human-clean-api:
 	$(check) --use_database --target_directory $(target) -D $(magnolia1)/human/sitemap.xml human
+
+npodoc-clean-api:
+	$(check) --use_database --target_directory $(target) -D $(magnolia1)/npodoc/sitemap.xml npodoc
 
 
 %-plot:
