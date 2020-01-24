@@ -5,6 +5,7 @@ import csv
 api = MediaBackend().command_line_client()
 log = api.logger
 
+log.info(str(api))
 
 with open('/Users/michiel/Downloads/zappechtgebeurd-kinderen-edited.csv', mode='r', encoding='utf-8') as file:
     reader = csv.reader(file, delimiter=';', quotechar='"', quoting=csv.QUOTE_MINIMAL)
@@ -13,6 +14,7 @@ with open('/Users/michiel/Downloads/zappechtgebeurd-kinderen-edited.csv', mode='
         mid = row[0]
         title = row[1]
         episode = row[2]
+        log.info("MID %s", mid)
         existing = api.get_object(mid)
         new_title = MU.main_title(existing)
         new_episode = MU.title(existing, 'SUB')
