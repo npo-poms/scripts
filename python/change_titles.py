@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 from npoapi import MediaBackend, MediaBackendUtil as MU
 import csv
+import os
 
 api = MediaBackend().command_line_client()
 log = api.logger
 
 log.info(str(api))
 
-with open('/Users/michiel/Downloads/zappechtgebeurd-kinderen-edited.csv', mode='r', encoding='utf-8') as file:
+with open(os.getenv("HOME") + '/Downloads/zappechtgebeurd-kinderen-edited.csv', mode='r', encoding='utf-8') as file:
     reader = csv.reader(file, delimiter=';', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
     for row in reader:

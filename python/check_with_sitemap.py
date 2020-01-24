@@ -108,7 +108,12 @@ def get_urls_from_api_search() -> set:
     return new_urls
 
 
-def get_urls_from_api_iterate() -> set:
+def get_urls_from_api_iterate(until = None) -> set:
+    """
+    Gets all urls as they are in the pages api
+
+    :param datetime.datetime until:a constraint on creationdate. Defaults to 6 o'clock today
+    """
     new_urls = set()
     from npoapi.xml import api as API
     form = API.pagesForm()
@@ -116,9 +121,10 @@ def get_urls_from_api_iterate() -> set:
     form.sortFields.append(API.pageSortTypeEnum.creationDate)
     form.searches = pyxb.BIND()
     form.searches.creationDates = pyxb.BIND()
-    now = datetime.datetime.now()
-    today = now.replace(hour=6, minute=0, second=0, microsecond=0)
-    dateRange = API.dateRangeMatcherType(end=today)
+    if not until:
+        now = datetime.datetime.now()
+        until = now.replace(hour=6, minute=0, second=0, microsecond=0)
+    dateRange = API.dateRangeMatcherType(end=until)
     form.searches.creationDates.append(dateRange)
     total = api.to_object(api.search(profile=profile, form=form, limit=0, accept="application/xml")).total
     pages = api.iterate(profile=profile, form=form)
@@ -144,6 +150,7 @@ def get_urls() -> list:
             log.info("No %s found, creating it now" % url_file)
         # new_urls = get_urls_from_api_search()
         new_urls = sorted(get_urls_from_api_iterate())
+        #new_urls = sorted(get_urls_from_api_iterate(datetime.datetime.now()))
         pickle.dump(new_urls, open(url_file, "wb"))
 
     write_urls_to_file(new_urls, "data." + profile + ".api.txt")

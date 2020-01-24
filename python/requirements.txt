@@ -1,7 +1,8 @@
-ijson==2.3
-python-dateutil==2.8.0
-pytz==2018.9
+ijson==2.5.1
+python-dateutil==2.8.1
+pytz==2019.3
 PyXB==1.2.6
 six==1.12.0
 psycopg2==2.8.2
-typing==3.7.4
+typing==3.7.4.1
+pyapi=5.13.0.dev1
