@@ -16,14 +16,16 @@ with open('/Users/michiel/Downloads/zappechtgebeurd-kinderen-edited.csv', mode='
         episode = row[2]
         log.info("MID %s", mid)
         existing = api.get_object(mid)
-        new_title = MU.main_title(existing)
-        new_episode = MU.title(existing, 'SUB')
-        if title != new_title or episode != new_episode:
-            log.info("updating: %s -> %s: %s -> %s", title, new_title, episode, new_episode)
-            MU.main_title(existing, new_title)
-            MU.title(existing, 'SUB', new_episode)
-            api.post(existing)
-        else:
-            log.info("existing: %s: %s", title, episode)
+        if existing:
+            existing_title = MU.main_title(existing)
+            existing_episode = MU.title(existing, 'SUB')
+            if title != existing_title or episode != existing_episode:
+                log.info("updating: %s -> %s: %s -> %s", existing_title, title, existing_episode, episode)
+                MU.main_title(existing, title)
+                MU.title(existing, 'SUB', episode)
+                log.info("%s", MU.main_title(existing))
+                api.post(existing)
+            else:
+                log.info("existing: %s: %s", title, episode)
 
 
