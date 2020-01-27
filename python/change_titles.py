@@ -14,7 +14,7 @@ log.info(str(api))
 
 rows = []
 
-with open(os.getenv("HOME") + '/Downloads/test.zappechtgebeurd-kinderen-edited.csv', mode='r', encoding='utf-8',  errors='ignore') as file:
+with open(os.getenv("HOME") + '/Downloads/zappechtgebeurd-kinderen-edited.csv', mode='r', encoding='utf-8',  errors='ignore') as file:
     reader = csv.reader(file, delimiter=';', quotechar='"', quoting=csv.QUOTE_MINIMAL)
     i = 0
     for row in reader:
@@ -33,8 +33,10 @@ for row in rows:
         try:
             existing_title = MU.main_title(existing)
             existing_episode = MU.title(existing, 'SUB')
+            if episode.__eq__(""):
+                episode = None
             if title != existing_title or episode != existing_episode:
-                log.info("updating: %s -> %s: %s -> %s", existing_title, title, existing_episode, episode)
+                log.info("updating: %s -> %s/ %s -> %s", existing_title, title, existing_episode, episode)
                 MU.main_title(existing, title)
                 MU.title(existing, 'SUB', episode)
                 log.info("%s", MU.main_title(existing))
