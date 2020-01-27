@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<program xmlns="urn:vpro:media:update:2009" avType="VIDEO" embeddable="true" mid="WO_KN_8495512" publishStart="2017-04-22T04:00:00Z" publishStop="2017-04-23T04:00:00Z" type="PROMO" urn="urn:vpro:media:program:92657914" version="5.11.7">
+  <crid>crid://parkpost/ZP2304MO_ZEGTIEN</crid>
+  <broadcaster>KRNC</broadcaster>
+  <title type="MAIN">ZappDoc</title>
+  <title type="SUB">Tien</title>
+  <duration>PT30S</duration>
+  <credits/>
+  <memberOf highlighted="false" position="1">KN_1690430</memberOf>
+  <locations>
+    <location urn="urn:vpro:media:location:92657918">
+      <programUrl>http://adaptive.npostreaming.nl/u/npo/promo/ZP2304MO_ZEGTIEN/ZP2304MO_ZEGTIEN.ism</programUrl>
+      <avAttributes>
+        <avFileFormat>HASP</avFileFormat>
+        <videoAttributes/>
+      </avAttributes>
+      <duration>PT30S</duration>
+    </location>
+    <location urn="urn:vpro:media:location:92657921">
+      <programUrl>http://download.omroep.nl/npo/promo/ZP2304MO_ZEGTIEN.mp4</programUrl>
+      <avAttributes>
+        <bitrate>1000000</bitrate>
+        <avFileFormat>MP4</avFileFormat>
+        <videoAttributes/>
+      </avAttributes>
+      <duration>PT30S</duration>
+    </location>
+  </locations>
+  <scheduleEvents/>
+  <relation broadcaster="NPO" type="PROMO_CHANNEL" urn="urn:vpro:media:relation:92657922"/>
+  <relation broadcaster="NPO" type="PROMO_PRODUCTCODE" urn="urn:vpro:media:relation:92657923">ZP2304MO_ZEGTIEN</relation>
+  <relation broadcaster="NPO" type="PROMO_REFERRER" urn="urn:vpro:media:relation:92657924"/>
+  <relation broadcaster="NPO" type="PROMO_VERSION" urn="urn:vpro:media:relation:92657925">MO</relation>
+  <images/>
+  <segments/>
+</program>
