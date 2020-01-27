@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """Script to do delete all descendants of a poms group"""
 
-from for_all_descendants import ForAllDescendants
-
-import datetime
 import dateutil.parser
+
+from for_all_descendants import ForAllDescendants
 
 
 class ForAllDescendantsSetEmbargo(ForAllDescendants):

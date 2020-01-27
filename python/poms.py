@@ -1,4 +1,4 @@
-""" This is deprecated use scripts from https://github.com/npo-poms/pyapi """
+""" This is deprecated use library from https://github.com/npo-poms/pyapi """
 
 import shelve
 import urllib.request
