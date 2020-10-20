@@ -26,8 +26,8 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
         """Actually add to api"""
 
         if self.jmx_url:
-            command =  ["/usr/bin/java", '-jar', self.jmxterm_binary, '--url', self.jmx_url, "-n"]
 
+            command = ["/usr/bin/java", '-jar', self.jmxterm_binary, '--url', self.jmx_url, "-n"]
 
             urls = list(filter(lambda  u : not self.find_mid(u), not_in_api))
             urls_page_size = 20
@@ -63,11 +63,11 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
             jmxtermversion = "1.0.2"
             jmxterm = "jmxterm-" + jmxtermversion + "-uber.jar"
             path = os.path.dirname(os.path.realpath(__file__))
-            jmxterm_binary = os.path.join(path, jmxterm)
-            if not os.path.exists(jmxterm_binary):
+            self.jmxterm_binary = os.path.join(path, jmxterm)
+            if not os.path.exists(self.jmxterm_binary):
                 get_url = "https://github.com/jiaqi/jmxterm/releases/download/v" + jmxtermversion + "/" + jmxterm
-                self.log.info("Downloading %s -> %s" % (get_url, jmxterm_binary))
-                urllib.request.urlretrieve (get_url, jmxterm_binary)
+                self.log.info("Downloading %s -> %s" % (get_url, self.jmxterm_binary))
+                urllib.request.urlretrieve (get_url, self.jmxterm_binary)
 
 
 
