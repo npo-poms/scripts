@@ -26,21 +26,26 @@ import pickle
 import re
 import urllib
 import xml.etree.ElementTree
+from subprocess import Popen, PIPE
+from typing import Optional
 
 import pyxb
 import requests
 from npoapi import Pages
 from npoapi import PagesBackend
-from npoapi.xml import poms
 
 api = Pages().command_line_client()
 backend = PagesBackend(env=api.actualenv).configured_login()
 api.add_argument('sitemap', type=str, nargs=1, help='sitemap')
 api.add_argument('profile', type=str, nargs='?', help='profile')
 api.add_argument('-C', '--clean', action='store_true', default=False, help='clean build')
-api.add_argument('-D', '--delete', action='store_true', default=False, help='delete from api')
-api.add_argument('-A', '--add', action='store_true', default=False, help='add to api')
+api.add_argument('-D', '--delete', action='store_true', default=False, help='remove from api')
+api.add_argument('--no_get_check', action='store_true', default=False, help='when removing from api, dont check http status code first')
 api.add_argument('-S', '--show', action='store_true', default=False, help='show from api')
+api.add_argument('--jmx_url', type=str, default=None, help='use JMX to trigger reindex')
+api.add_argument('--jmx_bean', type=str, default='nl.vpro.magnolia:name=IndexerMaintainerImpl', help='JMX bean that has reindex operation')
+api.add_argument('--jmx_operation_url', type=str, default='reindexUrls', help='JMX operation name to reindex an url')
+api.add_argument('--jmx_operation_mid', type=str, default='reindexMediaObjects', help='JMX operation name to reindex a media object')
 api.add_argument('--use_database', action='store_true', default=False, help='clean build')
 api.add_argument('--https_to_http', action='store_true', default=False, help='Replace all https with http')
 api.add_argument('--http_to_https', action='store_true', default=False, help='Replace all http with https')
@@ -54,13 +59,22 @@ args = api.parse_args()
 profile = args.profile
 sitemap_url = args.sitemap[0]
 clean = args.clean
+get_check = not args.no_get_check
 delete_from_api = args.delete
-add_docs_to_api = args.add
 show_docs_from_api = args.show
 https_to_http = args.https_to_http
 http_to_https = args.http_to_https
 use_database = args.use_database
+jmx_url = args.jmx_url
+jmx_bean  = args.jmx_bean
+jmx_operation_url  = args.jmx_operation_url
+jmx_operation_mid  = args.jmx_operation_mid
+jmxterm_binary = None
+
+
 log = api.logger
+
+
 
 if use_database and clean:
     raise Exception("Can't use both use_database and clean")
@@ -77,35 +91,25 @@ else:
     target_directory = ""
 
 
-
 if clean:
     log.info("Cleaning")
+
+
+if jmx_url:
+    jmxtermversion = "1.0.2"
+    jmxterm = "jmxterm-" + jmxtermversion + "-uber.jar"
+    path = os.path.dirname(os.path.realpath(__file__))
+    jmxterm_binary = os.path.join(path, jmxterm)
+    if not os.path.exists(jmxterm_binary):
+        get_url = "https://github.com/jiaqi/jmxterm/releases/download/v" + jmxtermversion + "/" + jmxterm
+        log.info("Downloading %s -> %s" % (get_url, jmxterm_binary))
+        urllib.request.urlretrieve (get_url, jmxterm_binary)
 
 log.info("API: %s, profile: %s" % (api.url, profile))
 
 
 def file_in_target(file: str) -> str:
     return os.path.join(target_directory, file)
-
-def get_urls_from_api_search() -> set:
-    offset = 0
-    new_urls = set()
-    while True:
-        result = api.search(profile=profile, offset=offset, limit=240)
-        json_object = json.loads(result)
-        items = json_object['items']
-        total = json_object['total']
-        log.info("API: Found %s/%s urls for profile %s", len(new_urls), total, profile)
-        grow = 0
-        for item in items:
-            url = item['result']['url']
-            new_urls.add(url)
-            offset += 1
-            grow += 1
-
-        if grow == 0:
-            break
-    return new_urls
 
 
 def get_urls_from_api_iterate(until = None) -> set:
@@ -124,17 +128,18 @@ def get_urls_from_api_iterate(until = None) -> set:
     if not until:
         now = datetime.datetime.now()
         until = now.replace(hour=6, minute=0, second=0, microsecond=0)
-    dateRange = API.dateRangeMatcherType(end=until)
-    form.searches.creationDates.append(dateRange)
-    total = api.to_object(api.search(profile=profile, form=form, limit=0, accept="application/xml")).total
+
     pages = api.iterate(profile=profile, form=form)
     for page in pages:
-        new_urls.add(page['url'])
+        creationDate = datetime.datetime.fromtimestamp(page['creationDate'] / 1000)
+        url = page['url']
+        if creationDate < until:
+            new_urls.add(url)
+        else:
+            log.info("Ignoring %s since it newer than sitemap itself" % url)
         if len(new_urls) % 100 == 0:
-            log.info("API: Found %d/%d urls for profile %s" % (len(new_urls), total, profile))
+            log.info("API: Found %d urls for profile %s" % (len(new_urls), profile))
 
-    if len(new_urls) < total:
-        log.error("Not found enough URL. %d < %d" % (len(new_urls), total))
     return new_urls
 
 
@@ -180,13 +185,13 @@ def get_sitemap_from_xml() -> list:
 
     return list(new_urls)
 
+
 def write_urls_to_file(urls: list, file_name : str):
     dest_file = file_in_target(file_name)
     with io.open(dest_file, 'w', encoding="utf-8") as f:
         f.write('\n'.join(urls))
         f.write('\n')
     log.info("Wrote %s (%d entries)", dest_file, len(urls))
-
 
 
 def get_sitemap() -> list:
@@ -219,6 +224,7 @@ def unmap(mapped_urls: list, urls: list, url: str):
         log.error("Could not map")
         return ""
 
+
 def clean_from_api(
         mapped_api_urls: list,
         api_urls: list,
@@ -249,21 +255,26 @@ def clean_from_api(
         with io.open(clean_from_es, 'w', encoding='utf-8') as f_clean_from_es, \
             io.open(remove_from_api, 'w', encoding='utf-8') as f_removed_from_api:
             for idx, url in enumerate(not_in_sitemap):
-                status = http_status(url)
-                if status == 404 or status == 301:
-                    log.info("(%d/%d) Deleting %s (http status: %d)", idx, len(not_in_sitemap), url, status)
+                if get_check:
+                    status = http_status(url)
+                else:
+                    status = None
+                if status is None or status == 404 or status == 301:
+                    log.info("(%d/%d) Deleting %s (http status: %s)", idx, len(not_in_sitemap), url, str(status))
                     response = backend.delete(url)
-                    if response == "NOTFOUND":
+                    if backend.code == 404:
                         log.info("Backend gave 404 for delete call: %s", url)
                         f_clean_from_es.write(url + '\n')
                         todo_delete_from_es += 1
+                    elif backend.code == 400:
+                        log.info("Backend gave 400 for delete call: %s", url)
                     else:
                         log.info("%s" % response)
                         f_removed_from_api.write(url + '\n')
                 else:
                     result = backend.get(url)
                     if not result is None:
-                        page = poms.CreateFromDocument(result)
+                        page = backend.to_object(result)
                         log.info("(%d/%d) In api, not in sitemap, but not giving 404 (but %s) url %s: %s", idx, len(not_in_sitemap), str(status), url, str(page.lastPublished))
                     else:
                         log.info("(%d/%d) In api, not giving 404 (but %s), but not found in publisher %s", idx, len(not_in_sitemap), str(status), url)
@@ -276,6 +287,31 @@ clean_from_es.sh %s
     else:
         log.info("No actual deletes requested")
 
+
+def find_mid(url: str) -> Optional[str]:
+    matcher = re.match(".*?~(.*?)~.*", url)
+    if matcher:
+        return matcher.group(1)
+    else:
+        return None
+
+
+def reindex_via_jmx(not_in_api: list):
+    command =  ["/usr/bin/java", '-jar', jmxterm_binary, '--url', jmx_url, "-n"]
+
+    mids = list(filter(lambda m: m is not None, map(find_mid, not_in_api)))
+    urls = list(filter(lambda  u : not find_mid(u), not_in_api))
+    for i in range(0, len(urls), 20):
+        sub_list = ",".join(urls[i: i + 20])
+        p = Popen(command, stdin=PIPE, stdout=PIPE, encoding='utf-8')
+        out = p.communicate(input='bean ' + jmx_bean + '\nrun ' + jmx_operation_url + ' "'+ sub_list + '"')
+        log.info("output\n%s" % out[0])
+
+    for i in range(0, len(mids), 100):
+        sub_list = ",".join(mids[i: i + 100])
+        p = Popen(command, stdin=PIPE, stdout=PIPE, encoding='utf-8')
+        out = p.communicate(input='bean ' + jmx_bean + '\nrun ' + jmx_operation_mid + ' "'+ sub_list + '"')
+        log.info("output\n%s" % out[0])
 
 
 def add_to_api(
@@ -304,7 +340,8 @@ def add_to_api(
     for url in not_in_api[:10]:
         print(url)
 
-
+    if jmx_url:
+        reindex_via_jmx(not_in_api)
 
 
 def main():
