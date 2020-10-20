@@ -6,6 +6,13 @@ reportdir := $(target)/reports/`date +'%FT%H'`
 lastmonth := $(shell python3 -c 'from datetime import datetime, timedelta; print((datetime.now() - timedelta(days=31)).strftime("%Y-%m-%dT%H"))')
 now := $(shell python3 -c 'from datetime import datetime, timedelta; print((datetime.now()).strftime("%Y-%m-%dT%H"))')
 
+clean := --clean
+delete := --delete --no_get_check
+jmx_url := --jmx_url localhost:5000
+
+#extra_args := $(delete) $(jmx_url) --target_directory $(target)
+extra_args := $(clean) --target_directory $(target)
+
 .PHONY: vpro 3voor12 human npodoc vprobroadcast vpro-clean-api 3voor12-clean-api human-clean-api report clean plots
 
 all: clean vpro 3voor12 human npodoc plots
@@ -21,8 +28,7 @@ report:
 vpro:
 	$(check) \
 		-e prod --http_to_https \
-		--clean \
-		--target_directory $(target) \
+		$(extra_args) \
 		--post_process "lambda url: re.sub(r'^https://www.vpro.nl/speel[~\.](.*?)[~\.](.*)', r'https://www.vpro.nl/speel~\1~.html', url)" \
 		$(magnolia1)/vpronl/sitemap.xml \
 		vpro-predictions
@@ -31,8 +37,7 @@ vpro:
 3voor12:
 	$(check) \
 		-e prod --http_to_https \
-		 --clean \
-		--target_directory $(target) \
+		$(extra_args) \
 		--post_process "lambda url: re.sub(r'^https://3voor12.vpro.nl(.*)/update[~\.](.*?)[~\.](.*)', r'https://3voor12.vpro.nl/update~\2~.html', url)" \
 		$(magnolia1)/3v12/sitemap.xml \
 		3voor12
@@ -40,8 +45,7 @@ vpro:
 human:
 	$(check) \
 		-e prod --http_to_https \
-		--clean \
-		--target_directory $(target) \
+		$(extra_args) \
 		--post_process "lambda url: re.sub(r'^https://www.human.nl/speel[~\.](.*?)[~\.](.*)', r'https://www.human.nl/speel~\1~.html', url)" \
 		$(magnolia1)/human/sitemap.xml \
 		human
@@ -51,8 +55,7 @@ human:
 npodoc:
 	$(check) \
 		-e prod --http_to_https \
-		--clean \
-		--target_directory $(target) \
+		$(extra_args) \
 		--post_process "lambda url: re.sub(r'^https://www.2doc.nl/speel[~\.](.*?)[~\.](.*)', r'https://www.2doc.nl/speel~\1~.html', url)" \
 		$(magnolia1)/npodoc/sitemap.xml \
 		npodoc
@@ -60,8 +63,7 @@ npodoc:
 vprobroadcast:
 	$(check) \
 		-e prod  \
-		--clean \
-		--target_directory $(target) \
+		$(extra_args) \
 		$(magnolia1)/international/sitemap.xml \
 		vprobroadcast
 
