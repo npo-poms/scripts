@@ -3,9 +3,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>nl.vpro.api-client</groupId>
+    <groupId>nl.vpro.poms.api-clients</groupId>
     <artifactId>api-client-parent</artifactId>
-    <version>5.10.0</version>
+    <version>5.15.0</version>
   </parent>
   <artifactId>api-client-scripts</artifactId>
   <name>api-client-scripts</name>
@@ -16,16 +16,7 @@
 
 
   <dependencies>
-    <dependency>
-      <groupId>nl.vpro.api-client</groupId>
-      <artifactId>media-backend-rs-client</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>nl.vpro.api-client</groupId>
-      <artifactId>client-utils</artifactId>
-      <version>${project.version}</version>
-    </dependency>
+
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
