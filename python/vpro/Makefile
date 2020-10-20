@@ -1,5 +1,5 @@
 
-check := ../check_with_sitemap.py
+check := ./check_with_sitemap_vpro.py
 magnolia1 := https://magnolia1-frontend1-prod.vpro.nl/
 target := $(HOME)/integrity-check-results
 reportdir := $(target)/reports/`date +'%FT%H'`
