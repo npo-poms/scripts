@@ -36,6 +36,7 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
             not_in_api = self._reindex_cinema_person(not_in_api)
 
             not_in_api = self._reindex_mids(not_in_api)
+
             self._reindex_urls(not_in_api)
 
         else:
@@ -43,53 +44,25 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
 
     def _reindex_mids(self, not_in_api: list) -> list:
         urls_with_mid = list(filter(lambda m: m[0] is not None, map(self._find_mid, not_in_api)))
-        self.log.info("Reindexing %d mids" % len(urls_with_mid))
-        page_size = 100
-        for i in range(0, len(urls_with_mid), page_size):
-            self._call_jmx_operation("nl.vpro.magnolia:name=IndexerMaintainerImpl", "reindexMediaObjects", list(map(lambda m : m[0], urls_with_mid[i: i + page_size])))
-
-        urls = list(map(lambda u: u[1], urls_with_mid))
-        return [e for e in not_in_api if e not in urls]
+        return self._reindex_ids(not_in_api, urls_with_mid, "nl.vpro.magnolia:name=IndexerMaintainerImpl", "reindexMediaObjects", 100,  "media objects")
 
     def _reindex_3voor12(self, not_in_api: list) -> list:
         urls_with_uuids = list(filter(lambda m: m[0] is not None, map(self._find_update_uuid, not_in_api)))
-
-        page_size = 100
-        self.log.info("Reindexing %d updates" % len(urls_with_uuids))
-        for i in range(0, len(urls_with_uuids), page_size):
-            self._call_jmx_operation("nl.vpro.magnolia:name=DrieVoorTwaalfUpdateIndexer", "reindexUUIDs", list(map(lambda m : m[0], urls_with_uuids[i: i + page_size])))
-
-        urls = list(map(lambda u: u[1], urls_with_uuids))
-        return [e for e in not_in_api if e not in urls]
+        return self._reindex_ids(not_in_api, urls_with_uuids, "nl.vpro.magnolia:name=DrieVoorTwaalfUpdateIndexer", "reindexUUIDs", 100,  "3voor12 updates")
 
     def _reindex_cinema_films(self, not_in_api: list) -> list:
         cinema_ids = list(filter(lambda m: m[0] is not None, map(self._find_cinema_film_id, not_in_api)))
-
-        page_size = 100
-        self.log.info("Reindexing %d cinema films" % len(cinema_ids))
-        for i in range(0, len(cinema_ids), page_size):
-            self._call_jmx_operation("nl.vpro.magnolia:name=CinemaObjectIndexer", "reindex", list(map(lambda m : m[0], cinema_ids[i: i + page_size])))
-
-        urls = list(map(lambda u: u[1], cinema_ids))
-        return [e for e in not_in_api if e not in urls]
+        return self._reindex_ids(not_in_api, cinema_ids, "nl.vpro.magnolia:name=CinemaObjectIndexer", "reindex", 100,  "cinema films")
 
     def _reindex_cinema_person(self, not_in_api: list) -> list:
         cinema_ids = list(filter(lambda m: m[0] is not None, map(self._find_cinema_person_uid, not_in_api)))
+        return self._reindex_ids(not_in_api, cinema_ids, "nl.vpro.magnolia:name=CinemaPersonIndexer", "reindex", 100,  "cinema persons")
 
-        page_size = 100
-        self.log.info("Reindexing %d cinema persons" % len(cinema_ids))
-        for i in range(0, len(cinema_ids), page_size):
-            self._call_jmx_operation("nl.vpro.magnolia:name=CinemaPersonIndexer", "reindex", list(map(lambda m : m[0], cinema_ids[i: i + page_size])))
-
-        urls = list(map(lambda u: u[1], cinema_ids))
-        return [e for e in not_in_api if e not in urls]
-
-    def _reindex_urls(self, not_in_api: list) -> list:
+    def _reindex_urls(self, not_in_api: list) -> None:
         page_size = 20
         self.log.info("Reindexing %d urls" % len(not_in_api))
         for i in range(0, len(not_in_api), page_size ):
             self._call_jmx_operation("nl.vpro.magnolia:name=IndexerMaintainerImpl", "reindexUrls", not_in_api[i: i + page_size ])
-        return not_in_api
 
     def _find_mid(self, url: str) -> list:
         return self._find_by_regexp(".*~(.*?)~.*", url)
@@ -110,6 +83,15 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
             return [matcher.group(1), url]
         else:
             return [None, url]
+
+    def _reindex_ids(self, not_in_api: list, ids: list, bean: str, operation: str, page_size: int, name: str) -> list:
+        self.log.info("Reindexing %d %s" % (len(ids), name))
+        for i in range(0, len(ids), page_size):
+            self._call_jmx_operation(operation, bean, list(map(lambda m : m[0], ids[i: i + page_size])))
+
+        urls = list(map(lambda u: u[1], ids))
+        return [e for e in not_in_api if e not in urls]
+
 
     def _call_jmx_operation(self, bean: str, operation: str, sub_list: list):
         p = Popen(self.command, stdin=PIPE, stdout=PIPE, encoding='utf-8')

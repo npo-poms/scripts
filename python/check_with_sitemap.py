@@ -49,6 +49,7 @@ class CheckWithSitemap:
         self.https_to_http = args.https_to_http
         self.http_to_https = args.http_to_https
         self.use_database = args.use_database
+        self.api_as_now = args.api_as_now
 
         self.log = self.api.logger
 
@@ -82,6 +83,8 @@ class CheckWithSitemap:
         api.add_argument('--use_database', action='store_true', default=False, help='explicitly use the local database (inverse of clean)')
         api.add_argument('--https_to_http', action='store_true', default=False, help='Replace all https with http')
         api.add_argument('--http_to_https', action='store_true', default=False, help='Replace all http with https')
+        api.add_argument('--api_as_now', action='store_true', default=False, help='Normally api object created after this morning are ignored. After repairing you could use this argument to check results')
+
         api.add_argument('--post_process_sitemap', type=str, default=None, help='')
         api.add_argument('--post_process_api', type=str, default=None, help='')
         api.add_argument('--post_process', type=str, default=None, help='')
@@ -125,7 +128,7 @@ class CheckWithSitemap:
 
         return new_urls
 
-    def get_urls(self) -> list:
+    def get_urls(self, until=None) -> list:
         url_file = self.file_in_target("data." + self.profile + ".api.p")
         if self.use_database or (os.path.exists(url_file) and not self.clean):
             new_urls = pickle.load(open(url_file, "rb"))
@@ -136,7 +139,7 @@ class CheckWithSitemap:
             else:
                 self.log.info("No %s found, creating it now" % url_file)
             # new_urls = get_urls_from_api_search()
-            new_urls = sorted(self.get_urls_from_api_iterate())
+            new_urls = sorted(self.get_urls_from_api_iterate(until=until))
             #new_urls = sorted(get_urls_from_api_iterate(datetime.datetime.now()))
             pickle.dump(new_urls, open(url_file, "wb"))
 
@@ -301,7 +304,7 @@ class CheckWithSitemap:
 
     def main(self):
         # list of all urls as they are present in the page api
-        api_urls = self.get_urls()
+        api_urls = self.get_urls(until= datetime.datetime.now() if self.api_as_now else None)
         # list of all urls as there are present in the sitemap
         sitemap_urls = self.get_sitemap()
 

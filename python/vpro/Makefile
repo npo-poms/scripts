@@ -6,23 +6,29 @@ reportdir := $(target)/reports/`date +'%FT%H'`
 lastmonth := $(shell python3 -c 'from datetime import datetime, timedelta; print((datetime.now() - timedelta(days=31)).strftime("%Y-%m-%dT%H"))')
 now := $(shell python3 -c 'from datetime import datetime, timedelta; print((datetime.now()).strftime("%Y-%m-%dT%H"))')
 
+
+jmx_url := localhost:5000
+resolve := false
+get_check := true
+
+ifeq (true, $(resolve))
+   extra_args := --delete --no_get_check --jmx_url $(jmx_url) --target_directory $(target)
+   ifeq (false, $(get_check))
+      extra_args := --no_get_check $(target)
+   endif
+else
+   extra_args := --target_directory $(target)
+endif
+
 clean := true
 ifeq (true, $(clean))
-   clean_arg := --clean
-else
-   clean_arg :=
+   extra_args := --clean $(extra_args)
 endif
 
-delete := --delete --no_get_check
-jmx_url := --jmx_url localhost:5000
-
-resolve := false
-ifeq (true, $(resolve))
-   extra_args := $(clean_arg) $(delete) $(jmx_url) --target_directory $(target)
-else
-   extra_args := $(clean_arg) --target_directory $(target)
+as_now := false
+ifeq (true, $(as_now))
+   extra_args := --api_as_now $(extra_args)
 endif
-
 
 .PHONY: vpro 3voor12 human npodoc vprobroadcast  gids report clean plots
 
