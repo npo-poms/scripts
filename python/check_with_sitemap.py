@@ -113,7 +113,10 @@ class CheckWithSitemap:
 
         pages = self.api.iterate(profile=self.profile, form=form)
         for page in pages:
-            creationDate = datetime.datetime.fromtimestamp(page['creationDate'] / 1000)
+            if 'creationDate' in page:
+                creationDate = datetime.datetime.fromtimestamp(page['creationDate'] / 1000)
+            else:
+                creationDate = datetime.datetime.fromtimestamp(0)
             url = page['url']
             if creationDate < until:
                 new_urls.add(url)
