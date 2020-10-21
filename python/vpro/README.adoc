@@ -1,0 +1,29 @@
+= Scripts to check to entire content of sitemap at various VPRO sites with the content of the 'pages' api.
+
+Useage
+
+Do all checks
+
+[source,bash]
+----
+make all
+----
+
+Check only vpro
+[source,bash]
+----
+make all
+----
+
+Correct all differences for vpro:
+[source,bash]
+----
+make all resolve=true
+----
+For this to work you need to tunnel JMX to os2-magnolia-backend-prod-01 on localhost:5000
+
+It will also ask for credentials to the page publisher API if it hasn't done so before. Use vpro-cms user from 1password.
+
+The makefile is basicly a wrapper around the python script `check_with_sitemap_vpro.py` which depends on the
+https://github.com/npo-poms/pyapi[python api]. Run the script in the necesssary python environment as described there.
+

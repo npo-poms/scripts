@@ -10,8 +10,14 @@ clean := --clean
 delete := --delete --no_get_check
 jmx_url := --jmx_url localhost:5000
 
-#extra_args := $(clean) $(delete) $(jmx_url) --target_directory $(target)
-extra_args := $(clean) --target_directory $(target)
+resolve := false
+ifeq (true, $(resolve))
+   extra_args := $(delete) $(jmx_url) --target_directory $(target)
+else
+   extra_args :=  --target_directory $(target)
+
+endif
+
 
 .PHONY: vpro 3voor12 human npodoc vprobroadcast vpro-clean-api 3voor12-clean-api human-clean-api report clean plots
 

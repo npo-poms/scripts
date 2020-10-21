@@ -23,7 +23,7 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
     def add_arguments(self):
         super().add_arguments()
         api = self.api
-        api.add_argument('--jmx_url', type=str, default=None, help='use JMX to trigger reindex')
+        api.add_argument('--jmx_url', type=str, default=None, help='use JMX to trigger reindex. An url like "localhost:500" where this is tunneled to the magnolia backend server')
 
     def perform_add_to_api(self, not_in_api: list):
         """Actually add to api"""

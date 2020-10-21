@@ -50,8 +50,6 @@ class CheckWithSitemap:
         self.http_to_https = args.http_to_https
         self.use_database = args.use_database
 
-
-
         self.log = self.api.logger
 
         if self.use_database and self.clean:
@@ -75,13 +73,13 @@ class CheckWithSitemap:
 
     def add_arguments(self):
         api = self.api
-        api.add_argument('sitemap', type=str, nargs=1, help='sitemap')
-        api.add_argument('profile', type=str, nargs='?', help='profile')
+        api.add_argument('sitemap', type=str, nargs=1, help='URL to the sitemap')
+        api.add_argument('profile', type=str, nargs='?', help='NPO pages profile')
         api.add_argument('-C', '--clean', action='store_true', default=False, help='clean build')
         api.add_argument('-D', '--delete', action='store_true', default=False, help='remove from api')
-        api.add_argument('--no_get_check', action='store_true', default=False, help='when removing from api, dont check http status code first')
+        api.add_argument('--no_get_check', action='store_true', default=False, help='when removing from api, dont check http status code first (only 404s will be deleted)')
         api.add_argument('-S', '--show', action='store_true', default=False, help='show from api')
-        api.add_argument('--use_database', action='store_true', default=False, help='clean build')
+        api.add_argument('--use_database', action='store_true', default=False, help='explicitly use the local database (inverse of clean)')
         api.add_argument('--https_to_http', action='store_true', default=False, help='Replace all https with http')
         api.add_argument('--http_to_https', action='store_true', default=False, help='Replace all http with https')
         api.add_argument('--post_process_sitemap', type=str, default=None, help='')
