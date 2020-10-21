@@ -29,7 +29,7 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
         """Actually add to api"""
 
         if self.jmx_url:
-            self.command = [self.java_path, '-jar', self.jmxterm_binary, '--url', self.jmx_url, "-n"]
+            self.command = [self.java_path, '-jar', self.jmxterm_binary, '--url', self.jmx_url, "-n", "-v", "silent"]
             not_in_api = self._reindex_3voor12(not_in_api)
             not_in_api = self._reindex_mids(not_in_api)
             # todo:
@@ -38,7 +38,7 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
             self._reindex_urls(not_in_api)
 
         else:
-            self.log.info("No jmx_url configured, not trying to implicetely add to api via JMX")
+            self.log.info("No jmx_url configured, not trying to implicitely add to api via JMX")
 
     def _reindex_mids(self, not_in_api: list) -> list:
         urls_with_mid = list(filter(lambda m: m[0] is not None, map(self._find_mid, not_in_api)))

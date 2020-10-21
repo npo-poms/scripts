@@ -278,7 +278,6 @@ class CheckWithSitemap:
             sitemap_urls:list):
         """Explores what needs to be added to the API"""
         dest_file = self.file_in_target("report." + self.profile + ".in_sitemap_but_not_in_api.txt")
-        not_in_api = ()
         if  not os.path.exists(dest_file) or self.clean:
             self.log.info("Calculating what needs to be added to the api")
             mapped_not_in_api = set(mapped_sitemap_urls) - set(mapped_api_urls)
