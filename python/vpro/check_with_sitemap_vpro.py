@@ -2,6 +2,7 @@
 import os
 import re
 import sys
+import time
 import urllib
 from subprocess import Popen, PIPE
 sys.path.append("..")
@@ -44,10 +45,7 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
         self.log.info("Reindexing %d mids" % len(urls_with_mid))
         page_size = 100
         for i in range(0, len(urls_with_mid), page_size):
-            sub_list = ",".join(list(map(lambda m : m[0], urls_with_mid[i: i + page_size])))
-            p = Popen(self.command, stdin=PIPE, stdout=PIPE, encoding='utf-8')
-            out = p.communicate(input='bean nl.vpro.magnolia:name=IndexerMaintainerImpl\nrun reindexMediaObjects "'+ sub_list + '"')
-            self.log.info("output\n%s" % out[0])
+            self._call_jmx_operation("nl.vpro.magnolia:name=IndexerMaintainerImpl", "reindexMediaObjects", list(map(lambda m : m[0], urls_with_mid[i: i + page_size])))
 
         urls = list(map(lambda u: u[1], urls_with_mid))
         return [e for e in not_in_api if e not in urls]
@@ -58,10 +56,7 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
         page_size = 100
         self.log.info("Reindexing %d updates" % len(urls_with_uuids))
         for i in range(0, len(urls_with_uuids), page_size):
-            sub_list = ",".join(list(map(lambda m : m[0], urls_with_uuids[i: i + page_size])))
-            p = Popen(self.command, stdin=PIPE, stdout=PIPE, encoding='utf-8')
-            out = p.communicate(input='bean nl.vpro.magnolia:name=DrieVoorTwaalfUpdateIndexer\nrun reindexUUIDs "'+ sub_list + '"')
-            self.log.info("output\n%s" % out[0])
+            self._call_jmx_operation("nl.vpro.magnolia:name=DrieVoorTwaalfUpdateIndexer", "reindexUUIDs", list(map(lambda m : m[0], urls_with_uuids[i: i + page_size])))
 
         urls = list(map(lambda u: u[1], urls_with_uuids))
         return [e for e in not_in_api if e not in urls]
@@ -70,14 +65,8 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
         page_size = 20
         self.log.info("Reindexing %d urls" % len(not_in_api))
         for i in range(0, len(not_in_api), page_size ):
-            sub_list = ",".join(not_in_api[i: i + page_size ])
-            p = Popen(self.command, stdin=PIPE, stdout=PIPE, encoding='utf-8')
-            out = p.communicate(input='bean nl.vpro.magnolia:name=IndexerMaintainerImpl\nrun reindexUrls "'+ sub_list + '"')
-            self.log.info("output\n%s" % out[0])
+            self._call_jmx_operation("nl.vpro.magnolia:name=IndexerMaintainerImpl", "reindexUrls", not_in_api[i: i + page_size ])
         return not_in_api
-
-
-
 
     def _find_mid(self, url: str) -> list:
         matcher = re.match(".*?~(.*?)~.*", url)
@@ -93,6 +82,13 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
         else:
             return [None, url]
 
+    def _call_jmx_operation(self, bean: str, operation: str, sub_list: list):
+        p = Popen(self.command, stdin=PIPE, stdout=PIPE, encoding='utf-8')
+        out = p.communicate(input="bean " + bean  +"\nrun " + operation + " " + ",".join(sub_list))[0]
+        self.log.info("output\n%s" % out)
+        if "still busy" in out:
+            self.log.info("Jmx reports that still busy. Let's wait a bit then")
+            time.sleep(20)
 
     def _get_jmx_term_if_necessary(self):
         if self.jmx_url:
