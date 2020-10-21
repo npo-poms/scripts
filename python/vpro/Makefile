@@ -24,9 +24,9 @@ else
 endif
 
 
-.PHONY: vpro 3voor12 human npodoc vprobroadcast vpro-clean-api 3voor12-clean-api human-clean-api report clean plots
+.PHONY: vpro 3voor12 human npodoc vprobroadcast  gids report clean plots
 
-all: clean vpro 3voor12 human npodoc plots
+all: clean vpro 3voor12 human npodoc gids plots
 
 plots: report $(target)/plots/plot-all.png
 
@@ -43,6 +43,14 @@ vpro:
 		--post_process "lambda url: re.sub(r'^https://www.vpro.nl/speel[~\.](.*?)[~\.](.*)', r'https://www.vpro.nl/speel~\1~.html', url)" \
 		$(magnolia1)/vpronl/sitemap.xml \
 		vpro-predictions
+
+
+gids:
+	$(check) \
+		-e prod \
+		$(extra_args) \
+		$(magnolia1)/gids/sitemap.xml \
+		vprocinema
 
 
 3voor12:
@@ -80,20 +88,6 @@ vprobroadcast:
 
 
 
-clean-api: vpro-clean-api 3voor12-clean-api human-clean-api npodoc-clean-api
-
-vpro-clean-api:
-	$(check) --use_database --target_directory $(target) -D $(magnolia1)/vpronl/sitemap.xml vpro-predictions
-
-
-3voor12-clean-api:
-	$(check) --use_database --target_directory $(target) -D $(magnolia1)/3v12/sitemap.xml 3voor12
-
-human-clean-api:
-	$(check) --use_database --target_directory $(target) -D $(magnolia1)/human/sitemap.xml human
-
-npodoc-clean-api:
-	$(check) --use_database --target_directory $(target) -D $(magnolia1)/npodoc/sitemap.xml npodoc
 
 
 %-plot:
@@ -104,7 +98,7 @@ npodoc-clean-api:
 	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';file='$(target)/$*.not-in-sitemap.data';title='$* not in sitemap';dest='$(target)/plots/$*-not-in-sitemap.svg'" plot.gp
 
 
-$(target)/plots/plot-all.png: vpro-predictions-plot human-plot 3voor12-plot npodoc-plot
+$(target)/plots/plot-all.png: vpro-predictions-plot human-plot 3voor12-plot npodoc-plot gids-plot
 	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';destdir='$(target)/'" plot-all.gp
 
 
