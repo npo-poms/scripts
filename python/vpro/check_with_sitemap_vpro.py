@@ -30,11 +30,12 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
 
         if self.jmx_url:
             self.command = [self.java_path, '-jar', self.jmxterm_binary, '--url', self.jmx_url, "-n", "-v", "silent"]
-            not_in_api = self._reindex_3voor12(not_in_api)
-            not_in_api = self._reindex_mids(not_in_api)
-            # todo:
-            # - cinema
 
+            not_in_api = self._reindex_3voor12(not_in_api)
+            not_in_api = self._reindex_cinema_films(not_in_api)
+            not_in_api = self._reindex_cinema_person(not_in_api)
+
+            not_in_api = self._reindex_mids(not_in_api)
             self._reindex_urls(not_in_api)
 
         else:
@@ -61,6 +62,28 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
         urls = list(map(lambda u: u[1], urls_with_uuids))
         return [e for e in not_in_api if e not in urls]
 
+    def _reindex_cinema_films(self, not_in_api: list) -> list:
+        cinema_ids = list(filter(lambda m: m[0] is not None, map(self._find_cinema_film_id, not_in_api)))
+
+        page_size = 100
+        self.log.info("Reindexing %d cinema films" % len(cinema_ids))
+        for i in range(0, len(cinema_ids), page_size):
+            self._call_jmx_operation("nl.vpro.magnolia:name=CinemaObjectIndexer", "reindex", list(map(lambda m : m[0], cinema_ids[i: i + page_size])))
+
+        urls = list(map(lambda u: u[1], cinema_ids))
+        return [e for e in not_in_api if e not in urls]
+
+    def _reindex_cinema_person(self, not_in_api: list) -> list:
+        cinema_ids = list(filter(lambda m: m[0] is not None, map(self._find_cinema_person_uid, not_in_api)))
+
+        page_size = 100
+        self.log.info("Reindexing %d cinema persons" % len(cinema_ids))
+        for i in range(0, len(cinema_ids), page_size):
+            self._call_jmx_operation("nl.vpro.magnolia:name=CinemaPersonIndexer", "reindex", list(map(lambda m : m[0], cinema_ids[i: i + page_size])))
+
+        urls = list(map(lambda u: u[1], cinema_ids))
+        return [e for e in not_in_api if e not in urls]
+
     def _reindex_urls(self, not_in_api: list) -> list:
         page_size = 20
         self.log.info("Reindexing %d urls" % len(not_in_api))
@@ -69,14 +92,20 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
         return not_in_api
 
     def _find_mid(self, url: str) -> list:
-        matcher = re.match(".*?~(.*?)~.*", url)
-        if matcher:
-            return [matcher.group(1), url]
-        else:
-            return [None, url]
+        return self._find_by_regexp(".*~(.*?)~.*", url)
 
     def _find_update_uuid(self, url: str) -> list:
-        matcher = re.match(".*?update~(.*?)~.*", url)
+        return self._find_by_regexp(".*?update~(.*?)~.*", url)
+
+    def _find_cinema_film_id(self, url: str) -> list:
+        return self._find_by_regexp(".*?film~(.*?)~.*", url)
+
+    def _find_cinema_person_uid(self, url: str) -> list:
+        return self._find_by_regexp(".*?persoon~(.*?)~.*", url)
+
+    @staticmethod
+    def _find_by_regexp(regex: str, url: str) -> list:
+        matcher = re.match(regex, url)
         if matcher:
             return [matcher.group(1), url]
         else:
@@ -100,8 +129,6 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
                 get_url = "https://github.com/jiaqi/jmxterm/releases/download/v" + jmxtermversion + "/" + jmxterm
                 self.log.info("Downloading %s -> %s" % (get_url, self.jmxterm_binary))
                 urllib.request.urlretrieve (get_url, self.jmxterm_binary)
-
-
 
 
 if __name__ == "__main__":
