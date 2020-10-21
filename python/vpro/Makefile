@@ -6,16 +6,21 @@ reportdir := $(target)/reports/`date +'%FT%H'`
 lastmonth := $(shell python3 -c 'from datetime import datetime, timedelta; print((datetime.now() - timedelta(days=31)).strftime("%Y-%m-%dT%H"))')
 now := $(shell python3 -c 'from datetime import datetime, timedelta; print((datetime.now()).strftime("%Y-%m-%dT%H"))')
 
-clean := --clean
+clean := true
+ifeq (true, $(clean))
+   clean_arg := --clean
+else
+   clean_arg :=
+endif
+
 delete := --delete --no_get_check
 jmx_url := --jmx_url localhost:5000
 
 resolve := false
 ifeq (true, $(resolve))
-   extra_args := $(delete) $(jmx_url) --target_directory $(target)
+   extra_args := $(clean_arg) $(delete) $(jmx_url) --target_directory $(target)
 else
-   extra_args :=  --target_directory $(target)
-
+   extra_args := $(clean_arg) --target_directory $(target)
 endif
 
 
