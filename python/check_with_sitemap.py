@@ -121,7 +121,7 @@ class CheckWithSitemap:
             if creationDate < until:
                 new_urls.add(url)
             else:
-                self.log.info("Ignoring %s since it newer than sitemap itself" % url)
+                self.log.info("Ignoring %s since it is newer (%s) than sitemap itself" % (url. str(creationDate)))
             if len(new_urls) % 100 == 0:
                 self.log.info("API: Found %d urls for profile %s" % (len(new_urls), self.profile))
 
