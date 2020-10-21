@@ -7,13 +7,16 @@ from subprocess import Popen, PIPE
 sys.path.append("..")
 from check_with_sitemap import CheckWithSitemap
 
+DEFAULT_JAVA_PATH = 'java'
+
 
 class CheckWithSiteMapVpro(CheckWithSitemap):
 
-    def __init__(self):
+    def __init__(self, java_path: str = DEFAULT_JAVA_PATH):
         super().__init__()
         self.jmx_url = self.args.jmx_url
         self.jmxterm_binary = ""
+        self.java_path = java_path
         self._get_jmx_term_if_necessary()
 
     def add_arguments(self):
@@ -25,13 +28,11 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
         """Actually add to api"""
 
         if self.jmx_url:
-
-            self.command = ["/usr/bin/java", '-jar', self.jmxterm_binary, '--url', self.jmx_url, "-n"]
-
+            self.command = [self.java_path, '-jar', self.jmxterm_binary, '--url', self.jmx_url, "-n"]
+            not_in_api = self._reindex_3voor12(not_in_api)
             not_in_api = self._reindex_mids(not_in_api)
             # todo:
             # - cinema
-            # - 3voor12 updates
 
             self._reindex_urls(not_in_api)
 
@@ -41,9 +42,9 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
     def _reindex_mids(self, not_in_api: list) -> list:
         urls_with_mid = list(filter(lambda m: m[0] is not None, map(self._find_mid, not_in_api)))
         self.log.info("Reindexing %d mids" % len(urls_with_mid))
-        mids_page_size = 100
-        for i in range(0, len(urls_with_mid), mids_page_size):
-            sub_list = ",".join(list(map(lambda m : m[0], urls_with_mid[i: i + mids_page_size])))
+        page_size = 100
+        for i in range(0, len(urls_with_mid), page_size):
+            sub_list = ",".join(list(map(lambda m : m[0], urls_with_mid[i: i + page_size])))
             p = Popen(self.command, stdin=PIPE, stdout=PIPE, encoding='utf-8')
             out = p.communicate(input='bean nl.vpro.magnolia:name=IndexerMaintainerImpl\nrun reindexMediaObjects "'+ sub_list + '"')
             self.log.info("output\n%s" % out[0])
@@ -51,15 +52,32 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
         urls = list(map(lambda u: u[1], urls_with_mid))
         return [e for e in not_in_api if e not in urls]
 
+    def _reindex_3voor12(self, not_in_api: list) -> list:
+        urls_with_uuids = list(filter(lambda m: m[0] is not None, map(self._find_update_uuid, not_in_api)))
+
+        page_size = 100
+        self.log.info("Reindexing %d updates" % len(urls_with_uuids))
+        for i in range(0, len(urls_with_uuids), page_size):
+            sub_list = ",".join(list(map(lambda m : m[0], urls_with_uuids[i: i + page_size])))
+            p = Popen(self.command, stdin=PIPE, stdout=PIPE, encoding='utf-8')
+            out = p.communicate(input='bean nl.vpro.magnolia:name=DrieVoorTwaalfUpdateIndexer\nrun reindexUUIDs "'+ sub_list + '"')
+            self.log.info("output\n%s" % out[0])
+
+        urls = list(map(lambda u: u[1], urls_with_uuids))
+        return [e for e in not_in_api if e not in urls]
+
     def _reindex_urls(self, not_in_api: list) -> list:
-        urls_page_size = 20
+        page_size = 20
         self.log.info("Reindexing %d urls" % len(not_in_api))
-        for i in range(0, len(not_in_api), urls_page_size ):
-            sub_list = ",".join(not_in_api[i: i + urls_page_size ])
+        for i in range(0, len(not_in_api), page_size ):
+            sub_list = ",".join(not_in_api[i: i + page_size ])
             p = Popen(self.command, stdin=PIPE, stdout=PIPE, encoding='utf-8')
             out = p.communicate(input='bean nl.vpro.magnolia:name=IndexerMaintainerImpl\nrun reindexUrls "'+ sub_list + '"')
             self.log.info("output\n%s" % out[0])
         return not_in_api
+
+
+
 
     def _find_mid(self, url: str) -> list:
         matcher = re.match(".*?~(.*?)~.*", url)
@@ -67,6 +85,14 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
             return [matcher.group(1), url]
         else:
             return [None, url]
+
+    def _find_update_uuid(self, url: str) -> list:
+        matcher = re.match(".*?update~(.*?)~.*", url)
+        if matcher:
+            return [matcher.group(1), url]
+        else:
+            return [None, url]
+
 
     def _get_jmx_term_if_necessary(self):
         if self.jmx_url:
