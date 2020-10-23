@@ -32,7 +32,7 @@ endif
 
 .PHONY: vpro 3voor12 human npodoc vprobroadcast  gids report clean plots
 
-all: clean vpro 3voor12 human npodoc gids plots
+all: clean vpro 3voor12 human npodoc vprobroadcast plots
 
 plots: report $(target)/plots/plot-all.png
 
@@ -55,6 +55,8 @@ gids:
 	$(check) \
 		-e prod \
 		$(extra_args) \
+                --post_process_api "lambda url: ..." \n
+                --post_process_sitemap "lambda url: verwijder gidspaginas" \n
 		$(magnolia1)/gids/sitemap.xml \
 		vprocinema
 
