@@ -85,7 +85,7 @@ class CheckWithSitemap:
         api.add_argument('--http_to_https', action='store_true', default=False, help='Replace all http with https')
         api.add_argument('--api_as_now', action='store_true', default=False, help='Normally api object created after this morning are ignored. After repairing you could use this argument to check results')
 
-        api.add_argument('--post_process_sitemap', type=str, default=None, help='')
+        api.add_argument('--post_process_sitemap', type=str, default=None, help='A piec')
         api.add_argument('--post_process_api', type=str, default=None, help='')
         api.add_argument('--post_process', type=str, default=None, help='')
         api.add_argument('--target_directory', type=str, default=None, help='')

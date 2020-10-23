@@ -73,7 +73,6 @@ human:
 	$(check) \
 		-e prod --http_to_https \
 		$(extra_args) \
-		--post_process "lambda url: re.sub(r'^https://www.human.nl/speel[~\.](.*?)[~\.](.*)', r'https://www.human.nl/speel~\1~.html', url)" \
 		$(magnolia1)/human/sitemap.xml \
 		human
 
@@ -106,7 +105,7 @@ vprobroadcast:
 	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';file='$(target)/$*.not-in-sitemap.data';title='$* not in sitemap';dest='$(target)/plots/$*-not-in-sitemap.svg'" plot.gp
 
 
-$(target)/plots/plot-all.png: vpro-predictions-plot human-plot 3voor12-plot npodoc-plot gids-plot
+$(target)/plots/plot-all.png: vpro-predictions-plot human-plot 3voor12-plot npodoc-plot vprobroadcast-plot
 	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';destdir='$(target)/'" plot-all.gp
 
 
