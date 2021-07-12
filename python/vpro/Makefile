@@ -55,8 +55,6 @@ gids:
 	$(check) \
 		-e prod \
 		$(extra_args) \
-                --post_process_api "lambda url: ..." \n
-                --post_process_sitemap "lambda url: verwijder gidspaginas" \n
 		$(magnolia1)/gids/sitemap.xml \
 		vprocinema
 
