@@ -129,6 +129,9 @@ class CheckWithSitemap:
         return new_urls
 
     def get_urls(self, until=None) -> list:
+
+        if self.profile is None:
+           raise Exception("No profile")
         url_file = self.file_in_target("data." + self.profile + ".api.p")
         if self.use_database or (os.path.exists(url_file) and not self.clean):
             new_urls = pickle.load(open(url_file, "rb"))
