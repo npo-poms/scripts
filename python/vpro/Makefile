@@ -20,7 +20,7 @@ else
    extra_args := --target_directory $(target)
 endif
 
-clean := false
+clean := true
 ifeq (true, $(clean))
    extra_args := --clean $(extra_args)
 endif
