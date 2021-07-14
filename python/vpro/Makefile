@@ -20,7 +20,7 @@ else
    extra_args := --target_directory $(target)
 endif
 
-clean := true
+clean := false
 ifeq (true, $(clean))
    extra_args := --clean $(extra_args)
 endif
@@ -55,6 +55,7 @@ gids:
 	$(check) \
 		-e prod \
 		$(extra_args) \
+		--post_process_api "lambda url: None if url.startswith('https://www.vprogids.nl/cinema/personen/persoon~') else url" \
 		$(magnolia1)/gids/sitemap.xml \
 		vprocinema
 

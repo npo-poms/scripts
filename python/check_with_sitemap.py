@@ -333,13 +333,13 @@ class CheckWithSitemap:
 
         self.log.info("Post processing")
         # list of all urls as they are present in the page api, but post processed. Should be used for comparing, not for operations
-        mapped_api_urls = list(map(lambda url: post_process(post_process_api(schema_mapper(url))), api_urls))
+        mapped_api_urls = list(filter(None.__ne__, list(map(lambda url: post_process(post_process_api(schema_mapper(url))), api_urls))))
 
         mapped_file = self.file_in_target("mappeddata." + self.profile + ".api.txt")
         with io.open(mapped_file, 'w', encoding="utf-8") as f:
             f.write('\n'.join(sorted(mapped_api_urls)))
         # list of all urls as they are present in the sitemap, but post processed. Should be used for comparing, not for operations
-        mapped_sitemap_urls = list(map(lambda url: post_process(post_process_sitemap(schema_mapper(url))), sitemap_urls))
+        mapped_sitemap_urls = list(filter(None.__ne__, list(map(lambda url: post_process(post_process_sitemap(schema_mapper(url))), sitemap_urls))))
         mapped_file = self.file_in_target("mappeddata." + self.profile + ".sitemap.txt")
         with io.open(mapped_file, 'w', encoding="utf-8") as f:
             f.write('\n'.join(sorted(mapped_sitemap_urls)))

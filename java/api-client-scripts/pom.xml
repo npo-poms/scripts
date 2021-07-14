@@ -2,41 +2,51 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>nl.vpro.api-client</groupId>
-    <artifactId>api-client-parent</artifactId>
-    <version>5.10.0</version>
-  </parent>
+  <groupId>nl.vpro</groupId>
   <artifactId>api-client-scripts</artifactId>
   <name>api-client-scripts</name>
+  <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <description>
     Just collecting some tools which we used to solve issues.
   </description>
 
+  <properties>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+  </properties>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>nl.vpro.poms</groupId>
+        <artifactId>poms-bom</artifactId>
+        <type>pom</type>
+        <version>5.30.1</version>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <dependencies>
+
     <dependency>
-      <groupId>nl.vpro.api-client</groupId>
-      <artifactId>media-backend-rs-client</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>nl.vpro.api-client</groupId>
-      <artifactId>client-utils</artifactId>
-      <version>${project.version}</version>
+      <groupId>nl.vpro.poms.api-clients</groupId>
+      <artifactId>media-backend-api-client</artifactId>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
+      <version>1.7.31</version>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
+      <version>1.18.20</version>
     </dependency>
     <dependency>
       <groupId>javax</groupId>
       <artifactId>javaee-api</artifactId>
+      <version>8.0.1</version>
       <scope>runtime</scope>
     </dependency>
   </dependencies>
