@@ -9,7 +9,7 @@ DIR="$1"
 # properties 'api_endpoint' and 'credentials'
 CONFIG_FILE="$2"
 
-source $CREDENTIALS
+source $CONFIG_FILE
 
 # Key 'user' should be included in credentials file
 if [ -z "$user" -o -z "$api_endpoint" ] ; then
@@ -17,7 +17,26 @@ if [ -z "$user" -o -z "$api_endpoint" ] ; then
     exit 1
 fi
 
-find . -name *.xml
+PREV_RESULT_FILE="prev_result.txt"
+NEW_RESULT_FILE="new_result.txt"
+
+find $DIR -type f -name "*.xml" -print > $NEW_RESULT_FILE
+
+if test -f "$PREV_RESULT_FILE"; then
+    echo "$PREV_RESULT_FILE exists."
+    # Only show newlines in $NEW_RESULT_FILE
+    comm -13 $PREV_RESULT_FILE $NEW_RESULT_FILE | while read newfile
+    do
+        echo $newfile
+        # TODO: finish API-call
+        curl -F "data=$newfile" --user $user --header "Content-Type: application/xml" $api_endpoint
+    done
+else
+    echo "previous result doesn't exist yet"
+fi
+
+mv $NEW_RESULT_FILE $PREV_RESULT_FILE
+
 
 #inotifywait -m -r -e create -e moved_to $DIR |
 #    while read dir action file; do
