@@ -8,13 +8,13 @@ CONFIG_FILE="$1"
 
 source $CONFIG_FILE
 
-# properties 'user', 'api_endpoint' and 'input_dir' should be included in the config file
-if [ -z "$user" -o -z "$api_endpoint" -o -z "$input_dir" ] ; then
-    echo "Not all required config keys are present: 'user' and 'api_endpoint'"
+# properties 'user', 'api_endpoint', 'input_dir' and 'env' should be included in the config file
+if [ -z "$user" -o -z "$api_endpoint" -o -z "$input_dir" -o -z "$env" ] ; then
+    echo "Not all required config keys are present: 'user', 'api_endpoint', 'input_dir' and 'env'"
     exit 1
 fi
 
-LAST_ADDED_FILE="last_added_file.txt"
+LAST_ADDED_FILE="$env.last_added_file.txt"
 
 touch $LAST_ADDED_FILE
 
