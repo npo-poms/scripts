@@ -6,7 +6,7 @@ fi
 
 # set path to watch
 DIR="$1"
-# properties 'api_endpoint' and 'credentials'
+# properties 'user' and 'api_endpoint'
 CONFIG_FILE="$2"
 
 source $CONFIG_FILE
@@ -17,32 +17,25 @@ if [ -z "$user" -o -z "$api_endpoint" ] ; then
     exit 1
 fi
 
-PREV_RESULT_FILE="prev_result.txt"
-NEW_RESULT_FILE="new_result.txt"
+LAST_ADDED_FILE="last_added_file.txt"
 
-find $DIR -type f -name "*.xml" -print > $NEW_RESULT_FILE
+touch $LAST_ADDED_FILE
 
-if test -f "$PREV_RESULT_FILE"; then
-    echo "$PREV_RESULT_FILE exists."
-    # Only show newlines in $NEW_RESULT_FILE
-    comm -13 $PREV_RESULT_FILE $NEW_RESULT_FILE | while read newfile
-    do
-        echo $newfile
-        # TODO: finish API-call
-        curl -F "data=$newfile" --user $user --header "Content-Type: application/xml" $api_endpoint
-    done
+last_filename=$(<$LAST_ADDED_FILE)
+newer_command=""
+
+if test -f "$last_filename"; then
+    newer_command="-newer $last_filename "
+    echo "file exists"
 else
-    echo "previous result doesn't exist yet"
+    newer_command="-mmin -60 "
+    echo "no file exists. Copy only files that are modified in the last 60 minutes (the cron-job interval)"
 fi
 
-mv $NEW_RESULT_FILE $PREV_RESULT_FILE
-
-
-#inotifywait -m -r -e create -e moved_to $DIR |
-#    while read dir action file; do
-#        if [[ "$file" =~ .*xml$ ]]; then
-#            echo "The file '$file' appeared in directory '$dir' via '$action'"
-#            # do something with the file
-#            curl -F "data=$file" --user $user --header "Content-Type: application/xml" $api_endpoint
-#        fi
-#    done
+# Sort from old to new
+find $DIR -type f -name "*.xml" $newer_command-printf "%T@ %p\n"| sort -n | while read timestamp newfile
+do
+    echo $newfile > $LAST_ADDED_FILE
+    
+    curl --form "data=$newfile" --user "$user" --header "Content-Type: application/xml" $api_endpoint
+done
