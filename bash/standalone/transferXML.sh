@@ -37,5 +37,5 @@ find $DIR -type f -name "*.xml" $newer_command-printf "%T@ %p\n"| sort -n | whil
 do
     echo $newfile > $LAST_ADDED_FILE
     
-    curl --form "data=$newfile" --user "$user" --header "Content-Type: application/xml" $api_endpoint
+    curl -X POST --data "@$newfile" --user "$user" --header "Content-Type: application/xml" $api_endpoint
 done
