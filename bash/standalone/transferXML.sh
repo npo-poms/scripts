@@ -1,18 +1,15 @@
 #!/bin/bash
-if [ -z "$1" -o -z "$2" ] ; then
-    echo use "$0 <path_to_input_dir> <path_to_config_file>"
+if [ -z "$1" ] ; then
+    echo use "$0 <path_to_config_file>"
     exit
 fi
 
-# set path to watch
-DIR="$1"
-# properties 'user' and 'api_endpoint'
-CONFIG_FILE="$2"
+CONFIG_FILE="$1"
 
 source $CONFIG_FILE
 
-# Key 'user' should be included in credentials file
-if [ -z "$user" -o -z "$api_endpoint" ] ; then
+# properties 'user', 'api_endpoint' and 'input_dir' should be included in the config file
+if [ -z "$user" -o -z "$api_endpoint" -o -z "$input_dir" ] ; then
     echo "Not all required config keys are present: 'user' and 'api_endpoint'"
     exit 1
 fi
@@ -33,7 +30,7 @@ else
 fi
 
 # Sort from old to new
-find $DIR -type f -name "*.xml" $newer_command-printf "%T@ %p\n"| sort -n | while read timestamp newfile
+find $input_dir -type f -name "*.xml" $newer_command-printf "%T@ %p\n"| sort -n | while read timestamp newfile
 do
     echo $newfile > $LAST_ADDED_FILE
     
