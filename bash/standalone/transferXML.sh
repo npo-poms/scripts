@@ -31,7 +31,7 @@ if test -f "$last_filename"; then
     newer_command="-newer $last_filename "
     echo "file exists"
 else
-    newer_command="-mmin -60 "
+    newer_command="-mmin -5 "
     echo "no file exists. Copy only files that are modified in the last 60 minutes (the cron-job interval)"
 fi
 
