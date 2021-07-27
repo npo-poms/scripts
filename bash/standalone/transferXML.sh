@@ -9,8 +9,8 @@ CONFIG_FILE="$1"
 source $CONFIG_FILE
 
 # properties 'user', 'api_endpoint', 'input_dir' and 'env' should be included in the config file
-if [ -z "$user" -o -z "$api_endpoint" -o -z "$input_dir" -o -z "$env" ] ; then
-    echo "Not all required config keys are present: 'user', 'api_endpoint', 'input_dir' and 'env'"
+if [ -z "$user" -o -z "$api_endpoint" -o -z "$input_dirs" -o -z "$env" ] ; then
+    echo "Not all required config keys are present: 'user', 'api_endpoint', 'input_dirs' and 'env'"
     exit 1
 fi
 
@@ -29,8 +29,8 @@ else
     echo "no file exists. Copy only files that are modified in the last 60 minutes (the cron-job interval)"
 fi
 
-# Sort from old to new
-find $input_dir -type f -name "*.xml" $newer_command-printf "%T@ %p\n"| sort -n | while read timestamp newfile
+# Sort from old to new in all provided directories
+find ${input_dirs[*]} -type f -name "*.xml" $newer_command-printf "%T@ %p\n"| sort -n | while read timestamp newfile
 do
     echo $newfile > $LAST_ADDED_FILE
     
