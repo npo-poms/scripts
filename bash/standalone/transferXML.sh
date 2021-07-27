@@ -14,6 +14,12 @@ if [ -z "$user" -o -z "$api_endpoint" -o -z "$input_dirs" -o -z "$env" ] ; then
     exit 1
 fi
 
+SOURCE=$(readlink  $BASH_SOURCE)
+if [[ -z "$SOURCE" ]] ; then
+    SOURCE=$BASH_SOURCE
+fi
+ERROR_LOG=$(dirname ${SOURCE[0]})/$env.error.log
+
 LAST_ADDED_FILE="$env.last_added_file.txt"
 
 touch $LAST_ADDED_FILE
@@ -34,5 +40,8 @@ find ${input_dirs[*]} -type f -name "*.xml" $newer_command-printf "%T@ %p\n"| so
 do
     echo $newfile > $LAST_ADDED_FILE
     
-    curl -X POST --data "@$newfile" --user "$user" --header "Content-Type: application/xml" $api_endpoint
+    response=$(curl -X POST --data "@$newfile" --user "$user" --header "Content-Type: application/xml" --write-out "%{http_code}" --silent --output /dev/null $api_endpoint)
+    if [ "$response" -ne "200" ]; then
+        echo $newfile$'\t'failed with status code $response >> $ERROR_LOG
+    fi
 done
