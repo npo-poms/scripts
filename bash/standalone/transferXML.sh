@@ -52,4 +52,5 @@ do
     if [ "$response" -ne "200" ]; then
         echo $(date)$'\t'$newfile$'\t'failed with status code $response >> $ERROR_LOG
     fi
+    read -t 2
 done
