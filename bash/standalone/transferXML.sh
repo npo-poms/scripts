@@ -46,11 +46,13 @@ fi
 # Find & sort XML-files from old to new in all provided directories
 find ${input_dirs[*]} -type f -name "*.xml" $newer_command-printf "%T@ %p\n"| sort -n | while read timestamp newfile
 do
-    echo $newfile > $LAST_ADDED_FILE
-    
     response=$(curl -X POST --data "@$newfile" --user "$user" --header "Content-Type: application/xml" --write-out "%{http_code}" --silent --output /dev/null $api_endpoint)
     if [ "$response" -ne "200" ]; then
         echo $(date)$'\t'$newfile$'\t'failed with status code $response >> $ERROR_LOG
+        # Retry in next iterator
+        break
+    else
+        echo $newfile > $LAST_ADDED_FILE
     fi
     read -t 2
 done
