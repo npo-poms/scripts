@@ -49,7 +49,7 @@ do
     response=$(curl -X POST --data "@$newfile" --user "$user" --header "Content-Type: application/xml" --write-out "%{http_code}" --silent --output /dev/null $api_endpoint)
     if [ "$response" -ne "200" ]; then
         echo $(date)$'\t'$newfile$'\t'failed with status code $response >> $ERROR_LOG
-        # Retry in next iterator
+        # Retry in next iteration
         break
     else
         echo $newfile > $LAST_ADDED_FILE
