@@ -1,0 +1,9 @@
+= Examples for posting to the NPO backend API
+
+
+(https://api.poms.omroep.nl)
+
+Some of these can also be uploaded as a file and then be processed bij POMS
+
+
+https://github.com/npo-poms/poms-shared/blob/main/media-test/src/test/resources/programupdate-with-everything.xml[This case we use in tests] It contains every possible feature (it is also generated from code and compared with this one to check that we don't accidentally change something)

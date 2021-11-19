@@ -1,29 +1,38 @@
-poms-scripts
-============
+= poms-scripts
+:toc:
 
 Scripts to talk to POMS Rest API.
 
-These scripts are in python. But we may add scripts in groovy or other scripting languages as well.
 
-Python
-------
+== XML
+
+Some plain XML examples can be found in link:examples[examples]
+
+
+
+== Python
+
 For python we maintain a 'poms.py' which is imported in the other python scripts. It provides a simple shelve-database with settings you use, and maps the rest-calls which are used in the scripts.
-```Shell
-michiel@baleno:~/github/npo-poms/scripts/python$ ./post.py -r -t dev  ../examples/program.xml 
+
+[source,Shell]
+----
+michiel@baleno:~/github/npo-poms/scripts/python$ ./post.py -r -t dev  ../examples/program.xml
 Username for https://api-dev.poms.omroep.nl/media/: vpro-mediatools
-Password: 
+Password:
 Username/password stored in file creds.db. Use -r to set it.
 posting  to https://api-dev.poms.omroep.nl/media/media?errors=michiel.meeuwissen@gmail.com
 crid://bds.tv/9876,crid://tmp.fragment.mmbase.vpro.nl/1234
-michiel@baleno:~/github/npo-poms/scripts/python$ 
-```
+michiel@baleno:~/github/npo-poms/scripts/python$
+----
 
 This is quite straight forward and was later improved to be an actual (python library)[https://github.com/npo-poms/pyapi]. Some scripts in the python directory of this project make use of that library.
 
-Groovy/Java
------------
-Since POMS is written in Java, it is actually feasible to use its domain objects in your scripts. [Rest clients](https://github.com/npo-poms/api-clients) are available, which use these domain objects directly.
-```java
+== Groovy/Java
+
+Since POMS is written in Java, it is actually feasible to use its domain objects in your scripts. https://github.com/npo-poms/api-clients[Rest clients] are available, which use these domain objects directly.
+
+[source,java]
+----
 MediaRestClient client = new MediaRestClient();
 client.setUrl(mediaRsUrl);
 client.setUserName(userName);
@@ -37,14 +46,16 @@ group.setPublishStart(onlineDate);
 
 client.set(group);
 
-```
+----
+
 In the directory `java` of this project we appear code that (temporary) used these clients.
 
+== Bash/XSLT
 
-Bash/XSLT
----------
 Simply calling 'curl' in shell script is of course possible too. These scripts include a 'creds.sh'. A template 'copy.to.creds.sh' is available. Do that and provide your own credentials in it. Most scripts can be prefixed with the environment:
-```shell
+
+[source,shell]
+----
 michiel@belono:~/github/npo-poms/scripts/bash$ ENV=prod ./unpublish.sh WO_VPRO_717563
 posting:
 <?xml version="1.0"?>
@@ -58,6 +69,6 @@ posting:
 </program>
 result:
 WO_VPRO_717563
-```
+----
 
 Sometimes operations involve modifying XML, which is done using xsltproc/XSLT in these scripts.
