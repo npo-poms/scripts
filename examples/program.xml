@@ -5,6 +5,8 @@
         "program"   - losse uitzending, web-only materiaal of een individuele track
         "group"     - een verzameling van programma's en groepen, bijvoorbeeld een serie, playlist of album
 
+    Dit is een voorbeeld van een program.
+
     (** Naast program en group bestaat er een derde basis element: "segment". Een segment is een deel van de tijdlijn
     van een programma. Omdat een segment zonder programma niet kan bestaan worden segmenten bij import aangeboden als
     onderdeel  van een programma (zie onder). Via REST/SOAP api's kan men segmenten los aanbieden, mits daarbij apart
@@ -12,7 +14,7 @@
 
     Programma's kunnen een onderdeel zijn van een groep via het memberOf element (generiek) of via episodeOf als het en
     aflevring betreft. Voor het laatste geval geldt dat het programma van het type BROADCAST of CLIP moet zijn, en dat
-    de groep van het type SERIES of SEASON moet zijn. Bij import scenario's dienen de groepen geimporteerd te zijn voor
+    de groep van het type SERIES of SEASON moet zijn. Bij import scenario's dienen de groepen geïmporteerd te zijn voor
     de programma's.
 
     Programma en groep hebben beiden een vereist type attribuut. Geldige waardes zijn:
@@ -30,7 +32,7 @@
         Crids worden gebruikt in TVAnytime om unieke id's voor content te genereren.
 
         Omroepen kunnen hier eigen crids toevoegen en dit veld gebruiken als koppeltabel naar hun eigen system. Bij imports of updates
-        zal POMS proberen om het originele document te vinden en dit te verreiken. Als dat niet lukt wordt een nieuwe entiteit aangemaakt.
+        zal POMS proberen om het originele document te vinden en dit te verrijken. Als dat niet lukt wordt een nieuwe entiteit aangemaakt.
 
         Regels:
             - crids zijn optioneel
@@ -44,19 +46,14 @@
     <crid>crid://bds.tv/9876</crid>
     <crid>crid://tmp.fragment.mmbase.vpro.nl/1234</crid>
     <!--
-        Omroep naam zoals gedistribueerd door MIS/Teleview. Is nog een vrij tekst veld maart het is niet verstandig om dit vrij te
-        in te vullen. Bij afwijkende inhoud kan de media na invoer niet bewerkt worden door de redacteuren van de bijbewhorende omroep.
-
-        Binnen afzienbare termijn wordt dit veld vervangen door een enum met een gelimiteerd aantal waardes.
-
-        Regels:
-        - Hoofletters, geen spaties
+        Omroep naam zoals oorspronkelijk gedistribueerd door MIS/Teleview. De lijst wordt tegenwoordig in POMS zelf bijgehouden  en kan worden
+        geraadpleegd om https://poms.omroep.nl/broadcasters
     -->
     <broadcaster>BNN</broadcaster>
     <broadcaster>VPRO</broadcaster>
     <!--
         Optionele portal id waaraan deze media gerelateerd moet worden. De portal moet bestaan in POMS. Als dat
-        niet het geval is zal
+        niet het geval is zal het object worden afgewezen.
 
         Regels:
         - [A-Z0-9_-]{4,}
@@ -89,7 +86,7 @@
     <tag>Kabouters</tag>
     <tag>2011</tag>
     <!--
-        Optionele lijst met genre term id's volgens http://poms.omroep.nl/schema/classification/ebu_ContentGenreCS.xml
+        Optionele lijst met genre term id's volgens https://poms.omroep.nl/schema/classification/ebu_ContentGenreCS.xml
 
         Wijzigen van dit veld is bij media van type BROADCAST niet toegestaan. Omdat het een gidsveld is. Updates moeten
         dan de originele waarde bevatten.
@@ -183,6 +180,10 @@
 
         In de praktijk is dit een niet erg betrouwbare oplossing, zeker als tijdstippen door willekeurige redactueren zijn ingevoerd. Matching op een geldige
         mediaRef heeft de voorkeur.
+
+
+       NOTE: volgens mij wordt dit niet meer op die manier ondersteunt. Wel kun je hiermee waarschijnlijk scheduleevents koppelen, maar dat kan alleen als 
+       het gebruikte account de juist rol heeft, en het kan alleen bij 'historische' content, maw, het kan nooit voor schedulevents in toekomsts of nabij verleden.
     -->
         <!-- Een vertoning op een kanaal. Alle velden, kanaal, start en duur zijn verplicht. -->
 
