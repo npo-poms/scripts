@@ -268,6 +268,11 @@
             <imageLocation>
               <url>http://images.poms.omroep.nl/image/494930.jpg</url> <!-- zomaar een plaatje, toevallig ook op poms -->
             </imageLocation>
+            <!-- 
+                In plaats van een imageLocation element kun je ook een 'imageData' element geven, met daarin het plaatje zelf.
+                De derde mogelijk is een 'urn' element waarme je kunt verwijzen naar een bestaand plaatje in poms
+
+            -->
         </image>
     </images>
 
