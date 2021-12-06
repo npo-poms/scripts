@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<program type="BROADCAST" avType="AUDIO" publishStop="2022-09-01T18:16:01.287+01:00"
+    publishStart="2021-09-01T16:16:01.287+01:00" embeddable="true"
+    xmlns="urn:vpro:media:update:2009">
+   <broadcaster id="NOS">NOS</broadcaster>
+   <title type="MAIN">NOS-Met Het Oog Op Morgen 123</title>
+   <description type="MAIN">Main description</description>
+   <duration>P0DT1H0M0.000S</duration>
+   <memberOf position="1">AUTO_NOSMETHETOOGOPMORGEN</memberOf>
+   <episodeOf position="1">AUTO_NOSMETHETOOGOPMORGEN</episodeOf>
+   <genre>3.0.1</genre><!-- https://jira.vpro.nl/browse/MSE-5182, will be rejected -->
+</program>
