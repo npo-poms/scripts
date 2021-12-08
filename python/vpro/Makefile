@@ -30,9 +30,11 @@ ifeq (true, $(as_now))
    extra_args := --api_as_now $(extra_args)
 endif
 
-.PHONY: vpro 3voor12 human npodoc vprobroadcast  gids report clean plots
+.PHONY: all all_sites vpro 3voor12 human npodoc vprobroadcast  gids report clean plots
 
-all: clean vpro 3voor12 human npodoc vprobroadcast gids plots
+all: clean all_sites plots
+all_sites: vpro 3voor12 human npodoc vprobroadcast gids
+
 
 plots: report $(target)/plots/plot-all.png
 
