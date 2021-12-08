@@ -94,8 +94,6 @@ vprobroadcast:
 
 
 
-
-
 %-plot:
 	mkdir -p $(target)/plots
 	cd $(target) ; for i in `ls reports/*/report.$*.in_sitemap*.txt`; do wc -l $$i  ; done | awk '{print $$2"/"$$1}' | awk -F '/' '{print $$2" "$$4}' > $(target)/$*.not-in-api.data
