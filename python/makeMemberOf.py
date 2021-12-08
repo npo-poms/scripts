@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Script to add a image to all members of a group."""
 
-from npoapi import MediaBackend, MediaBackendUtil as MU
+from npoapi import MediaBackend
 from npoapi.xml import mediaupdate
 from npoapi.xml import poms
 
