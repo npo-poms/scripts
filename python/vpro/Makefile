@@ -35,9 +35,7 @@ endif
 all: clean all_sites plots
 all_sites: vpro 3voor12 human npodoc vprobroadcast gids
 
-
 plots: report $(target)/plots/plot-all.png
-
 
 report:
 	@for f in `find $(target) -maxdepth 2 -type f '(' -iname 'report.*.txt' -or -iname 'done.*.txt' -or -iname 'todo.*.txt' ')'`; do wc -l  $$f ; done
@@ -104,7 +102,7 @@ vprobroadcast:
 	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';file='$(target)/$*.not-in-sitemap.data';title='$* not in sitemap';dest='$(target)/plots/$*-not-in-sitemap.svg'" plot.gp
 
 
-$(target)/plots/plot-all.png: vpro-predictions-plot human-plot 3voor12-plot npodoc-plot vprobroadcast-plot
+$(target)/plots/plot-all.png: vpro-predictions-plot human-plot 3voor12-plot npodoc-plot vprobroadcast-plot gids-plot
 	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';destdir='$(target)/'" plot-all.gp
 
 
