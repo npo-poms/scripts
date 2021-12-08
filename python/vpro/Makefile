@@ -32,7 +32,7 @@ endif
 
 .PHONY: vpro 3voor12 human npodoc vprobroadcast  gids report clean plots
 
-all: clean vpro 3voor12 human npodoc vprobroadcast plots gids
+all: clean vpro 3voor12 human npodoc vprobroadcast gids plots
 
 plots: report $(target)/plots/plot-all.png
 
