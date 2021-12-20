@@ -12,6 +12,13 @@ DEFAULT_JAVA_PATH = 'java'
 
 
 class CheckWithSiteMapVpro(CheckWithSitemap):
+    """
+    This specialization is customized for VPRO.
+
+    It can connect via JMX to VPRO's Mangolia CMS which contains the original pages, and request it to index missing pages
+
+    This wraps a command line client for jmx: https://github.com/jiaqi/jmxterm/
+    """
 
     def __init__(self, java_path: str = DEFAULT_JAVA_PATH):
         super().__init__()
@@ -26,7 +33,9 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
         api.add_argument('--jmx_url', type=str, default=None, help='use JMX to trigger reindex. An url like "localhost:500" where this is tunneled to the magnolia backend server')
 
     def perform_add_to_api(self, not_in_api: list):
-        """Actually add to api"""
+        """
+        Actually add to api
+        """
 
         if self.jmx_url:
             self.command = [self.java_path, '-jar', self.jmxterm_binary, '--url', self.jmx_url, "-n", "-v", "silent"]
@@ -40,7 +49,7 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
             self._reindex_urls(not_in_api)
 
         else:
-            self.log.info("No jmx_url configured, not trying to implicitely add to api via JMX")
+            self.log.info("No jmx_url configured, not trying to implicitly add to api via JMX")
 
     def _reindex_mids(self, not_in_api: list) -> list:
         urls_with_mid = list(filter(lambda m: m[0] is not None, map(self._find_mid, not_in_api)))
