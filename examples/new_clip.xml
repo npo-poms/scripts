@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- This clip does not have a mid. So it will be a new clip when you post this -->
 <program xmlns="urn:vpro:media:update:2009"
-         type="CLIP" avType="VIDEO" publishStop="2012-01-11T18:16:01.287+01:00" publishStart="2012-01-11T16:16:01.287+01:00" embeddable="true">
-  <broadcaster>VPRO</broadcaster>
+         type="CLIP" avType="VIDEO"
+         publishStart="2012-01-11T16:16:01.287+01:00" embeddable="true">
+  <broadcaster>EO</broadcaster>
   <title type="MAIN">TEST TEST</title>
   <tag>Kabouters</tag>
   <ageRating>ALL</ageRating>

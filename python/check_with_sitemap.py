@@ -26,7 +26,6 @@ import re
 import urllib
 import xml.etree.ElementTree
 
-import pyxb
 import requests
 from npoapi import Pages
 from npoapi import PagesBackend
@@ -102,9 +101,8 @@ class CheckWithSitemap:
         :param datetime.datetime until:a constraint on creationdate. Defaults to 6 o'clock today
         """
         new_urls = set()
-        from npoapi.xml import api as API
-        form = API.pagesForm()
-        form.sortFields = pyxb.BIND()
+        from npoapi.data import api as API
+        form = API.PagesForm()
         form.sortFields.append(API.pageSortTypeEnum.creationDate)
         form.searches = pyxb.BIND()
         form.searches.creationDates = pyxb.BIND()
