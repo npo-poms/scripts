@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 import os
 import re
+import subprocess
 import sys
+import threading
 import time
 import urllib
 from subprocess import Popen, PIPE
+
 sys.path.append("..")
 from check_with_sitemap import CheckWithSitemap
 
@@ -23,14 +26,19 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
     def __init__(self, java_path: str = DEFAULT_JAVA_PATH):
         super().__init__()
         self.jmx_url = self.args.jmx_url
-        self.jmxterm_binary = ""
+        self.jmxterm_binary = self.args.jmxterm_binary
         self.java_path = java_path
         self._get_jmx_term_if_necessary()
+        if self.args.tunnel:
+            tunnel = SshTunnel(self.log)
+            tunnel.start()
 
     def add_arguments(self):
         super().add_arguments()
         api = self.api
         api.add_argument('--jmx_url', type=str, default=None, help='use JMX to trigger reindex. An url like "localhost:500" where this is tunneled to the magnolia backend server')
+        api.add_argument('--jmxterm_binary', type=str, default=None, help='location of jmxterm binary')
+        api.add_argument('--tunnel', action='store_true', default=False, help='set up jmx tunnel too')
 
     def perform_add_to_api(self, not_in_api: list):
         """
@@ -38,12 +46,11 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
         """
 
         if self.jmx_url:
-            self.command = [self.java_path, '-jar', self.jmxterm_binary, '--url', self.jmx_url, "-n", "-v", "silent"]
+            self.jmxterm = [self.java_path, '-jar', self.jmxterm_binary, '--url', self.jmx_url, "-n", "-v", "silent"]
 
             not_in_api = self._reindex_3voor12(not_in_api)
             not_in_api = self._reindex_cinema_films(not_in_api)
             not_in_api = self._reindex_cinema_person(not_in_api)
-
             not_in_api = self._reindex_mids(not_in_api)
 
             self._reindex_urls(not_in_api)
@@ -74,7 +81,7 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
             self._call_jmx_operation("nl.vpro.magnolia:name=IndexerMaintainerImpl", "reindexUrls", not_in_api[i: i + page_size ])
 
     def _find_mid(self, url: str) -> list:
-        return self._find_by_regexp(".*~(.*?)~.*", url)
+        return self._find_by_regexp(".*?~(.*?)~.*", url)
 
     def _find_update_uuid(self, url: str) -> list:
         return self._find_by_regexp(".*?update~(.*?)~.*", url)
@@ -93,25 +100,35 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
         else:
             return [None, url]
 
-    def _reindex_ids(self, not_in_api: list, ids: list, bean: str, operation: str, page_size: int, name: str) -> list:
+    def _reindex_ids(
+            self, not_in_api: list,
+            ids: list,
+            bean: str,
+            operation: str, page_size: int, name: str) -> list:
         self.log.info("Reindexing %d %s" % (len(ids), name))
         for i in range(0, len(ids), page_size):
-            self._call_jmx_operation(operation, bean, list(map(lambda m : m[0], ids[i: i + page_size])))
+            self._call_jmx_operation(bean, operation, list(map(lambda m : m[0], ids[i: i + page_size])))
 
         urls = list(map(lambda u: u[1], ids))
+        self.log.debug("Associated with %s" % str(urls))
         return [e for e in not_in_api if e not in urls]
 
 
     def _call_jmx_operation(self, bean: str, operation: str, sub_list: list):
-        p = Popen(self.command, stdin=PIPE, stdout=PIPE, encoding='utf-8')
-        out = p.communicate(input="bean " + bean  +"\nrun " + operation + " " + ",".join(sub_list))[0]
+        p = Popen(self.jmxterm, stdin=PIPE, stdout=PIPE, encoding='utf-8')
+        input = "bean " + bean  +"\nrun " + operation + " " + ",".join(sub_list)
+        self.log.info("input\n%s" % input)
+        out, error = p.communicate(input=input, timeout=100)
         self.log.info("output\n%s" % out)
+        if error:
+            self.log.info("error\n%s" % error)
+
         if "still busy" in out:
             self.log.info("Jmx reports that still busy. Let's wait a bit then")
             time.sleep(20)
 
     def _get_jmx_term_if_necessary(self):
-        if self.jmx_url:
+        if self.jmx_url and not self.jmxterm_binary:
             jmxtermversion = "1.0.2"
             jmxterm = "jmxterm-" + jmxtermversion + "-uber.jar"
             path = os.path.dirname(os.path.realpath(__file__))
@@ -120,6 +137,23 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
                 get_url = "https://github.com/jiaqi/jmxterm/releases/download/v" + jmxtermversion + "/" + jmxterm
                 self.log.info("Downloading %s -> %s" % (get_url, self.jmxterm_binary))
                 urllib.request.urlretrieve (get_url, self.jmxterm_binary)
+
+class SshTunnel(threading.Thread):
+    def __init__(self, log):
+        threading.Thread.__init__(self)
+        self.daemon = True              # So that thread will exit when
+                                        # main non-daemon thread finishes
+        self.log = log
+
+    def run(self):
+        self.log.info("Setting up tunnel")
+        if subprocess.call([
+            'ssh', '-N', '-4',
+                   '-L', '5000:localhost:5000',
+                   'os2-magnolia-backend-prod-01'
+                ]):
+            raise Exception ('ssh tunnel setup failed')
+
 
 
 if __name__ == "__main__":
