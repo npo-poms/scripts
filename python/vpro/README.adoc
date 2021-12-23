@@ -84,16 +84,18 @@ Common arguments for targets are:
 ----
 
 * Finally, there is a dockerfile which wraps the lot, and makes it available without the hassle of setting up python and git and this kind of things. Only docker itself and credentials are needed then.
-
-
+ +
+Credentials are provided by mounting directories containing them. So this works.
++
 [source]
 ----
 export VPRO_CHECK_IMAGE=mihxil/npo-vpro-check:latest
 export VPRO_CHECK_MOUNTS="-v $HOME/conf:/root/conf -v $HOME/.ssh:/root/.ssh -v $HOME/integrity-check-results:/root/integrity-check-results"
 
 docker pull ${VPRO_CHECK_IMAGE}
-docker run -it ${VPRO_CHECK_MOUNTS} ${VPRO_CHECK_IMAGE} help tunnel=true
+docker run -it ${VPRO_CHECK_MOUNTS} ${VPRO_CHECK_IMAGE} help
 ----
+You can see it in link:run-in-docker.sh[this script]
 
 
 
