@@ -1,0 +1,10 @@
+
+Host os2-jumphost-01
+   Hostname 83.96.216.45
+   User root
+   ForwardAgent yes
+
+Host                    os2-* !os2-jumphost-01
+   User                    root
+   ProxyCommand            ssh -W %h:%p os2-jumphost-01
+

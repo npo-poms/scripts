@@ -6,15 +6,21 @@ reportdir := $(target)/reports/`date +'%FT%H'`
 lastmonth := $(shell python3 -c 'from datetime import datetime, timedelta; print((datetime.now() - timedelta(days=31)).strftime("%Y-%m-%dT%H"))')
 now := $(shell python3 -c 'from datetime import datetime, timedelta; print((datetime.now()).strftime("%Y-%m-%dT%H"))')
 
+docker_image := mihxil/npo-vpro-check:latest
 
 jmx_url := localhost:5000
+jmx_binary := ''
 resolve := false
 get_check := true
+tunnel := false
 
 ifeq (true, $(resolve))
-   extra_args := --delete --no_get_check --jmx_url $(jmx_url) --target_directory $(target)
+   extra_args := --delete --jmx_url $(jmx_url) --target_directory $(target) --jmxterm_binary $(jmx_binary)
    ifeq (false, $(get_check))
-      extra_args := --no_get_check $(target)
+      extra_args := --no_get_check $(extra_args)
+   endif
+   ifeq (true, $(tunnel))
+      extra_args := --tunnel $(extra_args)
    endif
 else
    extra_args := --target_directory $(target)
@@ -30,6 +36,8 @@ ifeq (true, $(as_now))
    extra_args := --api_as_now $(extra_args)
 endif
 
+
+
 .PHONY: all all_sites vpro 3voor12 human npodoc vprobroadcast  gids report clean plots
 
 all: clean all_sites plots
@@ -42,10 +50,12 @@ help:     ## Show this help.
 	@echo  "\nCommon arguments for targets are:\n\
 	   resolve=true Will via page api, and via jmx try to correct differences\n\
 	   get_check=false To speed up the run you may skip the HEAD checks before deleting from api\n\
-	   clean=false  Will not clean the databases before runs\n\
+	   tunnel=true  Also set up the tunnel needed for JMX\n\
+	   clean=false  Will not clean the pickle databases before runs\n\
 	   as_now=true  After a correction run, you may check again with this\n\
 	   jmx_url=$(jmx_url)  You may override the connection settings for jmx\n\
 	   reportdir=$(reportdir) Where reports are to be generated\n\
+	   docker_image=$(docker_image)\
 	"
 
 plots: report $(target)/plots/plot-all.svg   ## After running the scripts, generate plots form that, and combine everying in one plot too.
@@ -115,11 +125,14 @@ vprobroadcast:  ## Perform checks for vprobroadcast.com
 	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';file='$(target)/$*.not-in-sitemap.data';title='$* not in sitemap';dest='$(target)/plots/$*-not-in-sitemap.svg'" plot.gp || true
 
 
-$(target)/plots/plot-all.svg: vpro-predictions-plot human-plot 3voor12-plot npodoc-plot vprobroadcast-plot gids-plot
+$(target)/plots/plot-all.svg: vpro-predictions-plot human-plot 3voor12-plot npodoc-plot vprobroadcast-plot vprocinema-plot
 	echo "Creating $@"
 	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';destdir='$(target)/'" plot-all.gp
 
 
+docker:  ## Builds and pushes docker image
+	docker build -t $(docker_image)  .
+	docker push $(docker_image)
 
 clean:   ## remove all results, clean run
 	rm -rf $(target)/plots/*

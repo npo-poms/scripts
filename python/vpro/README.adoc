@@ -56,6 +56,32 @@ This script is structures as follows
   ** npodoc: The sitemap of https://www.2doc.nl/ with the npodoc profile
   ** vprobroadcasting: The sitemap of https://www.vprobroadcast.com/ with the 'vprobroadcast profile'
   ** Furthermore, the Makefile can generate SVG plots from the results (showing changes in time).
+  ** Try
++
+[source]
+----
+$ make help
+help                           Show this help.
+plots                          After running the scripts, generate plots form that, and combine everying in one plot too.
+report                         Show an abstract of the reports
+vpro                           Perform checks for vpro.nl.
+gids                           Perform checks for vprogids.nl
+human                          Perform checks for human.nl
+npodoc                         Perform checks for 2doc.nl
+vprobroadcast                  Perform checks for vprobroadcast.com
+docker                         Builds and pushes docker image
+clean                          remove all results, clean run
+
+Common arguments for targets are:
+   resolve=true Will via page api, and via jmx try to correct differences
+   get_check=false To speed up the run you may skip the HEAD checks before deleting from api
+   tunnel=true  Also set up the tunnel needed for JMX
+   clean=false  Will not clean the pickle databases before runs
+   as_now=true  After a correction run, you may check again with this
+   jmx_url=localhost:5000  You may override the connection settings for jmx
+   reportdir=/Users/michiel/integrity-check-results/reports/2021-12-23T12 Where reports are to be generated
+   docker_image=mihxil/npo-vpro-check:latest
+----
 
 * Finally, there is a dockerfile which wraps the lot, and makes it available without the hassle of setting up python and git and this kind of things. Only docker itself and credentials are needed then.
 
