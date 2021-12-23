@@ -7,5 +7,6 @@ ADD ssh_config /root
 ENV JMXTERM_BINARY=/root/jmxterm.jar
 RUN (cd /work && git clone https://github.com/npo-poms/scripts.git)
 
-ENTRYPOINT "/usr/bin/make"
+WORKDIR "/work/scripts/python/vpro"
+ENTRYPOINT ["/usr/bin/make"]
 
