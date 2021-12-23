@@ -5,7 +5,8 @@ RUN apk upgrade && apk add --no-cache openjdk8-jre openssh-client && \
 
 ADD ssh_config /root
 ENV JMXTERM_BINARY=/root/jmxterm.jar
-RUN (cd /work && git clone https://github.com/npo-poms/scripts.git)
+
+RUN (cd /work && git clone https://github.com/npo-poms/scripts.git && cd scripts && git checkout 9484df734223eb1d3b5805e6f7ce38b157815508)
 
 WORKDIR "/work/scripts/python/vpro"
 ENTRYPOINT ["/usr/bin/make"]
