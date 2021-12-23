@@ -1,6 +1,7 @@
 = Scripts to check to entire content of sitemap at various VPRO sites with the content of the 'pages' api.
+:toc:
 
-Useage
+== Usage
 
 Do all checks
 
@@ -25,5 +26,38 @@ For this to work you need to tunnel JMX to os2-magnolia-backend-prod-01 on local
 It will also ask for credentials to the page publisher API if it hasn't done so before. Use vpro-cms user from 1password.
 
 The makefile is basically a wrapper around the python script `check_with_sitemap_vpro.py` which depends on the
-https://github.com/npo-poms/pyapi[python api]. Run the script in the necessary python environment as described there.
+link:https://github.com/npo-poms/pyapi[python api]. Run the script in the necessary python environment as described there.
+
+== how does this work
+
+This script is structures as follows
+
+* It is based on python 3 and dedicated link:https://github.com/npo-poms/pyapi[library]
+* Then there is a script `link:../check_with_sitemap.py[check_with_sitemap.py]`, which is a general tool to compare a pages profile with a sitemap
+
+  ** This script compares a sitemap with a page profile
+  ** It has options to postprocess entries of sitemap and of api (e.g. to ignore entries or certain aspects of it)
+  ** It can (optionally) also delete entries from the API if it notices that they are not in the sitemap
+  *** Before doing that it can check if the URL also gives a 404
+  ** Results of downloading the entire sitemap and api content are cached in a local (pickle) database. This can be usefull when debugging the script or extensions of it itself, or to turn on deleting from the API only in a second run.
+
+* Of this script a vpro specific version is extended: `link:./check_with_sitemap_vpro.py[check_with_sitemap_vpro.py]`.
+  ** This also adds the possibility the add entries to the API. It does that by issuing JMX commands to the VPRO CMS backend, which has the needed information to do that.
+  ** For this it can (optionally) also open the necessary port forwarding
+
+* The different cases for the VPRO are collected in a link:Makefile[make file].
+  ** vpro: The sitemap of link:https://www.vpro.nl/sitemap.xml[vpro.nl] itself with the `link:https://rs.poms.omroep.nl/v1/api/profiles/vpro-predictions[vpro-predictions]` profile
+    *** it ignores differences in the URL of 'speel'-pages. These are irrelevant.
+  ** gids: The sitemap https://www.vprogids.nl/ with the 'vprocinema' profile. TODO: This needs work. vprogids contains protected content
+    *** it ignores all 'person'-pages. These are intentionally not in the sitemap.
+  ** 3voor12: The sitemap https://3voor12.vpro.nl/ with 3voor12 profile
+    *** it ignores differences in the URL of 'update'-pages. These are irrelevant.
+  ** human: The sitemap of https://www.human.nl/ with the 'human' profile
+  ** npodoc: The sitemap of https://www.2doc.nl/ with the npodoc profile
+  ** vprobroadcasting: The sitemap of https://www.vprobroadcast.com/ with the 'vprobroadcast profile'
+  ** Furthermore, the Makefile can generate SVG plots from the results (showing changes in time).
+
+* Finally, there is a dockerfile which wraps the lot, and makes it available without the hassle of setting up python and git and this kind of things. Only docker itself and credentials are needed then.
+
+
 
