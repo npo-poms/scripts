@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 #set -x
-image=docker-proxy.vpro.nl/mihxil/npo-vpro-check:latest
-mounts="-v $HOME/conf:/root/conf -v $HOME/.ssh:/root/.ssh -v $HOME/integrity-check-results:/root/integrity-check-results"
+#image=docker-proxy.vpro.nl/mihxil/npo-vpro-check:latest
+export VPRO_CHECK_IMAGE=mihxil/npo-vpro-check:latest
+export VPRO_CHECK_MOUNTS="-v $HOME/conf:/root/conf -v $HOME/.ssh:/root/.ssh -v $HOME/integrity-check-results:/root/integrity-check-results"
 
-docker pull ${image}
-docker run -it ${mounts} --entrypoint /usr/bin/make $image ${1:-all} jmx_binary=/root/jmxterm.jar tunnel=true
+docker pull ${VPRO_CHECK_IMAGE}
+docker run -it ${VPRO_CHECK_MOUNTS} --entrypoint /usr/bin/make $image ${1:-all} tunnel=true
 #docker run -it ${mounts}  $image

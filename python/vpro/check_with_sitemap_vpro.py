@@ -129,14 +129,18 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
 
     def _get_jmx_term_if_necessary(self):
         if self.jmx_url and not self.jmxterm_binary:
-            jmxtermversion = "1.0.2"
-            jmxterm = "jmxterm-" + jmxtermversion + "-uber.jar"
-            path = os.path.dirname(os.path.realpath(__file__))
-            self.jmxterm_binary = os.path.join(path, jmxterm)
-            if not os.path.exists(self.jmxterm_binary):
-                get_url = "https://github.com/jiaqi/jmxterm/releases/download/v" + jmxtermversion + "/" + jmxterm
-                self.log.info("Downloading %s -> %s" % (get_url, self.jmxterm_binary))
-                urllib.request.urlretrieve (get_url, self.jmxterm_binary)
+            from_env = os.getenv('JMXTERM_BINARY')
+            if not from_env is None:
+                self.jmxterm_binary=from_env
+            else:
+                jmxtermversion = "1.0.2"
+                jmxterm = "jmxterm-" + jmxtermversion + "-uber.jar"
+                path = os.path.dirname(os.path.realpath(__file__))
+                self.jmxterm_binary = os.path.join(path, jmxterm)
+                if not os.path.exists(self.jmxterm_binary):
+                    get_url = "https://github.com/jiaqi/jmxterm/releases/download/v" + jmxtermversion + "/" + jmxterm
+                    self.log.info("Downloading %s -> %s" % (get_url, self.jmxterm_binary))
+                    urllib.request.urlretrieve (get_url, self.jmxterm_binary)
 
 class SshTunnel(threading.Thread):
     def __init__(self, log):
