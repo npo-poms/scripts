@@ -96,6 +96,11 @@ docker pull ${VPRO_CHECK_IMAGE}
 docker run -it ${VPRO_CHECK_MOUNTS} ${VPRO_CHECK_IMAGE} help
 ----
 You can see it in link:run-in-docker.sh[this script]
-
-
-
++
+Alternatively, you can pull from `docker-proxy.vpro.nl` in stead:
++
+[source]
+----
+export VPRO_CHECK_IMAGE=docker-proxy.vpro.nl/mihxil/npo-vpro-check:latest
+----
+You need to be logged in on that (see 1password)
