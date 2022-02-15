@@ -46,7 +46,7 @@ all_sites: vpro 3voor12 human npodoc vprobroadcast gids
 
 help:     ## Show this help.
 	@sed -n 's/^##//p' $(MAKEFILE_LIST)
-	@grep -E '^[/%a-zA-Z._-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@grep -E '^[/%a-zA-Z._0-9-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 	@printf "\nCommon arguments for targets are:\n\
 	   resolve=true Will via page api, and via jmx try to correct differences\n\
 	   get_check=false To speed up the run you may skip the HEAD checks before deleting from api\n\
