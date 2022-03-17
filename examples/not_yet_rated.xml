@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<program avType="VIDEO" embeddable="true"
+         publishStart="2022-03-16T14:41:47+01:00" type="CLIP" xmlns="urn:vpro:media:update:2009" xmlns:shared="urn:vpro:shared:2009" xmlns:media="urn:vpro:media:2009">
+    <broadcaster>BNVA</broadcaster>
+    <title type="MAIN">Eerste beelden uit 'In koelen bloede: 40 jaar straffeloosheid'</title>
+    <description type="MAIN">Op 17 maart 1982, precies 40 jaar geleden, worden vier Nederlandse journalisten vermoord in El Salvador: Koos Koster, Jan Kuiper, Hans ter Laag en Joop Willemsen lopen in een hinderlaag en worden door militairen van het Salvadoraanse leger doodgeschoten. Op dat moment woedt er een burgeroorlog en de ploeg wilde gaan filmen in guerrillagebied. Zembla onderzoekt nu waarom er na 40 jaar nog steeds niemand is vervolgd en veroordeeld voor de moord op deze vier journalisten. Meer over de uitzending.</description>
+    <duration>P0DT0H0M31.000S</duration>
+    <credits/>
+    <memberOf position="1" highlighted="true">BV_101407348</memberOf>
+    <ageRating>NOT_YET_RATED</ageRating>
+    <prediction publishStart="2022-03-16T13:41:47+01:00" encryption="DRM">INTERNETVOD</prediction>
+    <locations/>
+    <scheduleEvents/>
+    <images>
+        <image type="STILL" highlighted="false">
+            <title>Eerste beelden uit 'In koelen bloede: 40 jaar straffeloosheid'</title>
+            <description>Op 17 maart 1982, precies 40 jaar geleden, worden vier Nederlandse journalisten vermoord in El Salvador: Koos Koster, Jan Kuiper, Hans ter Laag en Joop Willemsen lopen in een hinderlaag en worden door militairen van het Salvadoraanse leger doodgeschoten. Op dat moment woedt er een burgeroorlog en de ploeg wilde gaan filmen in guerrillagebied. Zembla onderzoekt nu waarom er na 40 jaar nog steeds niemand is vervolgd en veroordeeld voor de moord op deze vier journalisten. Meer over de uitzending.</description>
+            <urn>urn:vpro:image:1681614</urn>
+        </image>
+    </images>
+    <segments/>
+</program>
