@@ -41,7 +41,7 @@ endif
 .PHONY: all all_sites vpro 3voor12 human npodoc vprobroadcast  gids report clean plots
 
 all: clean all_sites plots                               ## Cleans local database, runs for all sites, and creates plots for all
-all_sites: vpro 3voor12 human npodoc vprobroadcast gids  ## Runs for all vpro maintained sites
+all_sites: vpro 3voor12 human npodoc vprobroadcast   ## Runs for all vpro maintained sites
 
 
 help:     ## Show this help.

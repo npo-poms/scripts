@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <program xmlns="urn:vpro:media:update:2009"
-         mid="POMS_VPRO_1433307"
          type="CLIP" avType="VIDEO" publishStop="2012-01-11T18:16:01.287+01:00" publishStart="2012-01-11T16:16:01.287+01:00" embeddable="true">
   <broadcaster>NCRV</broadcaster>
   <title type="MAIN">Main title! (alleen ncrv)</title>

@@ -182,7 +182,7 @@
         mediaRef heeft de voorkeur.
 
 
-       NOTE: volgens mij wordt dit niet meer op die manier ondersteunt. Wel kun je hiermee waarschijnlijk scheduleevents koppelen, maar dat kan alleen als 
+       NOTE: volgens mij wordt dit niet meer op die manier ondersteunt. Wel kun je hiermee waarschijnlijk scheduleevents koppelen, maar dat kan alleen als
        het gebruikte account de juist rol heeft, en het kan alleen bij 'historische' content, maw, het kan nooit voor schedulevents in toekomsts of nabij verleden.
     -->
         <!-- Een vertoning op een kanaal. Alle velden, kanaal, start en duur zijn verplicht. -->
@@ -268,7 +268,7 @@
             <imageLocation>
               <url>http://images.poms.omroep.nl/image/494930.jpg</url> <!-- zomaar een plaatje, toevallig ook op poms -->
             </imageLocation>
-            <!-- 
+            <!--
                 In plaats van een imageLocation element kun je ook een 'imageData' element geven, met daarin het plaatje zelf.
                 De derde mogelijk is een 'urn' element waarme je kunt verwijzen naar een bestaand plaatje in poms
 
