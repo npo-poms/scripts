@@ -132,7 +132,7 @@ $(target)/plots/plot-all.svg: vpro-predictions-plot human-plot 3voor12-plot npod
 $(target)/index.html: index.mustache $(target)/data.json
 	chevron $< -d $(target)/data.json > $@
 	
-$(target)/data.json: create_json.py
+$(target)/data.json: create_json.py  
 	./create_json.py $(target)
 
 

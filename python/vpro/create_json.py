@@ -3,6 +3,8 @@
 import json
 import sys
 import os
+from datetime import datetime
+
 directory= sys.argv[1] if len(sys.argv) > 1 else "/home/michiel" 
 
 svgs = []
@@ -16,6 +18,7 @@ for filename in os.listdir(directory + "/plots"):
 
     
 data = {
+    "title": "Results of " + datetime.now().replace(microsecond=0).isoformat(),
     "svgs": svgs
 }
 
