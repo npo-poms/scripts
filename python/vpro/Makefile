@@ -130,7 +130,6 @@ $(target)/plots/plot-all.svg: vpro-predictions-plot human-plot 3voor12-plot npod
 	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';destdir='$(target)/'" plot-all.gp
 
 $(target)/index.html: index.mustache $(target)/data.json
-	pip install chevron
 	chevron $< -d $(target)/data.json > $@
 	
 $(target)/data.json: create_json.py
