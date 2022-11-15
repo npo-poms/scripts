@@ -40,7 +40,7 @@ endif
 
 .PHONY: all all_sites vpro 3voor12 human npodoc vprobroadcast  gids report clean plots
 
-all: clean all_sites plots                               ## Cleans local database, runs for all sites, and creates plots for all
+all: clean all_sites plots $(target)/index.html                              ## Cleans local database, runs for all sites, and creates plots for all
 all_sites: vpro 3voor12 human npodoc vprobroadcast   ## Runs for all vpro maintained sites
 
 
@@ -128,6 +128,13 @@ vprobroadcast:  ## Perform checks for vprobroadcast.com
 $(target)/plots/plot-all.svg: vpro-predictions-plot human-plot 3voor12-plot npodoc-plot vprobroadcast-plot vprocinema-plot
 	echo "Creating $@"
 	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';destdir='$(target)/'" plot-all.gp
+
+$(target)/index.html: index.mustache $(target)/data.json
+	pip install chevron
+	chevron $< -d $(target)/data.json > $@
+	
+$(target)/data.json: create_json.py
+	./create_json.py $(target)
 
 
 docker:  ## Builds and pushes docker image
