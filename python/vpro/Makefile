@@ -38,7 +38,7 @@ endif
 
 
 
-.PHONY: all all_sites vpro 3voor12 human npodoc vprobroadcast  gids report clean plots
+.PHONY: all all_sites vpro 3voor12 human npodoc vprobroadcast  gids report clean plots index.html
 
 all: clean all_sites plots $(target)/index.html                              ## Cleans local database, runs for all sites, and creates plots for all
 all_sites: vpro 3voor12 human npodoc vprobroadcast   ## Runs for all vpro maintained sites
@@ -129,6 +129,7 @@ $(target)/plots/plot-all.svg: vpro-predictions-plot human-plot 3voor12-plot npod
 	echo "Creating $@"
 	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';destdir='$(target)/'" plot-all.gp
 
+index.html: $(target)/index.html
 $(target)/index.html: index.mustache $(target)/data.json
 	chevron $< -d $(target)/data.json > $@
 	
