@@ -37,16 +37,14 @@
   </head>
   <body>
     <h1>{{title}}</h1>
-    
-  {{#svgs}}
-    <h2>{{file_name}} {{#profile}} profile: {{profile}}{{/profile}}</h2>
-    <p>
-    {{#txt_file}}
-      <a href="{{txt_file}}">URLs</a>
-    {{/txt_file}} 
-    </p>
-    <img src="{{ svg }}" alt="{{title}}"/>
-  {{/svgs}}
-
+    {{#svgs}}
+      <h2>{{file_name}} {{#profile}} profile: {{profile}}{{/profile}}</h2>
+      {{#txt_file}}
+        <p>
+          <a href="{{txt_file}}">URLs</a>
+        </p>
+      {{/txt_file}}
+      <img src="{{ svg }}" alt="{{title}}"/>
+    {{/svgs}}
   </body>
 </html>
