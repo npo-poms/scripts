@@ -144,3 +144,6 @@ docker:  ## Builds and pushes docker image
 clean:   ## remove all results, clean run
 	rm -rf $(target)/plots/*
 	rm -f $(target)/*.p $(target)/*.txt
+	rm -f $(target)/index.html $(target)/data.json 
+ 
+
