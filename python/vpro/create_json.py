@@ -3,20 +3,22 @@
 import json
 import sys
 import os
+from pathlib import Path
+
 from datetime import datetime
 
 directory= sys.argv[1] if len(sys.argv) > 1 else "/home/michiel" 
 
 svgs = []
-os.chdir(directory)
-files = sorted(filter(os.path.isfile, os.listdir('./plots')), key=os.path.getmtime, reverse=True)
-for filename in files:
-    print(filename)
-    ob = {
-        "title": filename,
-        "svg": "plots/" + filename
-    }
-    svgs.append(ob)
+files = sorted(Path(directory + "/plots").iterdir(), key=os.path.getmtime, reverse=True)
+for file in files:
+    if file.suffix == '.svg': 
+        print(file.name)
+        ob = {
+           "title": file.name,
+           "svg": "plots/" + file.name
+        }
+        svgs.append(ob)
 
     
 data = {
