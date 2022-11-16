@@ -26,3 +26,9 @@ a {
   color: black;
   text-decoration: underline;
 }
+div.collapsible.collapsed img {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+ 

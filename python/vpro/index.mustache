@@ -10,6 +10,7 @@
     <h1>{{title}}</h1>
     <p><a href="..">UP</a></p>
     {{#svgs}}
+    <div class="collapsible">
       <h2>{{file_name}} {{#profile}} profile: {{profile}}{{/profile}}</h2>
       {{#txt_file}}
         <p>
@@ -17,6 +18,18 @@
         </p>
       {{/txt_file}}
       <img src="{{ svg }}" alt="{{file_name}}"/>
+    </div>
     {{/svgs}}
+    <script>
+var coll = document.getElementsByClassName("collapsible");
+
+for (var i = 0; i < coll.length; i++) {
+    col = coll[i]
+    h2 = coll[i].getElementsByTagName("h2")[0];
+    h2.addEventListener("click", function(ev) {
+      this.parentElement.classList.toggle("collapsed");
+  });
+}
+</script>
   </body>
 </html>
