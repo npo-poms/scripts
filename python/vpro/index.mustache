@@ -17,15 +17,17 @@
       h1, h2 {
         margin: 0;
         padding: 1ex;
-        color: white;
       }
       h1 {
         background-color: deepskyblue;
         border-bottom: darkblue dotted 2px;
+        color: white;
       }
       h2 {
+        margin-top: 1ex;
         background-color: gold;
         border-bottom: black dotted 2px;
+        color: black;
       }
     </style>
   </head>
@@ -33,7 +35,9 @@
     <h1>{{title}}</h1>
     
   {{#svgs}}
-    <h2>{{ title }}</h2>
+    <h2>{{ profile }}</h2>
+    {{#not_in_api}}<a href="{{not_in_api}}">Missing in API</a>{{/not_in_api}}, 
+    {{#not_in_sitemap}}<a href="{{not_in_sitemap}}">Missing in SiteMap</a>{{/not_in_sitemap}}
     <img src="{{ svg }}" alt="{{title}}"/>
   {{/svgs}}
 
