@@ -9,7 +9,7 @@ directory= sys.argv[1] if len(sys.argv) > 1 else "/home/michiel"
 
 svgs = []
 os.chdir(directory)
-files = sorted(filter(os.path.isfile, os.listdir('.')), key=os.path.getmtime, reverse=True)
+files = sorted(filter(os.path.isfile, os.listdir('./plots')), key=os.path.getmtime, reverse=True)
 for filename in files:
     print(filename)
     ob = {
