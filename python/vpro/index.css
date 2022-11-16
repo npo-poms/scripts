@@ -1,0 +1,28 @@
+img {
+  max-width: 100%;
+  background-color: white;
+}
+body {
+  background-color: #eee;
+  margin: 0;
+  padding: 0;
+}
+h1, h2, p {
+  margin: 0;
+  padding: 1ex;
+}
+h1 {
+  background-color: deepskyblue;
+  border-bottom: darkblue dotted 2px;
+  color: white;
+}
+h2 {
+  margin-top: 1ex;
+  background-color: gold;
+  border-bottom: black dotted 2px;
+  color: black;
+}
+a {
+  color: black;
+  text-decoration: underline;
+}

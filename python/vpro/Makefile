@@ -130,8 +130,11 @@ $(target)/plots/plot-all.svg: vpro-predictions-plot human-plot 3voor12-plot npod
 	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';destdir='$(target)/'" plot-all.gp
 
 index.html: $(target)/index.html
-$(target)/index.html: index.mustache $(target)/data.json
+$(target)/index.html: index.mustache $(target)/data.json $(target)/index.css
 	chevron $< -d $(target)/data.json &> $@
+
+$(target)/index.css: index.css
+	cp -f $< $@
 	
 $(target)/data.json: create_json.py $(target)/plots/plot-all.svg
 	./create_json.py $(target)
