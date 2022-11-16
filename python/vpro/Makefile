@@ -133,7 +133,7 @@ index.html: $(target)/index.html
 $(target)/index.html: index.mustache $(target)/data.json
 	chevron $< -d $(target)/data.json &> $@
 	
-$(target)/data.json: create_json.py  $(target)/plots/*
+$(target)/data.json: create_json.py $(target)/plots/plot-all.svg
 	./create_json.py $(target)
 
 
