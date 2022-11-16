@@ -35,9 +35,14 @@
     <h1>{{title}}</h1>
     
   {{#svgs}}
-    <h2>{{ profile }}</h2>
-    {{#not_in_api}}<a href="{{not_in_api}}">Missing in API</a>{{/not_in_api}}, 
-    {{#not_in_sitemap}}<a href="{{not_in_sitemap}}">Missing in SiteMap</a>{{/not_in_sitemap}}
+    <h2>{{file_name}} {{#profile}} profile: {{profile}}{{/profile}}</h2>
+    {{#not_in_api}}
+      <a href="{{not_in_api}}">Missing in API</a>
+      {{#not_in_sitemap}}, {{/not_in_sitemap}}
+    {{/not_in_api}} 
+    {{#not_in_sitemap}}
+      <a href="{{not_in_sitemap}}">Missing in SiteMap</a>
+    {{/not_in_sitemap}}
     <img src="{{ svg }}" alt="{{title}}"/>
   {{/svgs}}
 
