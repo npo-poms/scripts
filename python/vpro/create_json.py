@@ -17,20 +17,18 @@ for file in files:
         split = file.stem.split('.', 2)
         profile = split[0] if len(split) == 2 else None
         
+        txt_file = None
         if profile:
-            not_in_api = directory + "/" + profile + ".not-in-api.data"
-            not_in_sitemap = directory + "/" + profile + ".not-in-sitemap.data"
-        else:
-            not_in_api = None
-            not_in_sitemap = None
+            if split[1] == 'not-in-api':
+                txt_file = directory + "/report." + profile + ".in_sitemap_but_not_in_api.txt"
+            elif split[1] == 'not-in-sitemap':
+                txt_file = directory + "/report." + profile + ".in_api_but_not_in_sitemap.txt"                
         
         ob = {
            "file_name": file.name,
            "profile": profile,
            "svg": "plots/" + file.name,
-           "not_in_api":  not_in_api if not_in_api and os.path.exists(not_in_api) else None,
-           "not_in_sitemap":  not_in_sitemap if not_in_sitemap and os.path.exists(not_in_sitemap) else None
-
+           "txt_file":  txt_file if txt_file and os.path.exists(txt_file) else None,
         }
         svgs.append(ob)
 

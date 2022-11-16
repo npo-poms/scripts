@@ -14,7 +14,7 @@
         margin: 0;
         padding: 0;
       }
-      h1, h2 {
+      h1, h2, p {
         margin: 0;
         padding: 1ex;
       }
@@ -29,6 +29,10 @@
         border-bottom: black dotted 2px;
         color: black;
       }
+      a {
+        color: black;
+        text-decoration: underline;
+      }
     </style>
   </head>
   <body>
@@ -36,13 +40,11 @@
     
   {{#svgs}}
     <h2>{{file_name}} {{#profile}} profile: {{profile}}{{/profile}}</h2>
-    {{#not_in_api}}
-      <a href="{{not_in_api}}">Missing in API</a>
-      {{#not_in_sitemap}}, {{/not_in_sitemap}}
-    {{/not_in_api}} 
-    {{#not_in_sitemap}}
-      <a href="{{not_in_sitemap}}">Missing in SiteMap</a>
-    {{/not_in_sitemap}}
+    <p>
+    {{#txt_file}}
+      <a href="{{txt_file}}">URLs</a>
+    {{/txt_file}} 
+    </p>
     <img src="{{ svg }}" alt="{{title}}"/>
   {{/svgs}}
 
