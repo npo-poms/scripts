@@ -21,6 +21,7 @@ h2 {
   background-color: gold;
   border-bottom: black dotted 2px;
   color: black;
+  height: 5ex;
 }
 a {
   color: black;
@@ -31,4 +32,9 @@ div.collapsible.collapsed img {
   overflow: hidden;
   transition: max-height 0.2s ease-out;
 }
- 
+
+div.grid {
+  display: grid;
+  grid-template-columns: 33.33% 33.33% 33.33%;
+
+}
