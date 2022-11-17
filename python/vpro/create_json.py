@@ -20,15 +20,15 @@ for file in files:
         txt_file = None
         if profile:
             if split[1] == 'not-in-api':
-                txt_file = directory + "/report." + profile + ".in_sitemap_but_not_in_api.txt"
+                txt_file =  "report." + profile + ".in_sitemap_but_not_in_api.txt"
             elif split[1] == 'not-in-sitemap':
-                txt_file = directory + "/report." + profile + ".in_api_but_not_in_sitemap.txt"                
+                txt_file = "report." + profile + ".in_api_but_not_in_sitemap.txt"                
         
         ob = {
            "file_name": file.name,
            "profile": profile,
            "svg": "plots/" + file.name,
-           "txt_file":  txt_file if txt_file and os.path.exists(txt_file) else None,
+           "txt_file":  txt_file if txt_file and os.path.exists(directory + "/" + txt_file) else None,
         }
         svgs.append(ob)
 
