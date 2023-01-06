@@ -20,13 +20,13 @@ print(client.url)
 print(backend.url)
 
 
-day = datetime.date(2022, 12, 1)
+day = datetime.date(2022, 10, 1)
 end = datetime.date(2023, 1, 6)
 while day < end:
  
  
     for channel in channels:
-        print(day, channel)
+        #print(day, channel)
         resp = client.get(guideDay=day, channel=channel, properties="titles")
         result = json.loads(resp)
         items = result.get("items")
