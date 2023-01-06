@@ -14,7 +14,7 @@ from npoapi.data import TextualTypeEnum
 client = Schedule(env="prod").configured_login()
 backend = MediaBackend(env="prod").configured_login()
 
-channels = ['NED1', 'NED2', 'NED3','RAD1', 'RAD2', 'RAD3', 'RAD4', 'FUNX']
+channels = ['NED1', 'NED2', 'NED3','RAD1', 'RAD2', 'RAD3', 'RAD4', 'RAD5', 'FUNX']
 #channels = ['RAD3']
 print(client.url)
 print(backend.url)
