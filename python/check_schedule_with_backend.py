@@ -19,12 +19,11 @@ channels = ['NED1', 'NED2', 'NED3','RAD1', 'RAD2', 'RAD3', 'RAD4', 'FUNX']
 print(client.url)
 print(backend.url)
 
-
-day = datetime.date(2022, 10, 1)
-end = datetime.date(2023, 1, 6)
+end = datetime.date.today()
+day = end + datetime.timedelta(days=-100)
 while day < end:
  
- 
+    print(day)
     for channel in channels:
         #print(day, channel)
         resp = client.get(guideDay=day, channel=channel, properties="titles")
@@ -43,9 +42,9 @@ while day < end:
                 full = backend.get_full_object(mid, binding=Binding.XSDATA)
                 first_title = full.title[0]
                 if first_title.type == TextualTypeEnum.MAIN:
-                    print("Title expected to be", first_title.value)
+                    print("Title expected to be", mid, first_title.value)
                 else:
-                    print("OOOOODDD")
+                    print("OOOOODDD", mid)
                 
     day  += datetime.timedelta(days=1)
 
