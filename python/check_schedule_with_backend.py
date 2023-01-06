@@ -1,5 +1,6 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3 -u
 """
+ SEE https://jira.vpro.nl/browse/MSE-5377
  
 """
 
@@ -9,7 +10,6 @@ from npoapi import Schedule
 from npoapi import MediaBackend
 from npoapi import Binding
 from npoapi.data import TextualTypeEnum
-
 
 client = Schedule(env="prod").configured_login()
 backend = MediaBackend(env="prod").configured_login()
