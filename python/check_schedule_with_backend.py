@@ -20,7 +20,7 @@ print(client.url)
 print(backend.url)
 
 end = datetime.date.today()
-day = end + datetime.timedelta(days=-100)
+day = end + datetime.timedelta(days=-10)
 while day < end:
  
     print(day)
