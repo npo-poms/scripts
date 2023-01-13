@@ -1,7 +1,7 @@
 #!/usr/bin/env python3 -u
 """
  SEE https://jira.vpro.nl/browse/MSE-5377
- 
+
 """
 
 import datetime
@@ -19,10 +19,10 @@ channels = ['NED1', 'NED2', 'NED3','RAD1', 'RAD2', 'RAD3', 'RAD4', 'RAD5', 'FUNX
 print(client.url)
 print(backend.url)
 
-end = datetime.date.today()
-day = end + datetime.timedelta(days=-10)
+end = datetime.date.today() + datetime.timedelta(days=10)
+day = datetime.date.today() + datetime.timedelta(days=-10)
 while day < end:
- 
+
     print(day)
     for channel in channels:
         #print(day, channel)
@@ -45,6 +45,5 @@ while day < end:
                     print("Title expected to be", mid, first_title.value)
                 else:
                     print("OOOOODDD", mid)
-                
-    day  += datetime.timedelta(days=1)
 
+    day  += datetime.timedelta(days=1)

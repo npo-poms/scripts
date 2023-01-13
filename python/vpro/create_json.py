@@ -27,7 +27,7 @@ for file in files:
         ob = {
            "file_name": file.name,
            "profile": profile,
-           "svg": "plots/" + file.name,
+           "svg": "plots/" + file.name if  os.path.exists(directory + "/plots/" + file.name) else None,
            "txt_file":  txt_file if txt_file and os.path.exists(directory + "/" + txt_file) else None,
         }
         svgs.append(ob)

@@ -19,7 +19,9 @@
               <a href="{{txt_file}}">URLs</a>
             </p>
           {{/txt_file}}
-          <img src="{{ svg }}" alt="{{file_name}}"/>
+          <a href="{{ svg }}" target="SVG">
+            <img src="{{ svg }}" alt="{{file_name}}"/>
+          </a>
         </div>
       {{/svgs}}
     </div>
@@ -27,7 +29,7 @@
       
     const coll = document.getElementsByClassName("collapsible");
 
-    for (const i = 0; i < coll.length; i++) {
+    for (var i = 0; i < coll.length; i++) {
       col = coll[i]
       h2 = coll[i].getElementsByTagName("h2")[0];
       h2.addEventListener("click", function(ev) {

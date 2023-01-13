@@ -104,3 +104,15 @@ Alternatively, you can pull from `docker-proxy.vpro.nl` in stead:
 export VPRO_CHECK_IMAGE=docker-proxy.vpro.nl/mihxil/npo-vpro-check:latest
 ----
 You need to be logged in on that (see 1password)
+
+
+===  Prerequisites
+
+Run in a 'pyapi' virtual environment
+Further:
+
+[source, bash]
+----
+brew install gnuplut  make
+pip3 install chevron
+----

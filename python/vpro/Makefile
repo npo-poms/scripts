@@ -40,8 +40,8 @@ endif
 
 .PHONY: all all_sites vpro 3voor12 human npodoc vprobroadcast  gids report clean plots index.html
 
-all: clean all_sites plots $(target)/index.html                              ## Cleans local database, runs for all sites, and creates plots for all
-all_sites: vpro 3voor12 human npodoc vprobroadcast   ## Runs for all vpro maintained sites
+all: clean all_sites                                                            ## Cleans local database, runs for all sites, and creates plots for all
+all_sites: plots $(target)/index.html vpro 3voor12 human npodoc vprobroadcast   ## Runs for all vpro maintained sites
 
 
 help:     ## Show this help.
@@ -129,13 +129,13 @@ $(target)/plots/plot-all.svg: vpro-predictions-plot human-plot 3voor12-plot npod
 	echo "Creating $@"
 	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';destdir='$(target)/'" plot-all.gp
 
-index.html: $(target)/index.html
+index.html: $(target)/index.html       ## Just re-generate index.html
 $(target)/index.html: index.mustache $(target)/data.json $(target)/index.css
 	chevron $< -d $(target)/data.json &> $@
 
 $(target)/index.css: index.css
 	cp -f $< $@
-	
+
 $(target)/data.json: create_json.py $(target)/plots/plot-all.svg
 	./create_json.py $(target)
 
@@ -147,6 +147,4 @@ docker:  ## Builds and pushes docker image
 clean:   ## remove all results, clean run
 	rm -rf $(target)/plots/*
 	rm -f $(target)/*.p $(target)/*.txt
-	rm -f $(target)/index.html $(target)/data.json 
- 
-
+	rm -f $(target)/index.html $(target)/data.json
