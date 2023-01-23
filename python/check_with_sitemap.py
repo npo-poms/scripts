@@ -242,7 +242,7 @@ class CheckWithSitemap:
                         status = self.http_status(url)
                     else:
                         status = None
-                    if status is None or status == 404 or status == 301:
+                    if status is None or status == 404 or status == 301 or status == 302:
                         self.log.info("(%d/%d) Deleting %s (http status: %s)", idx, len(not_in_sitemap), url, str(status))
                         response = self.backend.delete(url)
                         if self.backend.code == 404:
