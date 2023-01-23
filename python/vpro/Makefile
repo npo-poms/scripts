@@ -63,7 +63,7 @@ plots: report $(target)/plots/plot-all.svg   ## After running the scripts, gener
 report:  ## Show an abstract of the reports
 	@for f in `find $(target) -maxdepth 2 -type f '(' -iname 'report.*.txt' -or -iname 'done.*.txt' -or -iname 'todo.*.txt' ')'`; do wc -l  $$f ; done
 	@mkdir -p $(reportdir)
-	@cp $(target)/report.*.txt $(reportdir)
+	@cp $(target)/report.*.txt $(reportdir) || :
 
 vpro:    ## Perform checks for vpro.nl.
 	$(check) \
