@@ -13,11 +13,13 @@ import npoapi.xml.mediaupdate
 # noinspection PyUnresolvedReferences
 from dateutil.parser import parse
 from npoapi import MediaBackend, MediaBackendUtil as MU
+from npoapi.base import DEFAULT_BINDING
+from npoapi.data.media_update import MediaUpdateType
 
 
 class ForAllDescendants:
 
-    def __init__(self, mid = None, clean=False, segments=False, episodes=False, filter=None, dryrun=False, include_self=False, processor = None, processor_description= None, filter_description = None):
+    def __init__(self, mid = None, clean=False, segments=False, episodes=False, filter=None, dryrun=False, include_self=False, processor = None, processor_description= None, filter_description = None, binding = DEFAULT_BINDING):
 
         self.api = MediaBackend().command_line_client()
         self.description = "Doing for all"
@@ -32,6 +34,7 @@ class ForAllDescendants:
         self.processor = processor
         self.processor_description = processor_description
         self.filter_description = filter_description
+        self.binding = binding
 
     def command_line(self):
         api = self.api
@@ -42,6 +45,7 @@ class ForAllDescendants:
         api.add_argument('--segments', action='store_true', default=False, help='')
         api.add_argument('--episodes', action='store_true', default=False, help='')
         api.add_argument('--include_self', action='store_true', default=False, help='')
+        api.add_argument('--recurse', action='store_true', default=False, help='')
         if self.processor is None:
             api.add_argument('process', type=str, nargs=1, help=
             """
@@ -73,6 +77,7 @@ member.publishStop=parse("2018-12-31")
         self.episodes = args.episodes or self.episodes
         self.dryrun = args.dryrun or self.dryrun
         self.include_self = args.include_self or self.include_self
+        self.recurse = args.recurse
 
     def do_one(self, member, idx):
         self.api.post(member)
@@ -98,13 +103,14 @@ member.publishStop=parse("2018-12-31")
                 log.info("Not found " + cache)
 
             MU.descendants(self.api, self.mid, batch=200, target=members, segments=self.segments, episodes=self.episodes,
+                           recurse_programs=self.recurse,
                            log_progress=True)
             pickle.dump(members, open(cache, "wb"))
 
         log.info("Found " + str(len(members)) + " objects")
         count = 0
 
-        for idx, member in enumerate(MU.iterate_objects(members)):
+        for idx, member in enumerate(MU.iterate_objects(members, binding=self.binding)):
             member_mid = member.mid
             # noinspection PyUnusedLocal
             main_title = MU.title(member, "MAIN")

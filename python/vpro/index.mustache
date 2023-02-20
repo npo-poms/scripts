@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <h1>{{title}}</h1>
+    <p><a href="..">UP</a></p>
+    <div class="grid">
+      
+      {{#svgs}}
+        <div class="collapsible">
+          <h2>{{file_name}} {{#profile}} profile: {{profile}}{{/profile}}</h2>
+          {{#txt_file}}
+            <p>
+              <a href="{{txt_file}}">URLs</a>
+            </p>
+          {{/txt_file}}
+          <a href="{{ svg }}" target="SVG">
+            <img src="{{ svg }}" alt="{{file_name}}"/>
+          </a>
+        </div>
+      {{/svgs}}
+    </div>
+    <script>
+      
+    const coll = document.getElementsByClassName("collapsible");
+
+    for (var i = 0; i < coll.length; i++) {
+      col = coll[i]
+      h2 = coll[i].getElementsByTagName("h2")[0];
+      h2.addEventListener("click", function(ev) {
+        this.parentElement.classList.toggle("collapsed");
+      });
+    }
+    </script>
+  </body>
+</html>

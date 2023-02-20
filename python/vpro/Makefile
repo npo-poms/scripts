@@ -45,10 +45,10 @@ endif
 
 
 
-.PHONY: all all_sites vpro 3voor12 human npodoc vprobroadcast  gids report clean plots
+.PHONY: all all_sites vpro 3voor12 human npodoc vprobroadcast  gids report clean plots index.html
 
-all: clean all_sites plots                               ## Cleans local database, runs for all sites, and creates plots for all
-all_sites: vpro 3voor12 human npodoc vprobroadcast gids  ## Runs for all vpro maintained sites
+all: clean all_sites                                                            ## Cleans local database, runs for all sites, and creates plots for all
+all_sites: plots $(target)/index.html vpro 3voor12 human npodoc vprobroadcast   ## Runs for all vpro maintained sites
 
 
 help:     ## Show this help.
@@ -71,7 +71,7 @@ plots: report $(target)/plots/plot-all.svg   ## After running the scripts, gener
 report:  ## Show an abstract of the reports
 	@for f in `find $(target) -maxdepth 2 -type f '(' -iname 'report.*.txt' -or -iname 'done.*.txt' -or -iname 'todo.*.txt' ')'`; do wc -l  $$f ; done
 	@mkdir -p $(reportdir)
-	@cp $(target)/report.*.txt $(reportdir)
+	@cp $(target)/report.*.txt $(reportdir) || :
 
 vpro:    ## Perform checks for vpro.nl.
 	$(check) \
@@ -129,13 +129,23 @@ vprobroadcast:  ## Perform checks for vprobroadcast.com
 	mkdir -p $(target)/plots
 	cd $(target) ; for i in `ls reports/*/report.$*.in_sitemap*.txt`; do wc -l $$i  ; done | awk '{print $$2"/"$$1}' | awk -F '/' '{print $$2" "$$4}' > $(target)/$*.not-in-api.data || true
 	cd $(target) ; for i in `ls reports/*/report.$*.in_api*.txt`; do wc -l $$i  ; done | awk '{print $$2"/"$$1}' | awk -F '/' '{print $$2" "$$4}' > $(target)/$*.not-in-sitemap.data || true
-	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';file='$(target)/$*.not-in-api.data';title='$* not in api';dest='$(target)/plots/$*-not-in-api.svg'" plot.gp  || true
-	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';file='$(target)/$*.not-in-sitemap.data';title='$* not in sitemap';dest='$(target)/plots/$*-not-in-sitemap.svg'" plot.gp || true
+	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';file='$(target)/$*.not-in-api.data';title='$* not in api';dest='$(target)/plots/$*.not-in-api.svg'" plot.gp  || true
+	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';file='$(target)/$*.not-in-sitemap.data';title='$* not in sitemap';dest='$(target)/plots/$*.not-in-sitemap.svg'" plot.gp || true
 
 
 $(target)/plots/plot-all.svg: vpro-predictions-plot human-plot 3voor12-plot npodoc-plot vprobroadcast-plot vprocinema-plot
 	echo "Creating $@"
 	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';destdir='$(target)/'" plot-all.gp
+
+index.html: $(target)/index.html       ## Just re-generate index.html
+$(target)/index.html: index.mustache $(target)/data.json $(target)/index.css
+	chevron $< -d $(target)/data.json &> $@
+
+$(target)/index.css: index.css
+	cp -f $< $@
+
+$(target)/data.json: create_json.py $(target)/plots/plot-all.svg
+	./create_json.py $(target)
 
 
 docker:  ## Builds and pushes docker image
@@ -145,3 +155,4 @@ docker:  ## Builds and pushes docker image
 clean:   ## remove all results, clean run
 	rm -rf $(target)/plots/*
 	rm -f $(target)/*.p $(target)/*.txt
+	rm -f $(target)/index.html $(target)/data.json
