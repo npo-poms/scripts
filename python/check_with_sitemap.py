@@ -13,9 +13,9 @@ If objects are in the API but not in the sitemap, then we suppose the sitemap is
 
 If objects are in the sitemap but not in the API then there are two possibilities
   - The object is in the API, but not in the profile
-  - The object does not existing in the API at all
+  - The object does not exist in the API at all
 
-In both cases the object needs the be reindexed from the CMS.
+In both cases the object needs to be reindexed from the CMS.
 """
 
 import datetime
@@ -70,6 +70,7 @@ class CheckWithSitemap:
             self.log.info("Cleaning")
 
         self.log.info("API: %s, profile: %s" % (self.api.url, self.profile))
+        self.log.info("Pages API: %s" % self.backend.url)
 
     def add_arguments(self):
         api = self.api
@@ -258,7 +259,7 @@ class CheckWithSitemap:
                         result = self.backend.get(url)
                         if not result is None:
                             page = self.backend.to_object(result, binding=Binding.XSDATA)
-                            self.log.info("(%d/%d) In api, not in sitemap, but not giving 404 (but %s) url %s: %s", idx, len(not_in_sitemap), str(status), url, str(page.lastPublished))
+                            self.log.info("(%d/%d) In api, not in sitemap, but not giving 404 (but %s) url %s: last published %s", idx, len(not_in_sitemap), str(status), url, str(page.lastPublished))
                         else:
                             self.log.info("(%d/%d) In api, not giving 404 (but %s), but not found in publisher %s", idx, len(not_in_sitemap), str(status), url)
             if todo_delete_from_es > 0:

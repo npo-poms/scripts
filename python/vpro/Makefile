@@ -1,14 +1,16 @@
 
-env := ''
+env := prod
 
-check := ./check_with_sitemap_vpro.py
-
-ifeq ('', $(env))
+ifeq ('prod', $(env))
    magnolia1 := https://magnolia1-frontend1-prod.vpro.nl/
+   infix     := 
 else
-   magnolia1 := https://magnolia1-frontend1$(env).vpro.nl/
+   infix     := -$(env)
+   magnolia1 := https://magnolia1-frontend1$(infix).vpro.nl/
 endif
-target := $(HOME)/integrity-check-results$(env)
+check := ./check_with_sitemap_vpro.py -e $(env)
+
+target := $(HOME)/integrity-check-results$(infix)
 reportdir := $(target)/reports/`date +'%FT%H'`
 lastmonth := $(shell python3 -c 'from datetime import datetime, timedelta; print((datetime.now() - timedelta(days=31)).strftime("%Y-%m-%dT%H"))')
 now := $(shell python3 -c 'from datetime import datetime, timedelta; print((datetime.now()).strftime("%Y-%m-%dT%H"))')
@@ -75,33 +77,32 @@ report:  ## Show an abstract of the reports
 
 vpro:    ## Perform checks for vpro.nl.
 	$(check) \
-		-e prod --http_to_https \
+		--http_to_https \
 		$(extra_args) \
-		--post_process "lambda url: re.sub(r'^https://www$(env).vpro.nl/speel[~\.](.*?)[~\.](.*)', r'https://www$(env).vpro.nl/speel~\1~.html', url)" \
+		--post_process "lambda url: re.sub(r'^https://www$(infix).vpro.nl/speel[~\.](.*?)[~\.](.*)', r'https://www$(infix).vpro.nl/speel~\1~.html', url)" \
 		$(magnolia1)/vpronl/sitemap.xml \
 		vpro-predictions
 
 
 gids:   ## Perform checks for vprogids.nl
-	$(check) \
-		-e prod \
+	$(check) \	  
 		$(extra_args) \
-		--post_process_api "lambda url: None if url.startswith('https://www$(env).vprogids.nl/cinema/personen/persoon~') else url" \
+		--post_process_api "lambda url: None if url.startswith('https://www$(infix).vprogids.nl/cinema/personen/persoon~') else url" \
 		$(magnolia1)/gids/sitemap.xml \
 		vprocinema
 
 
 3voor12:  ## Perform checks for 3voor12
 	$(check) \
-		-e prod --http_to_https \
+		--http_to_https \
 		$(extra_args) \
-		--post_process "lambda url: re.sub(r'^https://3voor12$(env)}.vpro.nl(.*)/update[~\.](.*?)[~\.](.*)', r'https://3voor12$(env).vpro.nl/update~\2~.html', url)" \
+		--post_process "lambda url: re.sub(r'^https://3voor12$(infix)}.vpro.nl(.*)/update[~\.](.*?)[~\.](.*)', r'https://3voor12$(infix).vpro.nl/update~\2~.html', url)" \
 		$(magnolia1)/3v12/sitemap.xml \
 		3voor12
 
 human:   ## Perform checks for human.nl
 	$(check) \
-		-e prod --http_to_https \
+		--http_to_https \
 		$(extra_args) \
 		$(magnolia1)/human/sitemap.xml \
 		human
@@ -110,15 +111,14 @@ human:   ## Perform checks for human.nl
 
 npodoc:   ## Perform checks for 2doc.nl
 	$(check) \
-		-e prod --http_to_https \
+		--http_to_https \
 		$(extra_args) \
-		--post_process "lambda url: re.sub(r'^https://www$(env).2doc.nl/speel[~\.](.*?)[~\.](.*)', r'https://www$(env).2doc.nl/speel~\1~.html', url)" \
+		--post_process "lambda url: re.sub(r'^https://www$(infix).2doc.nl/speel[~\.](.*?)[~\.](.*)', r'https://www$(infix).2doc.nl/speel~\1~.html', url)" \
 		$(magnolia1)/npodoc/sitemap.xml \
 		npodoc
 
 vprobroadcast:  ## Perform checks for vprobroadcast.com
 	$(check) \
-		-e prod  \
 		$(extra_args) \
 		$(magnolia1)/international/sitemap.xml \
 		vprobroadcast

@@ -23,15 +23,15 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
     This wraps a command line client for jmx: https://github.com/jiaqi/jmxterm/
     """
 
-    def __init__(self, java_path: str = DEFAULT_JAVA_PATH, env: str = "-prod"):
+    def __init__(self, java_path: str = DEFAULT_JAVA_PATH):
         super().__init__()
         self.jmx_url = self.args.jmx_url
         self.jmxterm_binary = self.args.jmxterm_binary
         self.java_path = java_path
         self._get_jmx_term_if_necessary()
-        self.env = env
+        self.log.info("Actual env %s"%self.api.actualenv)
         if self.args.tunnel:
-            tunnel = SshTunnel(self.log, self.env)
+            tunnel = SshTunnel(self.log, self.api.actualenv)
             tunnel.start()
 
     def add_arguments(self):
@@ -150,13 +150,15 @@ class SshTunnel(threading.Thread):
                                         # main non-daemon thread finishes
         self.log = log
         self.env = env
+        self.log.info("Env: %s"%self.env)
 
     def run(self):
-        self.log.info("Setting up tunnel")
+        
+        self.log.info("Setting up tunnel ssh -L 5000:localhost:5000 os2-magnolia-backend-%s-01"%self.env)
         if subprocess.call([
             'ssh', '-N', '-4',
                    '-L', '5000:localhost:5000',
-                   'os2-magnolia-backend%s-01'%self.env
+                   'os2-magnolia-backend-%s-01'%self.env
                 ]):
             raise Exception ('ssh tunnel setup failed')
 
