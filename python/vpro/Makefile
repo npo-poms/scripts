@@ -1,7 +1,14 @@
 
+env := ''
+
 check := ./check_with_sitemap_vpro.py
-magnolia1 := https://magnolia1-frontend1-prod.vpro.nl/
-target := $(HOME)/integrity-check-results
+
+ifeq ('', $(env))
+   magnolia1 := https://magnolia1-frontend1-prod.vpro.nl/
+else
+   magnolia1 := https://magnolia1-frontend1$(env).vpro.nl/
+endif
+target := $(HOME)/integrity-check-results$(env)
 reportdir := $(target)/reports/`date +'%FT%H'`
 lastmonth := $(shell python3 -c 'from datetime import datetime, timedelta; print((datetime.now() - timedelta(days=31)).strftime("%Y-%m-%dT%H"))')
 now := $(shell python3 -c 'from datetime import datetime, timedelta; print((datetime.now()).strftime("%Y-%m-%dT%H"))')
@@ -53,6 +60,7 @@ help:     ## Show this help.
 	   tunnel=true  Also set up the tunnel needed for JMX\n\
 	   clean=false  Will not clean the pickle databases before runs\n\
 	   as_now=true  After a correction run, you may check again with this\n\
+	   env=[|-test|-acc] Infix for urls\n\
 	   jmx_url=$(jmx_url)  You may override the connection settings for jmx\n\
 	   reportdir=$(reportdir) Where reports are to be generated\n\
 	   docker_image=$(docker_image)\
@@ -69,7 +77,7 @@ vpro:    ## Perform checks for vpro.nl.
 	$(check) \
 		-e prod --http_to_https \
 		$(extra_args) \
-		--post_process "lambda url: re.sub(r'^https://www.vpro.nl/speel[~\.](.*?)[~\.](.*)', r'https://www.vpro.nl/speel~\1~.html', url)" \
+		--post_process "lambda url: re.sub(r'^https://www$(env).vpro.nl/speel[~\.](.*?)[~\.](.*)', r'https://www$(env).vpro.nl/speel~\1~.html', url)" \
 		$(magnolia1)/vpronl/sitemap.xml \
 		vpro-predictions
 
@@ -78,7 +86,7 @@ gids:   ## Perform checks for vprogids.nl
 	$(check) \
 		-e prod \
 		$(extra_args) \
-		--post_process_api "lambda url: None if url.startswith('https://www.vprogids.nl/cinema/personen/persoon~') else url" \
+		--post_process_api "lambda url: None if url.startswith('https://www$(env).vprogids.nl/cinema/personen/persoon~') else url" \
 		$(magnolia1)/gids/sitemap.xml \
 		vprocinema
 
@@ -87,7 +95,7 @@ gids:   ## Perform checks for vprogids.nl
 	$(check) \
 		-e prod --http_to_https \
 		$(extra_args) \
-		--post_process "lambda url: re.sub(r'^https://3voor12.vpro.nl(.*)/update[~\.](.*?)[~\.](.*)', r'https://3voor12.vpro.nl/update~\2~.html', url)" \
+		--post_process "lambda url: re.sub(r'^https://3voor12$(env)}.vpro.nl(.*)/update[~\.](.*?)[~\.](.*)', r'https://3voor12$(env).vpro.nl/update~\2~.html', url)" \
 		$(magnolia1)/3v12/sitemap.xml \
 		3voor12
 
@@ -104,7 +112,7 @@ npodoc:   ## Perform checks for 2doc.nl
 	$(check) \
 		-e prod --http_to_https \
 		$(extra_args) \
-		--post_process "lambda url: re.sub(r'^https://www.2doc.nl/speel[~\.](.*?)[~\.](.*)', r'https://www.2doc.nl/speel~\1~.html', url)" \
+		--post_process "lambda url: re.sub(r'^https://www$(env).2doc.nl/speel[~\.](.*?)[~\.](.*)', r'https://www$(env).2doc.nl/speel~\1~.html', url)" \
 		$(magnolia1)/npodoc/sitemap.xml \
 		npodoc
 
