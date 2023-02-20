@@ -27,7 +27,7 @@ import urllib
 import xml.etree.ElementTree
 
 import requests
-from npoapi import Pages
+from npoapi import Pages, Binding
 from npoapi import PagesBackend
 
 
@@ -257,7 +257,7 @@ class CheckWithSitemap:
                     else:
                         result = self.backend.get(url)
                         if not result is None:
-                            page = self.backend.to_object(result)
+                            page = self.backend.to_object(result, binding=Binding.XSDATA)
                             self.log.info("(%d/%d) In api, not in sitemap, but not giving 404 (but %s) url %s: %s", idx, len(not_in_sitemap), str(status), url, str(page.lastPublished))
                         else:
                             self.log.info("(%d/%d) In api, not giving 404 (but %s), but not found in publisher %s", idx, len(not_in_sitemap), str(status), url)
