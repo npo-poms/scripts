@@ -62,7 +62,7 @@ help:     ## Show this help.
 	   tunnel=true  Also set up the tunnel needed for JMX\n\
 	   clean=false  Will not clean the pickle databases before runs\n\
 	   as_now=true  After a correction run, you may check again with this\n\
-	   env=[|-test|-acc] Infix for urls\n\
+	   env=[prod|acc|test] OTAP environment\n\
 	   jmx_url=$(jmx_url)  You may override the connection settings for jmx\n\
 	   reportdir=$(reportdir) Where reports are to be generated\n\
 	   docker_image=$(docker_image)\
