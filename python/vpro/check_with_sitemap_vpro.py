@@ -125,7 +125,7 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
             self.log.info("error\n%s" % error)
 
         if "still busy" in out:
-            self.log.info("Jmx reports that still busy. Let's wait a bit then")
+            self.log.info("Jmx reports that still busy. Lets wait a bit then")
             time.sleep(20)
 
     def _get_jmx_term_if_necessary(self):
@@ -159,7 +159,7 @@ class SshTunnel(threading.Thread):
             'ssh', '-N', '-4',
                    '-L', '5000:localhost:5000',
                    'os2-magnolia-backend-%s-01'%self.env
-                ]):
+                ], stderr=subprocess.PIPE):
             raise Exception ('ssh tunnel setup failed')
 
 

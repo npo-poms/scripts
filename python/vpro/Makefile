@@ -85,7 +85,7 @@ vpro:    ## Perform checks for vpro.nl.
 
 
 gids:   ## Perform checks for vprogids.nl
-	$(check) \	  
+	$(check) \
 		$(extra_args) \
 		--post_process_api "lambda url: None if url.startswith('https://www$(infix).vprogids.nl/cinema/personen/persoon~') else url" \
 		$(magnolia1)/gids/sitemap.xml \

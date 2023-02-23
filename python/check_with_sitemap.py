@@ -104,8 +104,12 @@ class CheckWithSitemap:
         new_urls = set()
         from npoapi.data import api as API
         form = API.PagesForm()
-        form.sortFields = []
-        form.sortFields.append(API.PageSortTypeEnum.CREATION_DATE)
+        form.sortFields = API.PageSortListType()
+        form.sortFields.sort = [] 
+        sort = API.PageSortType()
+        sort.value = API.PageSortTypeEnum.CREATION_DATE
+        sort.order = API.OrderTypeEnum.DESC
+        form.sortFields.sort.append(sort)
         form.searches = API.PagesSearchType()
         form.searches.creationDates = API.DateRangeMatcherListType()
         if not until:
