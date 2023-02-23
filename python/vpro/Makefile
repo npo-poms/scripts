@@ -1,5 +1,5 @@
 
-env := prod
+env := 'prod'
 
 ifeq ('prod', $(env))
    magnolia1 := https://magnolia1-frontend1-prod.vpro.nl/
@@ -11,6 +11,8 @@ endif
 check := ./check_with_sitemap_vpro.py -e $(env)
 
 target := $(HOME)/integrity-check-results$(infix)
+
+
 reportdir := $(target)/reports/`date +'%FT%H'`
 lastmonth := $(shell python3 -c 'from datetime import datetime, timedelta; print((datetime.now() - timedelta(days=31)).strftime("%Y-%m-%dT%H"))')
 now := $(shell python3 -c 'from datetime import datetime, timedelta; print((datetime.now()).strftime("%Y-%m-%dT%H"))')
@@ -91,12 +93,12 @@ gids:   ## Perform checks for vprogids.nl
 		$(magnolia1)/gids/sitemap.xml \
 		vprocinema
 
-
+  # regexp contains now a prefix before 'update'. See https://jira.vpro.nl/browse/MGNL-20207
 3voor12:  ## Perform checks for 3voor12
 	$(check) \
 		--http_to_https \
 		$(extra_args) \
-		--post_process "lambda url: re.sub(r'^https://3voor12$(infix)}.vpro.nl(.*)/update[~\.](.*?)[~\.](.*)', r'https://3voor12$(infix).vpro.nl/update~\2~.html', url)" \
+		--post_process "lambda url: re.sub(r'^https://3voor12$(infix).vpro.nl(.*)/(?:.*/)*update[~\.](.*?)[~\.](?:.*)', r'https://3voor12$(infix).vpro.nl/update~\2~.html', url)" \
 		$(magnolia1)/3v12/sitemap.xml \
 		3voor12
 
