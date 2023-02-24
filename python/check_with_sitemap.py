@@ -85,9 +85,10 @@ class CheckWithSitemap:
         api.add_argument('--http_to_https', action='store_true', default=False, help='Replace all http with https')
         api.add_argument('--api_as_now', action='store_true', default=False, help='Normally api object created after this morning are ignored. After repairing you could use this argument to check results')
 
-        api.add_argument('--post_process_sitemap', type=str, default=None, help='A piec')
+        api.add_argument('--post_process_sitemap', type=str, default=None, help='A piece of python to process sitemap urls')
         api.add_argument('--post_process_api', type=str, default=None, help='')
         api.add_argument('--post_process', type=str, default=None, help='')
+        api.add_argument('--expected_not_in_sitemap', type=str, default=None, help='Sometimes urls are intentionally not in the sitemap, but in the api')
         api.add_argument('--target_directory', type=str, default=None, help='')
 
 
@@ -334,10 +335,19 @@ class CheckWithSitemap:
 
         if self.http_to_https:
             schema_mapper = lambda url: re.sub(r'^http://(.*)', r'https://\1', url)
+            
+        expected_not_in_sitemap = None
+        if self.args.expected_not_in_sitemap:
+            expected_not_in_sitemap = re.compile(self.args.expected_not_in_sitemap)
 
         self.log.info("Post processing")
         # list of all urls as they are present in the page api, but post processed. Should be used for comparing, not for operations
-        mapped_api_urls = list(filter(None.__ne__, list(map(lambda url: post_process(post_process_api(schema_mapper(url))), api_urls))))
+        mapped_api_urls = list(
+            filter(lambda  url: not url is None and expected_not_in_sitemap is None or not (expected_not_in_sitemap.match(url)),
+                   list(
+                       map(lambda url: post_process(post_process_api(schema_mapper(url))), api_urls))
+                   )
+        )
 
         mapped_file = self.file_in_target("mappeddata." + self.profile + ".api.txt")
         with io.open(mapped_file, 'w', encoding="utf-8") as f:
