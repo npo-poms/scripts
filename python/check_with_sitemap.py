@@ -85,10 +85,10 @@ class CheckWithSitemap:
         api.add_argument('--http_to_https', action='store_true', default=False, help='Replace all http with https')
         api.add_argument('--api_as_now', action='store_true', default=False, help='Normally api object created after this morning are ignored. After repairing you could use this argument to check results')
 
-        api.add_argument('--post_process_sitemap', type=str, default=None, help='A piece of python to process sitemap urls')
-        api.add_argument('--post_process_api', type=str, default=None, help='')
-        api.add_argument('--post_process', type=str, default=None, help='')
-        api.add_argument('--expected_not_in_sitemap', type=str, default=None, help='Sometimes urls are intentionally not in the sitemap, but in the api')
+        api.add_argument('--post_process_sitemap', type=str, default=None, help='A piece of python to process sitemap urls. Return url as it should be compared. None if to ignore')
+        api.add_argument('--post_process_api', type=str, default=None, help='A piece of python to process api urls. Return url as it should be compared. None if to ignore')
+        api.add_argument('--post_process', type=str, default=None, help='Provide a default implementation for both --post_process_sitemap and --post_process_api (if they must be the same)')
+        api.add_argument('--expected_not_in_sitemap', type=str, default=None, help='Sometimes urls are intentionally not in the sitemap, but in the api. Can also be reached by returning None from  --post_process_api')
         api.add_argument('--target_directory', type=str, default=None, help='')
 
 

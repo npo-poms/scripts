@@ -82,7 +82,6 @@ vpro:    ## Perform checks for vpro.nl.
 		--http_to_https \
 		$(extra_args) \
 		--post_process "lambda url: re.sub(r'^https://www$(infix).vpro.nl/speel[~\.](.*?)[~\.](.*)', r'https://www$(infix).vpro.nl/speel~\1~.html', url)" \
-		--expected_not_in_sitemap "https://www$(infix).vpro.nl/cinema/films/film~.*" \
 		$(magnolia1)/vpronl/sitemap.xml \
 		vpro-predictions
 
@@ -109,7 +108,6 @@ human:   ## Perform checks for human.nl
 		$(extra_args) \
 		$(magnolia1)/human/sitemap.xml \
 		human
-
 
 
 npodoc:   ## Perform checks for 2doc.nl
