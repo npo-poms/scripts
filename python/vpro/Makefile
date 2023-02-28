@@ -136,7 +136,7 @@ vprobroadcast:  ## Perform checks for vprobroadcast.com
 
 $(target)/plots/plot-all.svg: vpro-predictions-plot human-plot 3voor12-plot npodoc-plot vprobroadcast-plot vprocinema-plot
 	echo "Creating $@"
-	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';destdir='$(target)/'" plot-all.gp
+	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';destdir='$(target)/'" plot-all.gp || true
 
 index.html: $(target)/index.html       ## Just re-generate index.html
 $(target)/index.html: index.mustache $(target)/data.json $(target)/index.css
