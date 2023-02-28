@@ -10,7 +10,8 @@ else
 endif
 check := ./check_with_sitemap_vpro.py -e $(env)
 
-target := $(HOME)/integrity-check-results$(infix)
+target_prefix := $(HOME)/integrity-check-results
+target := $(taget_prefix)$(infix)
 
 
 reportdir := $(target)/reports/`date +'%FT%H'`
