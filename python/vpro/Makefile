@@ -1,9 +1,9 @@
 
 env := 'prod'
 
-ifeq ('prod', $(env))
+ifeq ($(env), prod)
    magnolia1 := https://magnolia1-frontend1-prod.vpro.nl/
-   infix     := 
+   infix     := ''
 else
    infix     := -$(env)
    magnolia1 := https://magnolia1-frontend1$(infix).vpro.nl/
