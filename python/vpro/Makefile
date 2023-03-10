@@ -13,7 +13,6 @@ check := ./check_with_sitemap_vpro.py -e $(env)
 target_prefix := $(HOME)/integrity-check-results
 target := $(target_prefix)$(infix)
 
-
 reportdir := $(target)/reports/`date +'%FT%H'`
 lastmonth := $(shell python3 -c 'from datetime import datetime, timedelta; print((datetime.now() - timedelta(days=31)).strftime("%Y-%m-%dT%H"))')
 now := $(shell python3 -c 'from datetime import datetime, timedelta; print((datetime.now()).strftime("%Y-%m-%dT%H"))')
@@ -48,6 +47,7 @@ ifeq (true, $(as_now))
    extra_args := --api_as_now $(extra_args)
 endif
 
+$(info infix: $(infix), target: $(target), env: $(env))
 
 
 .PHONY: all all_sites vpro 3voor12 human npodoc vprobroadcast  gids report clean plots index.html
@@ -155,6 +155,8 @@ docker:  ## Builds and pushes docker image
 	docker push $(docker_image)
 
 clean:   ## remove all results, clean run
+	mkdir -p $(target)
 	rm -rf $(target)/plots/*
 	rm -f $(target)/*.p $(target)/*.txt
 	rm -f $(target)/index.html $(target)/data.json
+	echo Remaining in target $(target) ; ls -l $(target)
