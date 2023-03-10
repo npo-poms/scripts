@@ -140,7 +140,7 @@ $(target)/plots/plot-all.svg: vpro-predictions-plot human-plot 3voor12-plot npod
 	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';destdir='$(target)/'" plot-all.gp || true
 
 index.html: $(target)/index.html       ## Just re-generate index.html
-$(target)/index.html: index.mustache $(target)/data.json $(target)/index.css
+$(target)/index.html: index.mustache $(target)/data.json $(target)/index.css $(target)/.htaccess
 	chevron $< -d $(target)/data.json &> $@
 
 $(target)/index.css: index.css
