@@ -156,6 +156,7 @@ docker:  ## Builds and pushes docker image
 
 clean:   ## remove all results, clean run
 	mkdir -p $(target)
+	echo Remaining in target $(target) ; ls -l $(target)
 	rm -rf $(target)/plots/*
 	rm -f $(target)/*.p $(target)/*.txt
 	rm -f $(target)/index.html $(target)/data.json
