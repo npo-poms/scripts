@@ -146,6 +146,9 @@ $(target)/index.html: index.mustache $(target)/data.json $(target)/index.css
 $(target)/index.css: index.css
 	cp -f $< $@
 
+$(target)/.htaccess: htaccess
+	cp -f $< $@
+
 $(target)/data.json: create_json.py $(target)/plots/plot-all.svg
 	./create_json.py $(target)
 
