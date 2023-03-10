@@ -74,8 +74,8 @@ help:     ## Show this help.
 plots: report $(target)/plots/plot-all.svg   ## After running the scripts, generate plots form that, and combine everying in one plot too.
 
 report:  ## Show an abstract of the reports
-	@for f in `find $(target) -maxdepth 2 -type f '(' -iname 'report.*.txt' -or -iname 'done.*.txt' -or -iname 'todo.*.txt' ')'`; do wc -l  $$f ; done
 	@mkdir -p $(reportdir)
+	@for f in `find $(target) -maxdepth 2 -type f '(' -iname 'report.*.txt' -or -iname 'done.*.txt' -or -iname 'todo.*.txt' ')'`; do wc -l  $$f ; done	
 	@cp $(target)/report.*.txt $(reportdir) || :
 
 vpro:    ## Perform checks for vpro.nl.
