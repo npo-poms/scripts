@@ -83,7 +83,7 @@ vpro:    ## Perform checks for vpro.nl.
 		--http_to_https \
 		$(extra_args) \
 		--post_process "lambda url: re.sub(r'^https://www$(infix).vpro.nl/speel[~\.](.*?)[~\.](.*)', r'https://www$(infix).vpro.nl/speel~\1~.html', url)" \
-		$(magnolia1)/vpronl/sitemap.xml \
+		$(magnolia1)vpronl/sitemap.xml \
 		vpro-predictions
 
 
@@ -91,7 +91,7 @@ gids:   ## Perform checks for vprogids.nl
 	$(check) \
 		$(extra_args) \
 		--post_process_api "lambda url: None if url.startswith('https://www$(infix).vprogids.nl/cinema/personen/persoon~') else url" \
-		$(magnolia1)/gids/sitemap.xml \
+		$(magnolia1)gids/sitemap.xml \
 		vprocinema
 
   # regexp contains now a prefix before 'update'. See https://jira.vpro.nl/browse/MGNL-20207
@@ -100,14 +100,14 @@ gids:   ## Perform checks for vprogids.nl
 		--http_to_https \
 		$(extra_args) \
 		--post_process "lambda url: re.sub(r'^https://3voor12$(infix).vpro.nl(.*)/(?:.*/)*update[~\.](.*?)[~\.](?:.*)', r'https://3voor12$(infix).vpro.nl/update~\2~.html', url)" \
-		$(magnolia1)/3v12/sitemap.xml \
+		$(magnolia1)3v12/sitemap.xml \
 		3voor12
 
 human:   ## Perform checks for human.nl
 	$(check) \
 		--http_to_https \
 		$(extra_args) \
-		$(magnolia1)/human/sitemap.xml \
+		$(magnolia1)human/sitemap.xml \
 		human
 
 
@@ -116,13 +116,13 @@ npodoc:   ## Perform checks for 2doc.nl
 		--http_to_https \
 		$(extra_args) \
 		--post_process "lambda url: re.sub(r'^https://www$(infix).2doc.nl/speel[~\.](.*?)[~\.](.*)', r'https://www$(infix).2doc.nl/speel~\1~.html', url)" \
-		$(magnolia1)/npodoc/sitemap.xml \
+		$(magnolia1)npodoc/sitemap.xml \
 		npodoc
 
 vprobroadcast:  ## Perform checks for vprobroadcast.com
 	$(check) \
 		$(extra_args) \
-		$(magnolia1)/international/sitemap.xml \
+		$(magnolia1)international/sitemap.xml \
 		vprobroadcast
 
 
