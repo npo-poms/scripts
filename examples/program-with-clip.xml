@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<program type="CLIP" avType="MIXED" embeddable="true" xmlns="urn:vpro:media:update:2009" xmlns:shared="urn:vpro:shared:2009" xmlns:media="urn:vpro:media:2009">
+<program type="CLIP" avType="MIXED" embeddable="true" 
+         xmlns="urn:vpro:media:update:2009"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="urn:vpro:media:update:2009 https://poms.omroep.nl/schema/update/vproMediaUpdate.xsd">
     <crid>crid://pyapi/clip/1/a</crid>
     <broadcaster>VPRO</broadcaster>
     <title type="MAIN">hoi 1472053757.497178</title>
