@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!--
-    Er bestaan een aantal basis elementen:
+    Er bestaan een aantal basiselementen:
 
         "program"   - losse uitzending, web-only materiaal of een individuele track
         "group"     - een verzameling van programma's en groepen, bijvoorbeeld een serie, playlist of album
@@ -9,7 +9,7 @@
 
     (** Naast program en group bestaat er een derde basis element: "segment". Een segment is een deel van de tijdlijn
     van een programma. Omdat een segment zonder programma niet kan bestaan worden segmenten bij import aangeboden als
-    onderdeel  van een programma (zie onder). Via REST/SOAP api's kan men segmenten los aanbieden, mits daarbij apart
+    onderdeel van een programma (zie onder). Via REST/SOAP api's kan men segmenten los aanbieden, mits daarbij apart
     een referentie naar het bijbehorende programma wordt meegeleverd. **)
 
     Programma's kunnen een onderdeel zijn van een groep via het memberOf element (generiek) of via episodeOf als het en
@@ -35,7 +35,7 @@
         Crids worden gebruikt in TVAnytime om unieke id's voor content te genereren.
 
         Omroepen kunnen hier eigen crids toevoegen en dit veld gebruiken als koppeltabel naar hun eigen system. Bij imports of updates
-        zal POMS proberen om het originele document te vinden en dit te verrijken. Als dat niet lukt wordt een nieuwe entiteit aangemaakt.
+        zal POMS proberen om het originele document te vinden en dit te verrijken. Als dat niet lukt, wordt een nieuwe entiteit aangemaakt.
 
         Regels:
             - crids zijn optioneel
@@ -49,8 +49,8 @@
     <crid>crid://bds.tv/9876</crid>
     <crid>crid://tmp.fragment.mmbase.vpro.nl/1234</crid>
     <!--
-        Omroep naam zoals oorspronkelijk gedistribueerd door MIS/Teleview. De lijst wordt tegenwoordig in POMS zelf bijgehouden  en kan worden
-        geraadpleegd om https://poms.omroep.nl/broadcasters
+        Omroep-naam zoals oorspronkelijk gedistribueerd door MIS/Teleview. De lijst wordt tegenwoordig in POMS zelf bijgehouded en kan worden
+        geraadpleegd om https://poms.omroep.nl/broadcasters/
     -->
     <broadcaster>BNN</broadcaster>
     <broadcaster>VPRO</broadcaster>

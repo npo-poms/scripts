@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<s:mediaForm xmlns="urn:vpro:media:2009" xmlns:shared="urn:vpro:shared:2009" xmlns:s="urn:vpro:media:search:2012" xmlns:update="urn:vpro:media:update:2009" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-   <s:pager>
-       <s:offset>0</s:offset>
-       <s:order>ASC</s:order>
-   </s:pager>
-   <s:locationsCount>
-       <s:start>0</s:start>
-       <s:stop inclusive="true">0</s:stop>
-   </s:locationsCount>
+<s:mediaForm
+  xmlns:s="urn:vpro:media:search:2012" xmlns:update="urn:vpro:media:update:2009"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="urn:vpro:media:search:2012 https://poms.omroep.nl/schema/search/vproMediaSearch.xsd">
+  <s:pager>
+    <s:offset>0</s:offset>
+    <s:order>ASC</s:order>
+  </s:pager>
+  <s:locationsCount>
+    <s:start>0</s:start>
+    <s:stop inclusive="true">0</s:stop>
+  </s:locationsCount>
 </s:mediaForm>

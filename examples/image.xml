@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<image xmlns="urn:vpro:media:update:2009">
+<image xmlns="urn:vpro:media:update:2009" 
+       type="PICTURE" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="urn:vpro:media:update:2009 https://poms.omroep.nl/schema/update/vproMediaUpdate.xsd">
   <title>Empty title</title>
   <imageLocation>
     <url>http://images.poms.omroep.nl/image/641817.jpg</url>

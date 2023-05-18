@@ -12,6 +12,8 @@
             <familyName>PuK</familyName>
         </person>
     </credits>
+    <ageRating>14</ageRating>
+    <contentRating>DISCRIMINATIE</contentRating>
     <locations/>
     <scheduleEvents/>
     <images>
@@ -27,8 +29,6 @@
             <crid>crid://pyapi/segment/1/a</crid>
             <broadcaster>VPRO</broadcaster>
             <title type="MAIN">hoi (1) 1472053757.497178</title>
-
-
             <locations/>
             <scheduleEvents/>
             <images/>

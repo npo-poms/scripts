@@ -1,4 +1,6 @@
-<segment midRef="POMS_VPRO_1434043" avType="VIDEO" xmlns="urn:vpro:media:update:2009">
+<segment midRef="POMS_VPRO_1434043" avType="VIDEO" xmlns="urn:vpro:media:update:2009"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="urn:vpro:media:update:2009 https://poms.omroep.nl/schema/update/vproMediaUpdate.xsd">
   <crid>crid://tests/segments/1</crid>
   <broadcaster>VPRO</broadcaster>
   <title type="MAIN">TEST</title>

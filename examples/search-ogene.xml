@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<mediaForm xmlns="urn:vpro:media:search:2012">
+<mediaForm xmlns="urn:vpro:media:search:2012" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="urn:vpro:media:search:2012 https://poms.omroep.nl/schema/search/vproMediaSearch.xsd">
     <pager>
         <max>30</max>
         <sort>lastModified</sort>
