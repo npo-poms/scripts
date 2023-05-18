@@ -1,14 +1,18 @@
 
-env := ''
+env := 'prod'
 
-check := ./check_with_sitemap_vpro.py
-
-ifeq ('', $(env))
+ifeq ($(env), prod)
    magnolia1 := https://magnolia1-frontend1-prod.vpro.nl/
+   infix     := ''
 else
-   magnolia1 := https://magnolia1-frontend1$(env).vpro.nl/
+   infix     := -$(env)
+   magnolia1 := https://magnolia1-frontend1$(infix).vpro.nl/
 endif
-target := $(HOME)/integrity-check-results$(env)
+check := ./check_with_sitemap_vpro.py -e $(env)
+
+target_prefix := $(HOME)/integrity-check-results
+target := $(target_prefix)$(infix)
+
 reportdir := $(target)/reports/`date +'%FT%H'`
 lastmonth := $(shell python3 -c 'from datetime import datetime, timedelta; print((datetime.now() - timedelta(days=31)).strftime("%Y-%m-%dT%H"))')
 now := $(shell python3 -c 'from datetime import datetime, timedelta; print((datetime.now()).strftime("%Y-%m-%dT%H"))')
@@ -43,12 +47,13 @@ ifeq (true, $(as_now))
    extra_args := --api_as_now $(extra_args)
 endif
 
+$(info infix: $(infix), target: $(target), env: $(env))
 
 
 .PHONY: all all_sites vpro 3voor12 human npodoc vprobroadcast  gids report clean plots index.html
 
 all: clean all_sites                                                            ## Cleans local database, runs for all sites, and creates plots for all
-all_sites: plots $(target)/index.html vpro 3voor12 human npodoc vprobroadcast   ## Runs for all vpro maintained sites
+all_sites: vpro 3voor12 human npodoc vprobroadcast    $(target)/index.html plots ## Runs for all vpro maintained sites
 
 
 help:     ## Show this help.
@@ -60,7 +65,7 @@ help:     ## Show this help.
 	   tunnel=true  Also set up the tunnel needed for JMX\n\
 	   clean=false  Will not clean the pickle databases before runs\n\
 	   as_now=true  After a correction run, you may check again with this\n\
-	   env=[|-test|-acc] Infix for urls\n\
+	   env=[prod|acc|test] OTAP environment\n\
 	   jmx_url=$(jmx_url)  You may override the connection settings for jmx\n\
 	   reportdir=$(reportdir) Where reports are to be generated\n\
 	   docker_image=$(docker_image)\
@@ -69,58 +74,55 @@ help:     ## Show this help.
 plots: report $(target)/plots/plot-all.svg   ## After running the scripts, generate plots form that, and combine everying in one plot too.
 
 report:  ## Show an abstract of the reports
-	@for f in `find $(target) -maxdepth 2 -type f '(' -iname 'report.*.txt' -or -iname 'done.*.txt' -or -iname 'todo.*.txt' ')'`; do wc -l  $$f ; done
 	@mkdir -p $(reportdir)
+	@for f in `find $(target) -maxdepth 2 -type f '(' -iname 'report.*.txt' -or -iname 'done.*.txt' -or -iname 'todo.*.txt' ')'`; do wc -l  $$f ; done	
 	@cp $(target)/report.*.txt $(reportdir) || :
 
 vpro:    ## Perform checks for vpro.nl.
 	$(check) \
-		-e prod --http_to_https \
+		--http_to_https \
 		$(extra_args) \
-		--post_process "lambda url: re.sub(r'^https://www$(env).vpro.nl/speel[~\.](.*?)[~\.](.*)', r'https://www$(env).vpro.nl/speel~\1~.html', url)" \
-		$(magnolia1)/vpronl/sitemap.xml \
+		--post_process "lambda url: re.sub(r'^https://www$(infix).vpro.nl/speel[~\.](.*?)[~\.](.*)', r'https://www$(infix).vpro.nl/speel~\1~.html', url)" \
+		$(magnolia1)vpronl/sitemap.xml \
 		vpro-predictions
 
 
 gids:   ## Perform checks for vprogids.nl
 	$(check) \
-		-e prod \
 		$(extra_args) \
-		--post_process_api "lambda url: None if url.startswith('https://www$(env).vprogids.nl/cinema/personen/persoon~') else url" \
-		$(magnolia1)/gids/sitemap.xml \
+		--post_process_api "lambda url: None if url.startswith('https://www$(infix).vprogids.nl/cinema/personen/persoon~') else url" \
+		$(magnolia1)gids/sitemap.xml \
 		vprocinema
 
-
+  # regexp contains now a prefix before 'update'. See https://jira.vpro.nl/browse/MGNL-20207
 3voor12:  ## Perform checks for 3voor12
 	$(check) \
-		-e prod --http_to_https \
+		--http_to_https \
 		$(extra_args) \
-		--post_process "lambda url: re.sub(r'^https://3voor12$(env)}.vpro.nl(.*)/update[~\.](.*?)[~\.](.*)', r'https://3voor12$(env).vpro.nl/update~\2~.html', url)" \
-		$(magnolia1)/3v12/sitemap.xml \
+		--post_process "lambda url: re.sub(r'^https://3voor12$(infix).vpro.nl(.*)/(?:.*/)*update[~\.](.*?)[~\.](?:.*)', r'https://3voor12$(infix).vpro.nl/update~\2~.html', url)" \
+		$(magnolia1)3v12/sitemap.xml \
 		3voor12
 
 human:   ## Perform checks for human.nl
 	$(check) \
-		-e prod --http_to_https \
+		--http_to_https \
 		$(extra_args) \
-		$(magnolia1)/human/sitemap.xml \
+		$(magnolia1)human/sitemap.xml \
 		human
-
 
 
 npodoc:   ## Perform checks for 2doc.nl
 	$(check) \
-		-e prod --http_to_https \
+		--http_to_https \
 		$(extra_args) \
-		--post_process "lambda url: re.sub(r'^https://www$(env).2doc.nl/speel[~\.](.*?)[~\.](.*)', r'https://www$(env).2doc.nl/speel~\1~.html', url)" \
-		$(magnolia1)/npodoc/sitemap.xml \
+		--post_process "lambda url: re.sub(r'^https://www$(infix).2doc.nl/speel[~\.](.*?)[~\.](.*)', r'https://www$(infix).2doc.nl/speel~\1~.html', url)" \
+		$(magnolia1)npodoc/sitemap.xml \
 		npodoc
 
 vprobroadcast:  ## Perform checks for vprobroadcast.com
 	$(check) \
-		-e prod  \
 		$(extra_args) \
-		$(magnolia1)/international/sitemap.xml \
+		$(magnolia1)international/sitemap.xml \
 		vprobroadcast
 
 
@@ -135,13 +137,16 @@ vprobroadcast:  ## Perform checks for vprobroadcast.com
 
 $(target)/plots/plot-all.svg: vpro-predictions-plot human-plot 3voor12-plot npodoc-plot vprobroadcast-plot vprocinema-plot
 	echo "Creating $@"
-	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';destdir='$(target)/'" plot-all.gp
+	gnuplot -e "xstart='$(lastmonth)';xstop='$(now)';destdir='$(target)/'" plot-all.gp || true
 
 index.html: $(target)/index.html       ## Just re-generate index.html
-$(target)/index.html: index.mustache $(target)/data.json $(target)/index.css
+$(target)/index.html: index.mustache $(target)/data.json $(target)/index.css $(target)/.htaccess
 	chevron $< -d $(target)/data.json &> $@
 
 $(target)/index.css: index.css
+	cp -f $< $@
+
+$(target)/.htaccess: htaccess
 	cp -f $< $@
 
 $(target)/data.json: create_json.py $(target)/plots/plot-all.svg
@@ -153,6 +158,9 @@ docker:  ## Builds and pushes docker image
 	docker push $(docker_image)
 
 clean:   ## remove all results, clean run
+	mkdir -p $(target)
+	echo Remaining in target $(target) ; ls -l $(target)
 	rm -rf $(target)/plots/*
 	rm -f $(target)/*.p $(target)/*.txt
 	rm -f $(target)/index.html $(target)/data.json
+	echo Remaining in target $(target) ; ls -l $(target)

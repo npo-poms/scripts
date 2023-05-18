@@ -13,9 +13,9 @@ If objects are in the API but not in the sitemap, then we suppose the sitemap is
 
 If objects are in the sitemap but not in the API then there are two possibilities
   - The object is in the API, but not in the profile
-  - The object does not existing in the API at all
+  - The object does not exist in the API at all
 
-In both cases the object needs the be reindexed from the CMS.
+In both cases the object needs to be reindexed from the CMS.
 """
 
 import datetime
@@ -70,6 +70,7 @@ class CheckWithSitemap:
             self.log.info("Cleaning")
 
         self.log.info("API: %s, profile: %s" % (self.api.url, self.profile))
+        self.log.info("Pages API: %s" % self.backend.url)
 
     def add_arguments(self):
         api = self.api
@@ -77,16 +78,17 @@ class CheckWithSitemap:
         api.add_argument('profile', type=str, nargs='?', help='NPO pages profile')
         api.add_argument('-C', '--clean', action='store_true', default=False, help='clean build')
         api.add_argument('-D', '--delete', action='store_true', default=False, help='remove from api')
-        api.add_argument('--no_get_check', action='store_true', default=False, help='when removing from api, dont check http status code first (only 404s will be deleted)')
+        api.add_argument('--no_get_check', action='store_true', default=False, help='when removing from api, dont check http status code first (only 404s and 301s will be deleted)')
         api.add_argument('-S', '--show', action='store_true', default=False, help='show from api')
         api.add_argument('--use_database', action='store_true', default=False, help='explicitly use the local database (inverse of clean)')
         api.add_argument('--https_to_http', action='store_true', default=False, help='Replace all https with http')
         api.add_argument('--http_to_https', action='store_true', default=False, help='Replace all http with https')
         api.add_argument('--api_as_now', action='store_true', default=False, help='Normally api object created after this morning are ignored. After repairing you could use this argument to check results')
 
-        api.add_argument('--post_process_sitemap', type=str, default=None, help='A piec')
-        api.add_argument('--post_process_api', type=str, default=None, help='')
-        api.add_argument('--post_process', type=str, default=None, help='')
+        api.add_argument('--post_process_sitemap', type=str, default=None, help='A piece of python to process sitemap urls. Return url as it should be compared. None if to ignore')
+        api.add_argument('--post_process_api', type=str, default=None, help='A piece of python to process api urls. Return url as it should be compared. None if to ignore')
+        api.add_argument('--post_process', type=str, default=None, help='Provide a default implementation for both --post_process_sitemap and --post_process_api (if they must be the same)')
+        api.add_argument('--expected_not_in_sitemap', type=str, default=None, help='Sometimes urls are intentionally not in the sitemap, but in the api. Can also be reached by returning None from  --post_process_api')
         api.add_argument('--target_directory', type=str, default=None, help='')
 
 
@@ -103,8 +105,12 @@ class CheckWithSitemap:
         new_urls = set()
         from npoapi.data import api as API
         form = API.PagesForm()
-        form.sortFields = []
-        form.sortFields.append(API.PageSortTypeEnum.CREATION_DATE)
+        form.sortFields = API.PageSortListType()
+        form.sortFields.sort = [] 
+        sort = API.PageSortType()
+        sort.value = API.PageSortTypeEnum.CREATION_DATE
+        sort.order = API.OrderTypeEnum.DESC
+        form.sortFields.sort.append(sort)
         form.searches = API.PagesSearchType()
         form.searches.creationDates = API.DateRangeMatcherListType()
         if not until:
@@ -258,7 +264,7 @@ class CheckWithSitemap:
                         result = self.backend.get(url)
                         if not result is None:
                             page = self.backend.to_object(result, binding=Binding.XSDATA)
-                            self.log.info("(%d/%d) In api, not in sitemap, but not giving 404 (but %s) url %s: %s", idx, len(not_in_sitemap), str(status), url, str(page.lastPublished))
+                            self.log.info("(%d/%d) In api, not in sitemap, but not giving 404 (but %s) url %s: last published %s", idx, len(not_in_sitemap), str(status), url, str(page.lastPublished))
                         else:
                             self.log.info("(%d/%d) In api, not giving 404 (but %s), but not found in publisher %s", idx, len(not_in_sitemap), str(status), url)
             if todo_delete_from_es > 0:
@@ -329,10 +335,19 @@ class CheckWithSitemap:
 
         if self.http_to_https:
             schema_mapper = lambda url: re.sub(r'^http://(.*)', r'https://\1', url)
+            
+        expected_not_in_sitemap = None
+        if self.args.expected_not_in_sitemap:
+            expected_not_in_sitemap = re.compile(self.args.expected_not_in_sitemap)
 
         self.log.info("Post processing")
         # list of all urls as they are present in the page api, but post processed. Should be used for comparing, not for operations
-        mapped_api_urls = list(filter(None.__ne__, list(map(lambda url: post_process(post_process_api(schema_mapper(url))), api_urls))))
+        mapped_api_urls = list(
+            filter(lambda  url: not url is None and expected_not_in_sitemap is None or not (expected_not_in_sitemap.match(url)),
+                   list(
+                       map(lambda url: post_process(post_process_api(schema_mapper(url))), api_urls))
+                   )
+        )
 
         mapped_file = self.file_in_target("mappeddata." + self.profile + ".api.txt")
         with io.open(mapped_file, 'w', encoding="utf-8") as f:
