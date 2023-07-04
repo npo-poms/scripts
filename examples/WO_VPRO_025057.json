@@ -1,0 +1,114 @@
+/* Since poms 7.7 the backend api may also supply/accept json */
+{
+  "objectType": "programUpdate",
+  "broadcaster": [
+    "VPRO"
+  ],
+  "title": [
+    {
+      "value": "testclip michiel",
+      "type": "MAIN"
+    },
+    {
+      "value": "afasdfasdfasdf",
+      "type": "SHORT"
+    }
+  ],
+  "ageRating": "12",
+  "locations": [
+    {
+      "programUrl": "http://www.vpro.nl/43:2023-05-10T15:40:30.223+02:00 addLocation() Café 汉",
+      "avAttributes": {
+        "avFileFormat": "UNKNOWN",
+        "videoAttributes": {
+
+        }
+      },
+      "urn": "urn:vpro:media:location:16345"
+    }
+  ],
+  "segments": [
+    {
+      "objectType": "segmentUpdate",
+      "broadcaster": [
+        "VPRO"
+      ],
+      "title": [
+        {
+          "value": "0:2023-01-17T10:57:14.090+01:00 createNewSegmentOnExistingProgram() Café 汉",
+          "type": "MAIN"
+        }
+      ],
+      "genre": [
+        "3.0.1.40.58"
+      ],
+      "duration": "P0DT0H1M0.000S",
+      "ageRating": "ALL",
+      "start": "P0DT0H0M0.000S",
+      "mediaType": "SEGMENT",
+      "mid": "POMS_VPRO_L20000013",
+      "urn": "urn:vpro:media:segment:9942",
+      "embeddable": true,
+      "midRef": "WO_VPRO_025057",
+      "deleted": true,
+      "avType": "VIDEO"
+    },
+    {
+      "objectType": "segmentUpdate",
+      "broadcaster": [
+        "VPRO"
+      ],
+      "title": [
+        {
+          "value": "10:2023-01-17T10:53:40.076+01:00 updateSegmentViaProgram() Café 汉",
+          "type": "MAIN"
+        }
+      ],
+      "genre": [
+        "3.0.1.40.58"
+      ],
+      "duration": "P0DT0H5M0.000S",
+      "ageRating": "ALL",
+      "start": "P0DT0H0M0.000S",
+      "mediaType": "SEGMENT",
+      "mid": "POMS_VPRO_L20000010",
+      "urn": "urn:vpro:media:segment:9886",
+      "embeddable": true,
+      "midRef": "WO_VPRO_025057",
+      "deleted": true,
+      "avType": "VIDEO"
+    },
+    {
+      "objectType": "segmentUpdate",
+      "broadcaster": [
+        "VPRO"
+      ],
+      "title": [
+        {
+          "value": "31:2023-05-10T15:40:30.223+02:00 updateSegmentViaProgram() Café 汉",
+          "type": "MAIN"
+        }
+      ],
+      "genre": [
+        "3.0.1.40.58"
+      ],
+      "duration": "P0DT0H3M0.000S",
+      "ageRating": "ALL",
+      "start": "P0DT0H0M0.000S",
+      "mediaType": "SEGMENT",
+      "mid": "POMS_VPRO_L20000210",
+      "urn": "urn:vpro:media:segment:16287",
+      "embeddable": true,
+      "midRef": "WO_VPRO_025057",
+      "deleted": true,
+      "avType": "VIDEO"
+    }
+  ],
+  "mediaType": "CLIP",
+  "mid": "WO_VPRO_025057",
+  "urn": "urn:vpro:media:program:9880",
+  "embeddable": true,
+  "type": "CLIP",
+  "version": "7.7",
+  "avType": "AUDIO"
+}
