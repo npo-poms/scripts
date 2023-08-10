@@ -11,7 +11,7 @@
   ],
   "title": [
     {
-      "value": "Spraakmakertjes",
+      "value": "Spraakmakertje!",
       "type": "MAIN"
     }
   ],
@@ -56,5 +56,6 @@
   "ageRating" : "ALL",
   "embeddable": true,
   "type": "BROADCAST",
-  "avType": "AUDIO"
+    "avType": "AUDIO"
+    /* test */
 }
