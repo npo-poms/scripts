@@ -64,11 +64,8 @@ class Process:
 
     def check_video(self, mid, record: dict):
         dest = record.get('dest')
-        media_info = record.get('media_info')
-        if media_info is None:
-            media_info = json.loads(subprocess.run(["mediainfo", "--Output=JSON", dest], stdout=subprocess.PIPE).stdout.decode('utf-8').strip())
-            record['media_info'] = media_info
-
+        media_info = json.loads(subprocess.run(["mediainfo", "--Output=JSON", dest], stdout=subprocess.PIPE).stdout.decode('utf-8').strip())
+        record['media_info'] = media_info
         video_info = self.get_video_info(record)
         if video_info is None:
             return False
@@ -179,6 +176,7 @@ class Process:
                             self.fix_video_if_possible(record)
                         if not self.check_video(mid, record):
                             self.logger.info("NOT OK %s %s" % (mid, program_url))
+                            record.update({"skipped": "not ok"})
                             continue
 
                     self.upload(mid, record, mime_type=avtype + '/' + ext)
