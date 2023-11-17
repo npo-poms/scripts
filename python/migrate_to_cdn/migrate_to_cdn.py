@@ -181,6 +181,7 @@ class Process:
 
                     self.upload(mid, record, mime_type=avtype + '/' + ext)
                     self.remove_legacy(mid, program_url, record, publishstop=publish_stop)
+                    os.remove(record['dest'])
                 else:
                     self.logger.warning("Unknown action '%s' %s  %s" % (action, mid, program_url))
 
