@@ -66,7 +66,7 @@ class Process:
         dest = record.get('dest')
         media_info = record.get('media_info')
         if media_info is None:
-            media_info = json.loads(subprocess.run(["/opt/homebrew/bin/mediainfo", "--Output=JSON", dest], stdout=subprocess.PIPE).stdout.decode('utf-8').strip())
+            media_info = json.loads(subprocess.run(["mediainfo", "--Output=JSON", dest], stdout=subprocess.PIPE).stdout.decode('utf-8').strip())
             record['media_info'] = media_info
 
         video_info = self.get_video_info(record)
