@@ -30,11 +30,10 @@ class Process:
 
 
     def save(self):
-        self.logger.info("Saving %d" % (len(self.progress)))
         with open("progress.saving.json", "w", encoding="utf8") as file:
             json.dump(self.progress, file, indent=2)
         os.replace("progress.saving.json", "progress.json")
-        self.logger.info("Saved")
+        self.logger.info("Saved %d" % (len(self.progress)))
 
 
 
@@ -152,7 +151,7 @@ class Process:
     def upload(self, mid: str, record:dict, mime_type:str):
         dest = record['dest']
         self.logger.info("Uploading for %s %s %s" % (mid, dest, mime_type))
-        result = self.api.upload(mid, dest, content_type=mime_type, log=True)
+        result = self.api.upload(mid, dest, content_type=mime_type, log=False)
         if isinstance(result, str):
             # video
             record['result'] = result
@@ -163,8 +162,7 @@ class Process:
             success = result.status == "success"
         self.logger.info(str(result))
         self.save()
-
-        self.logger.info("Uploading for %s %s %s" % (mid, dest, mime_type))
+        return success
 
     def remove_legacy(self, mid: str, location:str, record:dict, publishstop=stop):
         if not 'publishstop' in record:
@@ -237,11 +235,13 @@ class Process:
                                 self.save()
                                 continue
 
-                    self.upload(mid, record, mime_type=avtype + '/' + ext)
-                    self.remove_legacy(mid, program_url, record, publishstop=publish_stop)
-                    #os.remove(record['dest'])
-                    #if os.exists(record['dest'] + ".orig"):
-                    #   os.remove(record['dest'] + ".orig")
+                    success = self.upload(mid, record, mime_type=avtype + '/' + ext)
+                    if success:
+                        self.remove_legacy(mid, program_url, record, publishstop=publish_stop)
+                        os.remove(record['dest'])
+                        if os.exists(record['dest'] + ".orig"):
+                            os.remove(record['dest'] + ".orig")
+                    self.save()
                 else:
                     self.logger.warning("Unknown action '%s' %s  %s" % (action, mid, program_url))
 
