@@ -8,6 +8,7 @@ from dataclasses import asdict
 
 import requests
 from npoapi import MediaBackend, Binding
+from npoapi.data import ProgramTypeEnum
 from xsdata.formats.dataclass.serializers import JsonSerializer
 
 stop = '2023-11-01T12:00:00Z'
@@ -206,6 +207,21 @@ class Process:
                     if ss is True:
                         self.logger.info("Skipped while getting streaming status %s already true" % (mid))
                         continue
+
+                    mo =  self.api.get_full_object(mid, binding=Binding.XSDATA)
+
+                    if mo is None:
+                        record.update({"skipped": "not exists"})
+                        self.save()
+                        continue
+                    if mo.typeValue == ProgramTypeEnum.BROADCAST:
+                        record.update({"skipped": "may not upload broadcast"})
+                        self.save()
+                        continue
+
+
+
+
                     self.download_file(program_url, mid, record)
                     (a, avtype) = self.probe(record['dest'])
                     ext = os.path.splitext(program_url)[1][1:]
@@ -218,6 +234,7 @@ class Process:
                                 self.logger.info("NOT OK %s %s" % (mid, program_url))
                                 record.update({"skipped": "not ok"})
                                 os.remove(record['dest'])
+                                self.save()
                                 continue
 
                     self.upload(mid, record, mime_type=avtype + '/' + ext)
