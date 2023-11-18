@@ -126,9 +126,19 @@ class Process:
 
             reasons = record['reasons']
             if len(list(filter(lambda r: r['reason_key'] in ('size', 'aspect_ratio'), reasons))) > 0:
-                video_height = max(432, int(video_info['Height']))
-                video_width = max(768, int(video_info['Width']))
-                args.extend(["-vf", "scale=%d:%d:force_original_aspect_ratio=increase,pad=%d:%d:-1:-1:color=black" %(video_width, video_height, video_width, video_height)])
+                video_height = int(video_info['Height'])
+                video_width = int(video_info['Width'])
+                aspect_ratio = video_width / video_height
+                if aspect_ratio > 16/9:
+                    scaled_video_width = max(778, video_width)
+                    scaled_video_height = scaled_video_width * 9 / 16
+                else:
+                    scaled_video_height = max(432, video_height)
+                    scaled_video_width = scaled_video_height * 16 / 9
+
+                # the bigger on
+                args.extend(["-vf", "scale=%d:%d:force_original_aspect_ratio=decrease,pad=%d:%d:-1:-1:color=black"
+                             %(scaled_video_width, scaled_video_height, scaled_video_width, scaled_video_height)])
             args.append(new_dest)
             subprocess.call(args)
             if os.path.exists(new_dest):
