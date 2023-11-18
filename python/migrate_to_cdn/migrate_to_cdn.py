@@ -217,11 +217,14 @@ class Process:
                             if not self.check_video(mid, record):
                                 self.logger.info("NOT OK %s %s" % (mid, program_url))
                                 record.update({"skipped": "not ok"})
+                                os.remove(record['dest'])
                                 continue
 
                     self.upload(mid, record, mime_type=avtype + '/' + ext)
                     self.remove_legacy(mid, program_url, record, publishstop=publish_stop)
                     os.remove(record['dest'])
+                    if os.path.exists(record['dest'] + ".orig"):
+                        os.remove(record['dest'] + ".orig")
                 else:
                     self.logger.warning("Unknown action '%s' %s  %s" % (action, mid, program_url))
 
