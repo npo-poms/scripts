@@ -201,10 +201,10 @@ class Process:
                     ss = self.streaming_status(mid, record)
                     self.logger.info("Streaming status %s %s" % (mid, str(record['streaming_status'])))
                     if ss is None:
-                        self.logger("Skipped while getting streaming status %s" % (mid))
+                        self.logger.info("Skipped while getting streaming status %s" % (mid))
                         continue
                     if ss is True:
-                        self.logger("Skipped while getting streaming status %s already true" % (mid))
+                        self.logger.info("Skipped while getting streaming status %s already true" % (mid))
                         continue
                     self.download_file(program_url, mid, record)
                     (a, avtype) = self.probe(record['dest'])
@@ -222,9 +222,9 @@ class Process:
 
                     self.upload(mid, record, mime_type=avtype + '/' + ext)
                     self.remove_legacy(mid, program_url, record, publishstop=publish_stop)
-                    os.remove(record['dest'])
-                    if os.path.exists(record['dest'] + ".orig"):
-                        os.remove(record['dest'] + ".orig")
+                    #os.remove(record['dest'])
+                    #if os.exists(record['dest'] + ".orig"):
+                    #   os.remove(record['dest'] + ".orig")
                 else:
                     self.logger.warning("Unknown action '%s' %s  %s" % (action, mid, program_url))
 
