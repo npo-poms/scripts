@@ -239,7 +239,7 @@ class Process:
                     if success:
                         self.remove_legacy(mid, program_url, record, publishstop=publish_stop)
                         os.remove(record['dest'])
-                        if os.exists(record['dest'] + ".orig"):
+                        if os.path.exists(record['dest'] + ".orig"):
                             os.remove(record['dest'] + ".orig")
                     self.save()
                 else:
