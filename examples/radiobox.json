@@ -1,8 +1,0 @@
-{
-  "searches" : {
-    "locations" : {
-      "value" : "https://radiobox2.*",
-      "matchType" : "WILDCARD"
-    }
-  }
-}
