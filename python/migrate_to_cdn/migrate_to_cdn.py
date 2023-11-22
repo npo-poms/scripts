@@ -73,6 +73,7 @@ class Process:
         record['media_info'] = media_info
         video_info = self.get_video_info(record)
         if video_info is None:
+            self.logger.info("No video info for %s" % mid)
             return False
         video_bit_rate = int(video_info['BitRate'])
         video_height = int(video_info['Height'])
@@ -206,7 +207,7 @@ class Process:
                         self.logger.info("Skipped while getting streaming status %s already true" % (mid))
                         continue
 
-                    mo =  self.api.get_full_object(mid, binding=Binding.XSDATA)
+                    mo = self.api.get_full_object(mid, binding=Binding.XSDATA)
 
                     if mo is None:
                         record.update({"skipped": "not exists"})
@@ -216,9 +217,6 @@ class Process:
                         record.update({"skipped": "may not upload broadcast"})
                         self.save()
                         continue
-
-
-
 
                     self.download_file(program_url, mid, record)
                     (a, avtype) = self.probe(record['dest'])
