@@ -229,7 +229,7 @@ class Process:
                         if not self.check_video(mid, record):
                             self.fix_video_if_possible(record)
                             if not self.check_video(mid, record):
-                                self.logger.info("NOT OK %s %s" % (mid, program_url))
+                                self.logger.info("NOT OK %s %s -> %s" % (mid, program_url, ",".join(record['reasons'])))
                                 record.update({"skipped": "not ok"})
                                 os.remove(record['dest'])
                                 self.save()
