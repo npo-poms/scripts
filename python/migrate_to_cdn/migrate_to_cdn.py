@@ -109,8 +109,11 @@ class Process:
         return len(reasons) == 0
 
     def fix_video_if_possible(self, record: dict):
-        if record.get('fixed', 0) == 0:
-            record['fixed'] = 0
+        if record.get('fixed', 0) <= 1:
+            if 'fixed' in record:
+                record['fixed'] += 1
+            else:
+                record['fixed'] = 0
             dest = record['dest']
             dest_orig = "%s.orig" % dest
             os.rename(dest, "%s.orig" % dest)
