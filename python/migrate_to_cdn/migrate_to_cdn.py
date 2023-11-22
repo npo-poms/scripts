@@ -48,6 +48,8 @@ class Process:
                 open(dest, 'wb').write(r.content)
             record.update({'dest': dest})
             self.save()
+        else:
+            self.logger.info("Nothing to download %s %s -> %s" % (mid, program_url, record['dest']))
 
     def probe(self, dest:str):
         ffprobe = sorted(subprocess.run(["ffprobe", "-loglevel", "error", "-show_entries", "stream=codec_type", "-of", "default=nw=1", dest], stdout=subprocess.PIPE).stdout.decode('utf-8').strip().split("\n"), reverse=True)
@@ -232,6 +234,8 @@ class Process:
                                 os.remove(record['dest'])
                                 self.save()
                                 continue
+                    else:
+                        self.logger.info("%s %s: %s. Progressing as audio" % (mid, program_url, avtype))
 
                     success = self.upload(mid, record, mime_type=avtype + '/' + ext)
                     if success:
@@ -239,6 +243,8 @@ class Process:
                         os.remove(record['dest'])
                         if os.path.exists(record['dest'] + ".orig"):
                             os.remove(record['dest'] + ".orig")
+                    else:
+                        self.logger.warn("Could not upload")
                     self.save()
                 else:
                     self.logger.warning("Unknown action '%s' %s  %s" % (action, mid, program_url))
