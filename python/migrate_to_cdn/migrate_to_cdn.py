@@ -111,6 +111,8 @@ class Process:
     def convert_to_audio(self, record :dict):
         dest = record['dest']
         dest_orig = "%s.orig" % dest
+        if not os.path.exists(dest_orig):
+            os.rename(dest, dest_orig)
         args = ["ffmpeg", "-y", "-i", dest_orig, "-q:a", "0", "-map",  "a", "-f", "mp3", dest]
         record['ffmpeg'] = " ".join(args)
         subprocess.call(args)
