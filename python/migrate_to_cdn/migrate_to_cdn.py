@@ -8,7 +8,7 @@ from dataclasses import asdict
 
 import requests
 from npoapi import MediaBackend, Binding
-from npoapi.data import ProgramTypeEnum
+from npoapi.data import ProgramTypeEnum, AvTypeEnum
 from xsdata.formats.dataclass.serializers import JsonSerializer
 
 stop = '2023-11-01T12:00:00Z'
@@ -107,6 +107,14 @@ class Process:
         record.update({"reasons": reasons})
         self.save()
         return len(reasons) == 0
+
+    def convert_to_audio(self, record :dict):
+        dest = record['dest']
+        dest_orig = "%s.orig" % dest
+        args = ["ffmpeg", "-y", "-i", dest_orig, "-q:a", "0", "-map",  "a", "-f", "mp3", dest]
+        record['ffmpeg'] = " ".join(args)
+        subprocess.call(args)
+
 
     def fix_video_if_possible(self, record: dict):
         if record.get('fixed', 0) <= 1:
@@ -232,11 +240,18 @@ class Process:
                         if not self.check_video(mid, record):
                             self.fix_video_if_possible(record)
                             if not self.check_video(mid, record):
-                                self.logger.info("NOT OK %s %s -> %s" % (mid, program_url, str(record['reasons'])))
-                                record.update({"skipped": "not ok"})
-                                os.remove(record['dest'])
-                                self.save()
-                                continue
+                                if mo.avType == AvTypeEnum.AUDIO:
+                                    self.convert_to_audio(record)
+                                    ext = 'mp3'
+                                    avtype = 'audio'
+                                    self.logger.info("%s %s: %s. Progressing as audio" % (mid, program_url, avtype))
+                                    self.save()
+                                else:
+                                    self.logger.info("NOT OK %s %s -> %s" % (mid, program_url, str(record['reasons'])))
+                                    record.update({"skipped": "not ok"})
+                                    os.remove(record['dest'])
+                                    self.save()
+                                    continue
                     else:
                         self.logger.info("%s %s: %s. Progressing as audio" % (mid, program_url, avtype))
 
