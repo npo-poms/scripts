@@ -102,7 +102,11 @@ class Process:
                 overview = eval(row['onlinelocationurloverview'])
                 if self.streaming_status(mid):
                     full = self.api.get_full_object(mid)
-                    locations = full.locations.location
+                    if full is None:
+                        self.logger.info("Not found object %s" % (mid))
+                        skipped += 1
+                        continue
+                    locations = full.locations.location if full.locations is not None else []
                     found_entry = False
                     for location in locations:
                         if location.programUrl.startswith("https://entry"):
