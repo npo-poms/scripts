@@ -4,6 +4,7 @@ import csv
 import json
 import os
 import subprocess
+import time
 from dataclasses import asdict
 
 import requests
@@ -50,6 +51,7 @@ class Process:
     def remove_legacy(self, mid: str, location:str):
         self.logger.info("Removing legacy %s %s %s" % (location, mid, stop))
         self.api.set_location(mid, location, publishStop=stop, only_if_exists=True)
+        time.sleep(10) # avoid overfeeding the Consumer.Media.ws.RunAsMediaService queue
 
     def streaming_status(self, mid:str):
         streaming_status = self.api.streaming_status(mid, binding=Binding.XSDATA)
