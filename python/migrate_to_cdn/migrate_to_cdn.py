@@ -198,6 +198,9 @@ class Process:
             return False
 
     def process_csv(self):
+        total = 0
+        skipped = 0
+        ok = 0
         with (open("Lagekwaliteitbronnenv1.csv", "r", encoding="utf_8_sig") as file):
             reader = csv.DictReader(file, delimiter=";")
             for row in reader:
@@ -205,6 +208,7 @@ class Process:
                 program_url = row['program_url']
                 mid = row['mid']
                 record = self.progress.get(mid, None)
+                total += 1
                 if record is None:
                     record = dict()
                     self.progress[mid] = record
@@ -217,9 +221,11 @@ class Process:
                     self.logger.info("Streaming status %s %s" % (mid, str(record['streaming_status'])))
                     if ss is None:
                         self.logger.info("Skipped while getting streaming status %s" % (mid))
+                        skipped += 1
                         continue
                     if ss is True:
                         self.logger.info("Skipped while getting streaming status %s already true" % (mid))
+                        ok += 1
                         continue
 
                     mo = self.api.get_full_object(mid, binding=Binding.XSDATA)
@@ -227,10 +233,12 @@ class Process:
                     if mo is None:
                         record.update({"skipped": "not exists"})
                         self.save()
+                        skipped += 1
                         continue
                     if mo.typeValue == ProgramTypeEnum.BROADCAST:
                         record.update({"skipped": "may not upload broadcast"})
                         self.save()
+                        skipped += 1
                         continue
 
                     self.download_file(program_url, mid, record)
@@ -270,6 +278,7 @@ class Process:
                     self.logger.warning("Unknown action '%s' %s  %s" % (action, mid, program_url))
 
                     continue
+        self.logger.info("Total %d skipped %d ok %d" % (total, skipped, ok))
 
 
 
