@@ -13,7 +13,10 @@ from xsdata.formats.dataclass.serializers import JsonSerializer
 
 stop = '2023-11-01T12:00:00Z'
 
+# \copy (select l.id, l.programurl, mid(l.mediaobject_id), onlinelocationurloverview(l.mediaobject_id), workflow(l.mediaobject_id)   from location l join mediaobject_broadcaster mb on l.mediaobject_id  = mb.mediaobject_id where l.workflow = 'PUBLISHED' and mb.broadcasters_id = 'VPRO' and (l.programurl like 'http%radiobox%' or l.programurl like 'http%content.omroep.nl%') order by l.mediaobject_id desc) to '/tmp/SYS-1258.csv' with delimiter E'\t' csv header;
 
+
+#  See SYS-1258
 class Process:
 
     def __init__(self, broadcaster:str = 'vpro'):
@@ -22,6 +25,7 @@ class Process:
         self.index = 0
         self.logger.info("Talking to %s" % (str(self.api)))
         self.jsonserializer = JsonSerializer()
+        self.seen_mids = set()
 
 
 
@@ -44,7 +48,7 @@ class Process:
         return success
 
     def remove_legacy(self, mid: str, location:str):
-        self.logger.info("Removing legacy %s %s" % (location, mid))
+        self.logger.info("Removing legacy %s %s %s" % (location, mid, stop))
         self.api.set_location(mid, location, publishStop=stop, only_if_exists=True)
 
     def streaming_status(self, mid:str):
@@ -72,8 +76,15 @@ class Process:
             for row in reader:
                 self.logger.info("Processing %s" % (row))
                 mid = row['mid']
+
                 total += 1
 
+                if mid in self.seen_mids:
+                    skipped += 1
+                    self.logger.info("Mid already seen %s: %s" % (mid, programurl))
+                    continue
+
+                self.seen_mids.add(mid)
                 programurl = row['programurl']
                 if not programurl.endswith(".mp3"):
                     skipped += 1
