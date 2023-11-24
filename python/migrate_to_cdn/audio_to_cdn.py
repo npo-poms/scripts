@@ -97,6 +97,7 @@ class Process:
                     if found_entry:
                         skipped += 1
                         self.logger.info("Already online %s" % (mid))
+                        self.remove_legacy_list(mid, overview)
                         continue
                     else:
                         self.logger.info("Online, but missing entry %s" % (mid))
