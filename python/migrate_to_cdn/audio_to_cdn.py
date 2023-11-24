@@ -62,11 +62,9 @@ class Process:
         else:
             return False
 
-    def remove_legacy_list(self, mid: str, overview:list):
+    def remove_legacy_list(self, mid: str, overview:set):
         for l in overview:
-            pu = l.split(" ")[0]
-            if "radiobox" in pu or "content.omroep.nl" in pu:
-                self.remove_legacy(mid, pu)
+            self.remove_legacy(mid, l)
 
     def process_csv(self):
         total = 0
@@ -108,13 +106,17 @@ class Process:
                         continue
                     locations = full.locations.location if full.locations is not None else []
                     found_entry = False
+                    need_remove = set()
                     for location in locations:
                         if location.programUrl.startswith("https://entry"):
                             found_entry = True
+                        if "radiobox" in location.programUrl or "content.omroep.nl" in location.programUrl:
+                            if location.publishStop is None:
+                                need_remove.add(location.programUrl)
                     if found_entry:
                         skipped += 1
                         self.logger.info("Already online %s" % (mid))
-                        self.remove_legacy_list(mid, overview)
+                        self.remove_legacy_list(mid, need_remove)
                         continue
                     else:
                         self.logger.info("Online, but missing entry %s" % (mid))
