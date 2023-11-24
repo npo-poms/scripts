@@ -80,8 +80,13 @@ class Process:
                     self.logger.info("Not downloadla %s" % (programurl))
                     skipped += 1
                     continue
+                overview = eval(row['onlinelocationurloverview'])
                 self.upload(mid, 'audio/mp3', dest)
-                self.remove_legacy(mid, programurl)
+
+                for l in overview:
+                    pu = l.split(" ")[0]
+                    if "radiobox" in pu or "content.omroep.nl" in pu:
+                        self.remove_legacy(mid, programurl)
                 os.remove(dest)
                 ok += ok
         self.logger.info("Total %d skipped %d ok %d" % (total, skipped, ok))
