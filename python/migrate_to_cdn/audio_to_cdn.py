@@ -111,7 +111,7 @@ class Process:
                         if location.programUrl.startswith("https://entry"):
                             found_entry = True
                         if "radiobox" in location.programUrl or "content.omroep.nl" in location.programUrl:
-                            if location.publishStop is None:
+                            if location.publishStop is None and location.workflow == "PUBLISHED":
                                 need_remove.add(location.programUrl)
                     if found_entry:
                         skipped += 1
