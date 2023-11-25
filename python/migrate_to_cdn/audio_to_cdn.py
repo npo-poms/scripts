@@ -4,6 +4,7 @@ import csv
 import json
 import os
 import subprocess
+import sys
 import time
 from dataclasses import asdict
 
@@ -66,7 +67,7 @@ class Process:
         for l in overview:
             self.remove_legacy(mid, l)
 
-    def process_csv(self):
+    def process_csv(self, ignore_until = 0):
         total = 0
         skipped = 0
         ok = 0
@@ -74,10 +75,13 @@ class Process:
         with (open("SYS-1258.csv", "r", encoding="utf_8") as file):
             reader = csv.DictReader(file, delimiter="\t")
             for row in reader:
-                self.logger.info("Processing %s" % (row))
+                total += 1
+                if total <= ignore_until:
+                    continue
+                self.logger.info("%d Processing %s" % (total, row))
                 mid = row['mid']
 
-                total += 1
+
 
                 if mid in self.seen_mids:
                     skipped += 1
@@ -155,4 +159,4 @@ class Process:
 
 process = Process()
 
-process.process_csv()
+process.process_csv(ignore_until= int(sys.argv[1]) if len(sys.argv) > 1 else 0)
