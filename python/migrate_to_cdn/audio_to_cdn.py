@@ -10,7 +10,7 @@ from dataclasses import asdict
 
 import requests
 from npoapi import MediaBackend, Binding
-from npoapi.data import ProgramTypeEnum, AvTypeEnum, PredictionUpdateType, Prediction
+from npoapi.data import ProgramTypeEnum, AvTypeEnum, PredictionUpdateType, Prediction, WorkflowEnumType
 from xsdata.formats.dataclass.serializers import JsonSerializer
 
 stop = '2023-11-01T12:00:00Z'
@@ -115,7 +115,7 @@ class Process:
                         if location.programUrl.startswith("https://entry"):
                             found_entry = True
                         if "radiobox" in location.programUrl or "content.omroep.nl" in location.programUrl:
-                            if location.publishStop is None and location.workflow == "PUBLISHED":
+                            if location.publishStop is None and location.workflow == WorkflowEnumType.PUBLISHED:
                                 need_remove.add(location.programUrl)
                     if found_entry:
                         skipped += 1
