@@ -147,8 +147,17 @@ class Process:
                     skipped += 1
                     continue
 
-
-                self.upload(mid, 'audio/mp3', dest)
+                tries = 0
+                while tries < 2:
+                    try:
+                        tries += 1
+                        result = self.upload(mid, 'audio/mp3', dest)
+                        self.logger.info("Upload result %s %s" % (mid, result))
+                        break
+                    except Exception as e:
+                        self.logger.info("Upload failed %s %s" % (mid, e))
+                        time.sleep(5)
+                        continue
                 self.remove_legacy_list(mid, overview)
                 os.remove(dest)
                 ok += ok
