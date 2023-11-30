@@ -30,7 +30,6 @@ class Process:
         self.seen_mids = set()
 
 
-
     def download_file(self, program_url:str, mid:str):
         self.logger.info("Downloading %s %s" % (mid, program_url))
         dest = '%s.asset' % (mid)
@@ -139,9 +138,12 @@ class Process:
                             self.remove_legacy_list(mid, overview)
                             corrected += 1
                             continue
-
-
-                dest = self.download_file(programurl, mid)
+                try:
+                    dest = self.download_file(programurl, mid)
+                except Exception as e:
+                    self.logger.info("Download failed %s %s" % (mid, e))
+                    skipped += 1
+                    continue
                 if dest is None:
                     self.logger.info("Not downloadable %s" % (programurl))
                     skipped += 1
