@@ -28,6 +28,7 @@ class Process:
         self.logger.info("Talking to %s" % (str(self.api)))
         self.jsonserializer = JsonSerializer()
         self.seen_mids = set()
+        self.corrected = 0
 
 
     def download_file(self, program_url:str, mid:str):
@@ -66,11 +67,71 @@ class Process:
         for l in overview:
             self.remove_legacy(mid, l)
 
+    def check_streamingstatus(self, mid: str,  overview:set):
+        if self.streaming_status(mid):
+            full = self.api.get_full_object(mid)
+            if full is None:
+                self.logger.info("Not found object %s" % (mid))
+                return False
+            locations = full.locations.location if full.locations is not None else []
+            found_entry = False
+            need_remove = set()
+            for location in locations:
+                if location.programUrl.startswith("https://entry"):
+                    found_entry = True
+                if "radiobox" in location.programUrl or "content.omroep.nl" in location.programUrl:
+                    if location.publishStop is None and location.workflow == WorkflowEnumType.PUBLISHED:
+                        need_remove.add(location.programUrl)
+            if found_entry:
+                self.logger.info("Already online %s" % (mid))
+                self.remove_legacy_list(mid, need_remove)
+                return False
+            else:
+                self.logger.info("Online, but missing entry %s" % (mid))
+                existing_prediction  = full.prediction[0] if len(full.prediction) else  None
+                if existing_prediction is None:
+                    self.logger.info("No prediction %s" % (mid))
+                    return False
+                else:
+                    prediction = Prediction()
+                    prediction.publishStart = existing_prediction.publishStart
+                    prediction.publishStop = existing_prediction.publishStop
+                    prediction.value = "INTERNETVOD"
+                    result = self.api.post_prediction(mid, prediction)
+                    self.logger.info("posted prediction %s-> %s" % (mid, result))
+                    self.remove_legacy_list(mid, overview)
+                    self.corrected += 1
+                    return False
+
+    def do_one(self, mid:str, programurl:str, overview:set = None):
+        try:
+            dest = self.download_file(programurl, mid)
+        except Exception as e:
+            self.logger.info("Download failed %s %s" % (mid, e))
+            return False
+        if dest is None:
+            self.logger.info("Not downloadable %s" % (programurl))
+            return False
+
+        tries = 0
+        while tries < 2:
+            try:
+                tries += 1
+                result = self.upload(mid, 'audio/mp3', dest)
+                self.logger.info("Upload result %s %s" % (mid, result))
+                break
+            except Exception as e:
+                self.logger.info("Upload failed %s %s" % (mid, e))
+                time.sleep(5)
+                continue
+        self.remove_legacy_list(mid, overview)
+        os.remove(dest)
+
     def process_csv(self, ignore_until = 0):
         total = 0
         skipped = 0
         ok = 0
-        corrected = 0
+
         with (open("SYS-1258.csv", "r", encoding="utf_8") as file):
             reader = csv.DictReader(file, delimiter="\t")
             for row in reader:
@@ -79,8 +140,6 @@ class Process:
                     continue
                 self.logger.info("%d Processing %s" % (total, row))
                 mid = row['mid']
-
-
 
                 if mid in self.seen_mids:
                     skipped += 1
@@ -101,73 +160,20 @@ class Process:
                     continue
 
                 overview = eval(row['onlinelocationurloverview'])
-                if self.streaming_status(mid):
-                    full = self.api.get_full_object(mid)
-                    if full is None:
-                        self.logger.info("Not found object %s" % (mid))
-                        skipped += 1
-                        continue
-                    locations = full.locations.location if full.locations is not None else []
-                    found_entry = False
-                    need_remove = set()
-                    for location in locations:
-                        if location.programUrl.startswith("https://entry"):
-                            found_entry = True
-                        if "radiobox" in location.programUrl or "content.omroep.nl" in location.programUrl:
-                            if location.publishStop is None and location.workflow == WorkflowEnumType.PUBLISHED:
-                                need_remove.add(location.programUrl)
-                    if found_entry:
-                        skipped += 1
-                        self.logger.info("Already online %s" % (mid))
-                        self.remove_legacy_list(mid, need_remove)
-                        continue
-                    else:
-                        self.logger.info("Online, but missing entry %s" % (mid))
-                        existing_prediction  = full.prediction[0] if len(full.prediction) else  None
-                        if existing_prediction is None:
-                            self.logger.info("No prediction %s" % (mid))
-                            skipped += 1
-                            continue
-                        else:
-                            prediction = Prediction()
-                            prediction.publishStart = existing_prediction.publishStart
-                            prediction.publishStop = existing_prediction.publishStop
-                            prediction.value = "INTERNETVOD"
-                            result = self.api.post_prediction(mid, prediction)
-                            self.logger.info("posted prediction %s-> %s" % (mid, result))
-                            self.remove_legacy_list(mid, overview)
-                            corrected += 1
-                            continue
-                try:
-                    dest = self.download_file(programurl, mid)
-                except Exception as e:
-                    self.logger.info("Download failed %s %s" % (mid, e))
-                    skipped += 1
-                    continue
-                if dest is None:
-                    self.logger.info("Not downloadable %s" % (programurl))
-                    skipped += 1
+
+                if not self.check_streamingstatus(mid):
                     continue
 
-                tries = 0
-                while tries < 2:
-                    try:
-                        tries += 1
-                        result = self.upload(mid, 'audio/mp3', dest)
-                        self.logger.info("Upload result %s %s" % (mid, result))
-                        break
-                    except Exception as e:
-                        self.logger.info("Upload failed %s %s" % (mid, e))
-                        time.sleep(5)
-                        continue
-                self.remove_legacy_list(mid, overview)
-                os.remove(dest)
+                if not self.do_one(mid, programurl, overview):
+                    continue
                 ok += ok
-        self.logger.info("Total %d skipped %d ok %d corrected %d" % (total, skipped, ok, corrected))
+        self.logger.info("Total %d skipped %d ok %d corrected %d" % (total, skipped, ok, self.corrected))
 
 
 
 
 process = Process()
 
-process.process_csv(ignore_until= int(sys.argv[1]) if len(sys.argv) > 1 else 0)
+#process.process_csv(ignore_until= int(sys.argv[1]) if len(sys.argv) > 1 else 0)
+
+process.do_one("5ee8ffebfc92c80f588ee2b2", "https://content.omroep.nl/nporadio/audio/34a076b3-08b3-4c0c-ae2e-33b5a04faf68/21e0312e-e04f-4b4a-8a20-d69d430699ec.mp3")
