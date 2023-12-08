@@ -1,0 +1,8 @@
+ {
+
+     "searches" : {
+         "type" : "BROADCAST",
+         "avTypes": "VIDEO"
+     }
+
+}
