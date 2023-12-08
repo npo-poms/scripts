@@ -1,7 +1,7 @@
  {
 
      "searches" : {
-         "type" : "BROADCAST",
+         "types" : "BROADCAST",
          "avTypes": "VIDEO"
      }
 
