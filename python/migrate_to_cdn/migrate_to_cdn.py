@@ -243,7 +243,14 @@ class Process:
                     self.logger.info("%s %s: %s. Successfully fixed. Processing video" % (mid, program_url, avtype))
 
         else:
-            self.logger.info("%s %s: %s. Progressing as audio" % (mid, program_url, avtype))
+            if mo.avType == AvTypeEnum.AUDIO:
+                self.logger.info("%s %s: %s. Progressing as audio" % (mid, program_url, avtype))
+                avtype = 'audio'
+                ext = 'mp3'
+            else:
+                self.logger.info("NOT OK %s %s -> %s" % (mid, program_url, str(record['reasons'])))
+                return False
+
 
         success = self.upload(mid, record, mime_type=avtype + '/' + ext)
         if success:
@@ -301,9 +308,10 @@ class Process:
 
 
 
-process = Process(remove_files=True)
-process.process_csv()
+#process = Process(remove_files=True)a
+#process.process_csv()
 
-#record = dict()
-#process.do_one("WO_VPRO_361947", record, "http://content.omroep.nl/vpro/poms/world/26/07/88/69/NPO_bb.m4v")
-#process.logger.info(str(record))
+process = Process(remove_files=False)
+record = dict()
+process.do_one("POMS_VPRO_189372", record, "http://download.omroep.nl/vpro/12/85/33/38/POMS_VPRO_189372.mp3")
+process.logger.info(str(record))
