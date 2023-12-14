@@ -18,11 +18,12 @@ stop_video ='2123-11-01T12:00:00Z'
 
 class Process:
 
-    def __init__(self, broadcaster:str = 'vpro'):
+    def __init__(self, remove_files = True):
         self.api = MediaBackend().env('prod').command_line_client()
         self.logger = self.api.logger
         self.index = 0
         self.logger.info("Talking to %s" % (str(self.api)))
+        self.remove_files = remove_files
         if os.path.exists("progress.json"):
             with open("progress.json", "r", encoding="utf8") as file:
                 self.progress = json.load(file)
@@ -230,25 +231,27 @@ class Process:
                         avtype = 'audio'
                         self.logger.info("%s %s: %s. Progressing as audio" % (mid, program_url, avtype))
                         self.save()
-                    elif mo.avType == AvTypeEnum.VIDEO:
-                        ext = 'mp4'
-                        self.logger.info("%s %s: %s. Progressing as video" % (mid, program_url, avtype))
-                        self.save()
                     else:
                         self.logger.info("NOT OK %s %s -> %s" % (mid, program_url, str(record['reasons'])))
                         record.update({"skipped": "not ok"})
-                        os.remove(record['dest'])
+                        if self.remove_files:
+                            os.remove(record['dest'])
                         self.save()
                         return False
+                else:
+                    ext = 'mp4'
+                    self.logger.info("%s %s: %s. Successfully fixed. Processing video" % (mid, program_url, avtype))
+
         else:
             self.logger.info("%s %s: %s. Progressing as audio" % (mid, program_url, avtype))
 
         success = self.upload(mid, record, mime_type=avtype + '/' + ext)
         if success:
             self.remove_legacy(mid, program_url, record, publishstop=publish_stop)
-            os.remove(record['dest'])
-            if os.path.exists(record['dest'] + ".orig"):
-                os.remove(record['dest'] + ".orig")
+            if self.remove_files:
+                os.remove(record['dest'])
+                if os.path.exists(record['dest'] + ".orig"):
+                   os.remove(record['dest'] + ".orig")
         else:
             self.logger.warn("Could not upload")
         return True
@@ -298,10 +301,9 @@ class Process:
 
 
 
-process = Process()
-
+process = Process(remove_files=True)
 process.process_csv()
 
 #record = dict()
-#process.do_one("WO_VPRO_013967", record, " http://download.omroep.nl/vpro/wimdebie/stoepoproep.mp4")
+#process.do_one("WO_VPRO_361947", record, "http://content.omroep.nl/vpro/poms/world/26/07/88/69/NPO_bb.m4v")
 #process.logger.info(str(record))
