@@ -300,8 +300,8 @@ class Process:
 
 process = Process()
 
-#process.process_csv()
+process.process_csv()
 
-record = dict()
-process.do_one("WO_VPRO_013967", record, " http://download.omroep.nl/vpro/wimdebie/stoepoproep.mp4")
-process.logger.info(str(record))
+#record = dict()
+#process.do_one("WO_VPRO_013967", record, " http://download.omroep.nl/vpro/wimdebie/stoepoproep.mp4")
+#process.logger.info(str(record))
