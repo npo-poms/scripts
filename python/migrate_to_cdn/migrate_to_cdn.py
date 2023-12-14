@@ -5,6 +5,7 @@ import json
 import math
 import os
 import subprocess
+import sys
 from dataclasses import asdict
 
 import requests
@@ -18,12 +19,13 @@ stop_video ='2123-11-01T12:00:00Z'
 
 class Process:
 
-    def __init__(self, remove_files = True):
+    def __init__(self, remove_files = True, start_at = 1):
         self.api = MediaBackend().env('prod').command_line_client()
         self.logger = self.api.logger
         self.index = 0
         self.logger.info("Talking to %s" % (str(self.api)))
         self.remove_files = remove_files
+        self.start_at = start_at
         if os.path.exists("progress.json"):
             with open("progress.json", "r", encoding="utf8") as file:
                 self.progress = json.load(file)
@@ -275,6 +277,8 @@ class Process:
                 mid = row['mid']
                 record = self.progress.get(mid, None)
                 total += 1
+                if total < self.start_at:
+                    continue
                 if record is None:
                     record = dict()
                     self.progress[mid] = record
@@ -284,7 +288,7 @@ class Process:
                 if action == 'transcode & resize' or action == 'transcode' or action == 'resize' or action == 'resize & zwarte randen' or action == '':
                     self.logger.info(mid)
                     ss = self.streaming_status(mid, record)
-                    self.logger.info("Streaming status %s %s" % (mid, str(record['streaming_status'])))
+                    self.logger.info("%d Streaming status %s %s" % (total, mid, str(record['streaming_status'])))
                     if ss is None:
                         self.logger.info("Skipped while getting streaming status %s" % (mid))
                         skipped += 1
@@ -300,18 +304,19 @@ class Process:
                         skipped += 1
                     self.save()
                 else:
-                    self.logger.warning("Unknown action '%s' %s  %s" % (action, mid, program_url))
+                    self.logger.warning("%d Unknown action '%s' %s  %s" % (total, action, mid, program_url))
 
                     continue
         self.logger.info("Total %d skipped %d ok %d" % (total, skipped, ok))
 
 
 
+start_at= int(sys.argv[1]) if len(sys.argv) > 1 else 1
 
-#process = Process(remove_files=True)a
-#process.process_csv()
+process = Process(remove_files=True, start_at = start_at)
+process.process_csv()
 
-process = Process(remove_files=False)
-record = dict()
-process.do_one("POMS_VPRO_189372", record, "http://download.omroep.nl/vpro/12/85/33/38/POMS_VPRO_189372.mp3")
-process.logger.info(str(record))
+#process = Process(remove_files=False)
+#record = dict()
+#process.do_one("POMS_VPRO_189372", record, "http://download.omroep.nl/vpro/12/85/33/38/POMS_VPRO_189372.mp3")
+#process.logger.info(str(record))
