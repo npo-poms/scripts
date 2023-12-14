@@ -2,6 +2,7 @@
 
 import csv
 import json
+import math
 import os
 import subprocess
 from dataclasses import asdict
@@ -13,6 +14,7 @@ from xsdata.formats.dataclass.serializers import JsonSerializer
 
 stop = '2023-11-01T12:00:00Z'
 stop_video ='2123-11-01T12:00:00Z'
+
 
 class Process:
 
@@ -28,14 +30,11 @@ class Process:
             self.progress = dict()
         self.jsonserializer =JsonSerializer()
 
-
     def save(self):
         with open("progress.saving.json", "w", encoding="utf8") as file:
             json.dump(self.progress, file, indent=2)
         os.replace("progress.saving.json", "progress.json")
         self.logger.info("Saved %d" % (len(self.progress)))
-
-
 
     def download_file(self, program_url:str, mid:str, record):
         if not 'dest' in record or not os.path.exists(record['dest']):
@@ -59,7 +58,6 @@ class Process:
         split = ffprobe[0].split("=")
         codec_type = split[1]
         return split[0], codec_type
-
 
     def get_video_info(self, record : dict):
         media_info = record['media_info']
@@ -136,25 +134,32 @@ class Process:
             target_bit_rate = max(video_bit_rate, 2_000_000)
 
             args = ['ffmpeg', '-hide_banner' ,'-loglevel', 'info', '-y', '-i', dest_orig,  '-q:a', '0', '-b:v', str(target_bit_rate), "-bufsize", "1500k"]
-            if frame_rate < 25:
-                target_frame_rate = 25
-                args.extend(['-filter:v', "fps=%d" % target_frame_rate])
 
             reasons = record['reasons']
+
+            if frame_rate < 25:
+                target_frame_rate = 25
+                self.logger.info("Scaling up frame rate %f -> %s " % (frame_rate, target_frame_rate))
+            else:
+                target_frame_rate = frame_rate
+
+            video_options = "fps=%d" % target_frame_rate
             if len(list(filter(lambda r: r['reason_key'] in ('size', 'aspect_ratio'), reasons))) > 0:
                 video_height = int(video_info['Height'])
                 video_width = int(video_info['Width'])
                 aspect_ratio = video_width / video_height
                 if aspect_ratio > 16/9:
-                    scaled_video_width = max(778, video_width)
-                    scaled_video_height = scaled_video_width * 9 / 16
+                    scaled_video_width = math.ceil(max(778, video_width))
+                    scaled_video_height = math.ceil(scaled_video_width * 9 / 16)
                 else:
-                    scaled_video_height = max(432, video_height)
-                    scaled_video_width = scaled_video_height * 16 / 9
+                    scaled_video_height = math.ceil(max(432, video_height))
+                    scaled_video_width = math.ceil(scaled_video_height * 16 / 9)
 
                 # the bigger on
-                args.extend(["-vf", "scale=%d:%d:force_original_aspect_ratio=decrease,pad=%d:%d:-1:-1:color=black"
-                             %(scaled_video_width, scaled_video_height, scaled_video_width, scaled_video_height)])
+                video_options += ",scale=%d:%d:force_original_aspect_ratio=decrease,pad=%d:%d:-1:-1:color=black" %(scaled_video_width, scaled_video_height, scaled_video_width, scaled_video_height)
+
+            args.extend(["-vf", video_options])
+
             args.append(new_dest)
             subprocess.call(args)
             if os.path.exists(new_dest):
@@ -197,6 +202,57 @@ class Process:
         else:
             return False
 
+
+    def do_one(self, mid:str, record: dict, program_url:str):
+        mo = self.api.get_full_object(mid, binding=Binding.XSDATA)
+
+        if mo is None:
+            record.update({"skipped": "not exists"})
+            self.save()
+            return  False
+        if mo.typeValue == ProgramTypeEnum.BROADCAST:
+            record.update({"skipped": "may not upload broadcast"})
+            self.save()
+            return False
+
+        self.download_file(program_url, mid, record)
+        (a, avtype) = self.probe(record['dest'])
+        ext = os.path.splitext(program_url)[1][1:]
+        publish_stop = stop
+        if avtype == 'video':
+            publish_stop = stop_video
+            if not self.check_video(mid, record):
+                self.fix_video_if_possible(record)
+                if not self.check_video(mid, record):
+                    if mo.avType == AvTypeEnum.AUDIO:
+                        self.convert_to_audio(record)
+                        ext = 'mp3'
+                        avtype = 'audio'
+                        self.logger.info("%s %s: %s. Progressing as audio" % (mid, program_url, avtype))
+                        self.save()
+                    elif mo.avType == AvTypeEnum.VIDEO:
+                        ext = 'mp4'
+                        self.logger.info("%s %s: %s. Progressing as video" % (mid, program_url, avtype))
+                        self.save()
+                    else:
+                        self.logger.info("NOT OK %s %s -> %s" % (mid, program_url, str(record['reasons'])))
+                        record.update({"skipped": "not ok"})
+                        os.remove(record['dest'])
+                        self.save()
+                        return False
+        else:
+            self.logger.info("%s %s: %s. Progressing as audio" % (mid, program_url, avtype))
+
+        success = self.upload(mid, record, mime_type=avtype + '/' + ext)
+        if success:
+            self.remove_legacy(mid, program_url, record, publishstop=publish_stop)
+            os.remove(record['dest'])
+            if os.path.exists(record['dest'] + ".orig"):
+                os.remove(record['dest'] + ".orig")
+        else:
+            self.logger.warn("Could not upload")
+        return True
+
     def process_csv(self):
         total = 0
         skipped = 0
@@ -228,51 +284,10 @@ class Process:
                         ok += 1
                         continue
 
-                    mo = self.api.get_full_object(mid, binding=Binding.XSDATA)
-
-                    if mo is None:
-                        record.update({"skipped": "not exists"})
-                        self.save()
-                        skipped += 1
-                        continue
-                    if mo.typeValue == ProgramTypeEnum.BROADCAST:
-                        record.update({"skipped": "may not upload broadcast"})
-                        self.save()
-                        skipped += 1
-                        continue
-
-                    self.download_file(program_url, mid, record)
-                    (a, avtype) = self.probe(record['dest'])
-                    ext = os.path.splitext(program_url)[1][1:]
-                    publish_stop = stop
-                    if avtype == 'video':
-                        publish_stop = stop_video
-                        if not self.check_video(mid, record):
-                            self.fix_video_if_possible(record)
-                            if not self.check_video(mid, record):
-                                if mo.avType == AvTypeEnum.AUDIO:
-                                    self.convert_to_audio(record)
-                                    ext = 'mp3'
-                                    avtype = 'audio'
-                                    self.logger.info("%s %s: %s. Progressing as audio" % (mid, program_url, avtype))
-                                    self.save()
-                                else:
-                                    self.logger.info("NOT OK %s %s -> %s" % (mid, program_url, str(record['reasons'])))
-                                    record.update({"skipped": "not ok"})
-                                    os.remove(record['dest'])
-                                    self.save()
-                                    continue
+                    if self.do_one(mid, record, program_url):
+                        ok += 1
                     else:
-                        self.logger.info("%s %s: %s. Progressing as audio" % (mid, program_url, avtype))
-
-                    success = self.upload(mid, record, mime_type=avtype + '/' + ext)
-                    if success:
-                        self.remove_legacy(mid, program_url, record, publishstop=publish_stop)
-                        os.remove(record['dest'])
-                        if os.path.exists(record['dest'] + ".orig"):
-                            os.remove(record['dest'] + ".orig")
-                    else:
-                        self.logger.warn("Could not upload")
+                        skipped += 1
                     self.save()
                 else:
                     self.logger.warning("Unknown action '%s' %s  %s" % (action, mid, program_url))
@@ -285,4 +300,8 @@ class Process:
 
 process = Process()
 
-process.process_csv()
+#process.process_csv()
+
+record = dict()
+process.do_one("WO_VPRO_013967", record, " http://download.omroep.nl/vpro/wimdebie/stoepoproep.mp4")
+process.logger.info(str(record))
