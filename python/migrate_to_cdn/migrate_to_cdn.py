@@ -297,11 +297,14 @@ class Process:
                         self.logger.info("Skipped while getting streaming status %s already true" % (mid))
                         ok += 1
                         continue
-
-                    if self.do_one(mid, record, program_url):
-                        ok += 1
-                    else:
-                        skipped += 1
+                    try:
+                        if self.do_one(mid, record, program_url):
+                            ok += 1
+                        else:
+                            skipped += 1
+                    except Exception as e:
+                        self.logger.warning("%d Exception %s %s" % (total, mid, str(e)))
+                        record['exception'] = str(e)
                     self.save()
                 else:
                     self.logger.warning("%d Unknown action '%s' %s  %s" % (total, action, mid, program_url))
@@ -318,5 +321,5 @@ process.process_csv()
 
 #process = Process(remove_files=False)
 #record = dict()
-#process.do_one("POMS_VPRO_189372", record, "http://download.omroep.nl/vpro/12/85/33/38/POMS_VPRO_189372.mp3")
+#process.do_one("WO_VPRO_014089", record, "http://download.omroep.nl/vpro/wimdebie/22012010leescoach.mp4")
 #process.logger.info(str(record))
