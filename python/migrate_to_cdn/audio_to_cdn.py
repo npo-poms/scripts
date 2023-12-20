@@ -22,7 +22,7 @@ stop = '2023-11-01T12:00:00Z'
 class Process:
 
     def __init__(self, broadcaster:str = 'vpro'):
-        self.api = MediaBackend().env('prod').command_line_client()
+        self.api = MediaBackend(debug=True).env('prod').command_line_client()
         self.logger = self.api.logger
         self.index = 0
         self.logger.info("Talking to %s" % (str(self.api)))
@@ -124,8 +124,11 @@ class Process:
                 self.logger.info("Upload failed %s %s" % (mid, e))
                 time.sleep(5)
                 continue
-        self.remove_legacy_list(mid, overview)
-        os.remove(dest)
+        if overview is None:
+            self.logger.info("No overview %s (also keeping %s)" % (mid, dest))
+        else:
+            self.remove_legacy_list(mid, overview)
+            os.remove(dest)
 
     def process_csv(self, ignore_until = 0):
         total = 0
