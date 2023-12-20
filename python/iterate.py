@@ -16,7 +16,6 @@ class IterateExample:
     def __init__(self):
         self.client = Media().configured_login()
 
-
     def show_response(self, response):
         data = json_stream.load(response)
         mediaobjects = data['mediaobjects']
@@ -27,7 +26,6 @@ class IterateExample:
             sys.stdout.write(str(count) + ':' + str(mo['mid']) + ":" +  mo['titles'][0]['value'] + ":" + mo['type'] + "\n")
             sys.stdout.flush()
         response.close()
-
 
     def iterate_with_dict(self, **kwargs):
         """
@@ -49,9 +47,9 @@ class IterateExample:
         """
         {
           "searches": {
-              "types": "BROADCAST"
+              "types": "BROADCAST",
           }
-       }
+        }
         """, **kwargs)
         self.show_response(response)
 
@@ -69,10 +67,6 @@ class IterateExample:
         self.client.logger.info(poms.to_xml(form))
         response = self.client.iterate_raw(form=form, **kwargs)
         self.show_response(response)
-
-
-
-
 
 if __name__ == '__main__':
     IterateExample().iterate_with_xsdata(profile="bnnvara", properties="none", limit=None)
