@@ -34,7 +34,13 @@ class IterateExample:
         # Made this work in dec 2023
         response = self.client.iterate_raw(form={
             "searches": {
-                "types": ["BROADCAST"]
+                "types" : [ {
+                   "value" : "BROADCAST",
+                   "match" : "SHOULD"
+                 }, {
+                 "value" : "SEGMENT",
+                 "match" : "SHOULD"
+                } ]
             }
         }, **kwargs)
         self.show_response(response)
@@ -46,9 +52,15 @@ class IterateExample:
         response = self.client.iterate_raw(form=
         """
         {
-          "searches": {
-              "types": "BROADCAST",
-          }
+           "searches": {
+                "types" : [ {
+                   "value" : "CLIP",
+                   "match" : "SHOULD"
+                 }, {
+                 "value" : "SEGMENT",
+                 "match" : "SHOULD"
+                } ]
+            }
         }
         """, **kwargs)
         self.show_response(response)
@@ -69,8 +81,8 @@ class IterateExample:
         self.show_response(response)
 
 if __name__ == '__main__':
-    IterateExample().iterate_with_xsdata(profile="bnnvara", properties="none", limit=None)
-    #IterateExample().iterate_with_json(profile="bnnvara", properties="none", limit=None)
+    #IterateExample().iterate_with_xsdata(profile="bnnvara", properties="none", limit=None)
+    IterateExample().iterate_with_json(profile="bnnvara", properties="none", limit=None)
     #IterateExample().iterate_with_dict(profile="bnnvara", properties="none", limit=None)
 
 
