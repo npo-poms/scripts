@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import sys
+from datetime import datetime
 
 import json_stream
 from npoapi import Media
@@ -24,6 +25,10 @@ class IterateExample:
             count += 1
             mo = json_stream.to_standard_types(lazy_mediaobject)
             sys.stdout.write(str(count) + ':' + str(mo['mid']) + ":" +  mo['titles'][0]['value'] + ":" + mo['type'] + "\n")
+            for s in mo['scheduleEvents']:
+                sys.stdout.write("  " + str(datetime.fromtimestamp(s['start'] / 1000)) + ":" + str(s['channel']) + "\n")
+
+
             sys.stdout.flush()
         response.close()
 
@@ -32,15 +37,14 @@ class IterateExample:
         Json could quite easily be constructed via a dict
         """
         # Made this work in dec 2023
-        response = self.client.iterate_raw(form={
-            "searches": {
-                "types" : [ {
-                   "value" : "BROADCAST",
-                   "match" : "SHOULD"
-                 }, {
-                 "value" : "SEGMENT",
-                 "match" : "SHOULD"
-                } ]
+        response = self.client.iterate_raw({  "searches" : {
+                "scheduleEvents" : {
+                    "begin" : "2024-01-11T09:16:02.289Z",
+                    "end" :  "2024-01-16T09:16:02.289Z"
+                },
+                "broadcasters" : { "value" : "BNVA" },
+                "types"        : { "value" : "BROADCAST"},
+                "avTypes"      : { "value" : "VIDEO"}
             }
         }, **kwargs)
         self.show_response(response)
@@ -82,8 +86,5 @@ class IterateExample:
 
 if __name__ == '__main__':
     #IterateExample().iterate_with_xsdata(profile="bnnvara", properties="none", limit=None)
-    IterateExample().iterate_with_json(profile="bnnvara", properties="none", limit=None)
-    #IterateExample().iterate_with_dict(profile="bnnvara", properties="none", limit=None)
-
-
-
+    #IterateExample().iterate_with_json(profile="bnnvara", properties="none", limit=None)
+    IterateExample().iterate_with_dict(profile="bnnvara", properties="scheduleevents", limit=None)
