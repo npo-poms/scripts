@@ -20,7 +20,7 @@ stop = '2023-11-01T12:00:00Z'
 class Process:
 
     def __init__(self, broadcaster:str = 'vpro'):
-        self.api = MediaBackend(debug=True).env('acc').command_line_client()
+        self.api = MediaBackend(debug=True).env('prod').command_line_client()
         self.logger = self.api.logger
         self.index = 0
         self.logger.info("Talking to %s" % (str(self.api)))
@@ -82,7 +82,7 @@ class Process:
             if found_entry:
                 self.logger.info("Already online %s" % (mid))
                 self.remove_legacy_list(mid, need_remove)
-                return False
+                return True
             else:
                 self.logger.info("Online, but missing entry %s" % (mid))
                 existing_prediction  = full.prediction[0] if len(full.prediction) else  None
@@ -145,6 +145,7 @@ class Process:
                     skipped += 1
                     self.logger.info("Mid already seen %s: %s" % (mid, programurl))
                     continue
+                self.logger.info("Proceeding with %s" % mid)
 
                 self.seen_mids.add(mid)
                 programurl = row['programurl']
