@@ -1,4 +1,4 @@
-IndexOptions NameWidth=100 DescriptionWidth=100 FancyIndexing
+IndexOptions FancyIndexing  NameWidth=100 DescriptionWidth=100  +ShowForbidden
 
 AddDescription "This is a data file, for graphs in time" *.data
 
