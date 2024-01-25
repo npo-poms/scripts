@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!--
-    Er bestaan een aantal basis elementen:
+    Er bestaan een aantal basiselementen:
 
         "program"   - losse uitzending, web-only materiaal of een individuele track
         "group"     - een verzameling van programma's en groepen, bijvoorbeeld een serie, playlist of album
@@ -9,7 +9,7 @@
 
     (** Naast program en group bestaat er een derde basis element: "segment". Een segment is een deel van de tijdlijn
     van een programma. Omdat een segment zonder programma niet kan bestaan worden segmenten bij import aangeboden als
-    onderdeel  van een programma (zie onder). Via REST/SOAP api's kan men segmenten los aanbieden, mits daarbij apart
+    onderdeel van een programma (zie onder). Via REST/SOAP api's kan men segmenten los aanbieden, mits daarbij apart
     een referentie naar het bijbehorende programma wordt meegeleverd. **)
 
     Programma's kunnen een onderdeel zijn van een groep via het memberOf element (generiek) of via episodeOf als het en
@@ -25,14 +25,17 @@
     Overige attributen zijn optioneel en spreken voor zich.
 -->
 <program type="CLIP" avType="VIDEO" publishStop="2012-01-11T18:16:01.287+01:00"
-    publishStart="2012-01-11T16:16:01.287+01:00" embeddable="true"
-    xmlns="urn:vpro:media:update:2009">
+         publishStart="2012-01-11T16:16:01.287+01:00" embeddable="true"
+         xmlns="urn:vpro:media:update:2009" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="
+         urn:vpro:media:update:2009 https://poms.omroep.nl/schema/update/vproMediaUpdate.xsd">
 
     <!--
         Crids worden gebruikt in TVAnytime om unieke id's voor content te genereren.
 
         Omroepen kunnen hier eigen crids toevoegen en dit veld gebruiken als koppeltabel naar hun eigen system. Bij imports of updates
-        zal POMS proberen om het originele document te vinden en dit te verrijken. Als dat niet lukt wordt een nieuwe entiteit aangemaakt.
+        zal POMS proberen om het originele document te vinden en dit te verrijken. Als dat niet lukt, wordt een nieuwe entiteit aangemaakt.
 
         Regels:
             - crids zijn optioneel
@@ -46,8 +49,8 @@
     <crid>crid://bds.tv/9876</crid>
     <crid>crid://tmp.fragment.mmbase.vpro.nl/1234</crid>
     <!--
-        Omroep naam zoals oorspronkelijk gedistribueerd door MIS/Teleview. De lijst wordt tegenwoordig in POMS zelf bijgehouden  en kan worden
-        geraadpleegd om https://poms.omroep.nl/broadcasters
+        Omroep-naam zoals oorspronkelijk gedistribueerd door MIS/Teleview. De lijst wordt tegenwoordig in POMS zelf bijgehouded en kan worden
+        geraadpleegd om https://poms.omroep.nl/broadcasters/
     -->
     <broadcaster>BNN</broadcaster>
     <broadcaster>VPRO</broadcaster>
@@ -151,7 +154,8 @@
                     - Verplicht veld
                     - Moet geldige URL bevatten
             -->
-            <programUrl>http://cgi.omroep.nl/legacy/nebo?/Ceres/1/vpro/rest/2009/VPRO_1132492/bb.20090317.m4v</programUrl>
+            <programUrl>http://cgi.omroep.nl/legacy/nebo?/Ceres/1/vpro/rest/2009/VPRO_1132492/bb.20090317.m4v
+            </programUrl>
             <avAttributes>
                 <!-- Bitrate bij de gehele stream in bits/seconde -->
                 <bitrate>-832461398</bitrate>
@@ -185,9 +189,9 @@
        NOTE: volgens mij wordt dit niet meer op die manier ondersteunt. Wel kun je hiermee waarschijnlijk scheduleevents koppelen, maar dat kan alleen als
        het gebruikte account de juist rol heeft, en het kan alleen bij 'historische' content, maw, het kan nooit voor schedulevents in toekomsts of nabij verleden.
     -->
-        <!-- Een vertoning op een kanaal. Alle velden, kanaal, start en duur zijn verplicht. -->
+    <!-- Een vertoning op een kanaal. Alle velden, kanaal, start en duur zijn verplicht. -->
 
-<!--
+    <!--
     <scheduleEvents>
 
         <scheduleEvent channel="NED3">
@@ -266,7 +270,8 @@
                 - Locatie moet een geldige URL zijn die door de de applicatie die deze import verwerkt benaderbaar moet zijn
             -->
             <imageLocation>
-              <url>http://images.poms.omroep.nl/image/494930.jpg</url> <!-- zomaar een plaatje, toevallig ook op poms -->
+                <url>http://images.poms.omroep.nl/image/494930.jpg
+                </url> <!-- zomaar een plaatje, toevallig ook op poms -->
             </imageLocation>
             <!--
                 In plaats van een imageLocation element kun je ook een 'imageData' element geven, met daarin het plaatje zelf.
@@ -304,7 +309,8 @@
                 - Als duration niet is ingevuld loopt het segment door tot het einde van het programma
                 - Als het programma wordt verwijderd verdwijnen ook de bijbehorende segmenten.
         -->
-        <segment avType="VIDEO" publishStop="2012-01-11T18:16:01.271+01:00" publishStart="2012-01-11T16:16:01.271+01:00" embeddable="true">
+        <segment avType="VIDEO" publishStop="2012-01-11T18:16:01.271+01:00" publishStart="2012-01-11T16:16:01.271+01:00"
+                 embeddable="true">
             <broadcaster>VPRO</broadcaster>
             <title type="MAIN">Main title</title>
             <duration>P0DT0H1M40.000S</duration>

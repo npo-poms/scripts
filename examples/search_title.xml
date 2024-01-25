@@ -1,4 +1,8 @@
-<s:mediaForm xmlns="urn:vpro:media:2009" xmlns:shared="urn:vpro:shared:2009" xmlns:s="urn:vpro:media:search:2012" xmlns:update="urn:vpro:media:update:2009" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<s:mediaForm
+  xmlns:s="urn:vpro:media:search:2012"
+  xmlns:update="urn:vpro:media:update:2009"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="urn:vpro:media:search:2012 https://poms.omroep.nl/schema/search/vproMediaSearch.xsd">
   <s:pager>
     <s:offset>0</s:offset>
     <s:max>50</s:max>

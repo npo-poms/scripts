@@ -2,16 +2,17 @@
 <!-- This clip does not have a mid. So it will be a new clip when you post this -->
 <program xmlns="urn:vpro:media:update:2009"
          type="CLIP" avType="VIDEO"
-         publishStart="2012-01-11T16:16:01.287+01:00" embeddable="true">
+         publishStart="2012-01-11T16:16:01.287+01:00" embeddable="true"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="urn:vpro:media:update:2009 https://poms.omroep.nl/schema/update/vproMediaUpdate.xsd">
   <broadcaster>VPRO</broadcaster>
   <title type="MAIN">TEST TEST</title>
   <tag>Kabouters</tag>
   <ageRating>ALL</ageRating>
   <email>programma@avro.nl</email>
-  <memberOf>crid://michiel/2</memberOf>
   <segments>
-    <segment avType="VIDEO"  embeddable="true">
-      <!-- default, broadcasters are inherited from program -->
+    <segment avType="VIDEO" embeddable="true">
+      <broadcaster>VPRO</broadcaster>
       <title type="MAIN">Main title</title>
       <duration>P0DT0H1M40.000S</duration>
       <start>P0DT2H23M0.000S</start>

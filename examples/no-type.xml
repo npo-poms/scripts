@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<program xmlns="urn:vpro:media:update:2009"
+         avType="VIDEO" embeddable="true">
+  <broadcaster>VPRO</broadcaster>
+  <title type="MAIN">Invalid</title>
+  <tag>Kabouters</tag>
+  <ageRating>ALL</ageRating>
+  <email>programma@avro.nl</email>
+</program>

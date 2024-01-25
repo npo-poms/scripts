@@ -14,7 +14,7 @@ import npoapi.xml.mediaupdate
 from dateutil.parser import parse
 from npoapi import MediaBackend, MediaBackendUtil as MU
 from npoapi.base import DEFAULT_BINDING
-from npoapi.data.media_update import MediaUpdateType
+from npoapi.data.mediaupdate import MediaUpdateType
 
 
 class ForAllDescendants:

@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<program type="CLIP" avType="MIXED" embeddable="true" xmlns="urn:vpro:media:update:2009" xmlns:shared="urn:vpro:shared:2009" xmlns:media="urn:vpro:media:2009">
-    <crid>crid://pyapi/clip/withperson</crid>
-    <broadcaster>VPRO</broadcaster>
-    <title type="MAIN">With person test</title>
-    <credits>
-      <!-- supported @since 5.12 -->
-      <person role="EDITOR" gtaaUri="http://data.beeldengeluid.nl/gtaa/149017"> <!-- this URI can be determined by https://rs.poms.omroep.nl/v1/thesaurus/example/ -->
-        <!-- mark rutte -->
-      </person>
-    </credits>
-    <ageRating>ALL</ageRating>
+<program type="CLIP" avType="MIXED" embeddable="true"
+         xmlns="urn:vpro:media:update:2009"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="
+      urn:vpro:media:update:2009 https://poms.omroep.nl/schema/update/vproMediaUpdate.xsd">
+  <crid>crid://pyapi/clip/withperson</crid>
+  <broadcaster>VPRO</broadcaster>
+  <title type="MAIN">With person test</title>
+  <credits>
+    <!-- supported @since 5.12 -->
+    <person role="EDITOR"
+            gtaaUri="http://data.beeldengeluid.nl/gtaa/149017"> <!-- this URI can be determined by https://rs.poms.omroep.nl/v1/thesaurus/example/ -->
+      <!-- mark rutte -->
+    </person>
+  </credits>
+  <ageRating>ALL</ageRating>
 </program>

@@ -1,0 +1,61 @@
+{
+  "objectType": "programUpdate",
+  "crid": [
+      "crid://prepr.io/timeline/first/cf40b3cc-20b3-4d75-8ab8-88d172c48a58",
+      "crid://prepr.io/timeline/cf40b3cc-20b3-4d75-8ab8-88d172c48a58",
+      "crid://prepr.io/timeline/e21482ef-7fe9-4794-a21f-5cd92a1aaabe",
+      "crid://rcrs/1"
+  ],
+  "broadcaster": [
+    "KRNC"
+  ],
+  "title": [
+    {
+      "value": "Spraakmakertje!",
+      "type": "MAIN"
+    }
+  ],
+  "description": [
+    {
+      "value": "Spraakmaker is reisjournalist Sander Groen \n\nMediaforum: Sjirk Kuiper en Roos Schlikker \n\nPlaat van Spraakmakers: WO+MAN van REINDIER \n\nActua: Lector Grootstedelijke Ontwikkeling aan De Haagse Hogeschool en lid van de Adviesraad Migratie, Katja Rusinovic over de vraag: moeten er structurelere huisvesting komen voor Oekraïeners?  \n\nSpraakmaker en reisjournalist Sander Groen wil met de zomervakantie die bijna gaat beginnen een warm pleidooi houden voor wat hij noemt: slow travel.",
+      "type": "MAIN"
+    }
+  ],
+  "duration": "P0DT1H58M8.013S",
+  "credits": [
+    {
+      "person": {
+        "givenName": "Ghislaine",
+        "familyName": "Plag",
+        "role": "PRESENTER"
+      }
+    }
+  ],
+  "prediction": [
+    {
+      "encryption": "NONE",
+      "platform": "INTERNETVOD"
+    }
+  ],
+  "scheduleEvents": [
+    {
+      "start": "2023-07-04T09:30:00+02:00",
+      "guideDay": "2023-07-04",
+      "duration": "P0DT2H0M0.000S",
+      "channel": "RAD1"
+    }
+  ],
+  "episodeOf": [
+    {
+      "position": 25,
+      "highlighted": false,
+      "value": "RBX_S_KN_12096876"
+    }
+  ],
+  "mid": "PREPR_KN_17280308",
+  "ageRating" : "ALL",
+  "embeddable": true,
+  "type": "BROADCAST",
+    "avType": "AUDIO"
+    /* test */
+}

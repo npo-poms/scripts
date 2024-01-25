@@ -1,0 +1,589 @@
+{
+  "objectType": "programUpdate",
+  "crid": [
+      "crid://prepr.io/timeline/first/cf40b3cc-20b3-4d75-8ab8-88d172c48a58",
+      "crid://prepr.io/timeline/cf40b3cc-20b3-4d75-8ab8-88d172c48a58",
+      "crid://prepr.io/timeline/e21482ef-7fe9-4794-a21f-5cd92a1aaabe",
+      "crid://rcrs/1"
+  ],
+  "broadcaster": [
+    "KRNC"
+  ],
+  "title": [
+    {
+      "value": "Spraakmakertjes",
+      "type": "MAIN"
+    }
+  ],
+  "description": [
+    {
+      "value": "Spraakmaker is reisjournalist Sander Groen \n\nMediaforum: Sjirk Kuiper en Roos Schlikker \n\nPlaat van Spraakmakers: WO+MAN van REINDIER \n\nActua: Lector Grootstedelijke Ontwikkeling aan De Haagse Hogeschool en lid van de Adviesraad Migratie, Katja Rusinovic over de vraag: moeten er structurelere huisvesting komen voor Oekraïeners?  \n\nSpraakmaker en reisjournalist Sander Groen wil met de zomervakantie die bijna gaat beginnen een warm pleidooi houden voor wat hij noemt: slow travel.",
+      "type": "MAIN"
+    }
+  ],
+  "duration": "P0DT1H58M8.013S",
+  "credits": [
+    {
+      "person": {
+        "givenName": "Ghislaine",
+        "familyName": "Plag",
+        "role": "PRESENTER"
+      }
+    }
+  ],
+  "prediction": [
+    {
+      "encryption": "NONE",
+      "platform": "INTERNETVOD"
+    }
+  ],
+  "scheduleEvents": [
+    {
+      "start": "2023-07-04T09:30:00+02:00",
+      "guideDay": "2023-07-04",
+      "duration": "P0DT2H0M0.000S",
+      "channel": "RAD1"
+    }
+  ],
+  "episodeOf": [
+    {
+      "position": 25,
+      "highlighted": false,
+      "value": "RBX_S_KN_12096876"
+    }
+  ],
+  "segments": [
+    {
+      "objectType": "segmentUpdate",
+      "crid": [
+        "crid://prepr.io/post/189eaae3-b61b-4f32-881c-9ce572b15463/1",
+        "crid://prepr.io/audio/2e3bd5d3-1507-44a3-b1e9-7c1f6c6a8fb8/post/189eaae3-b61b-4f32-881c-9ce572b15463/1"
+      ],
+      "broadcaster": [
+        "KRNC"
+      ],
+      "title": [
+        {
+          "value": "Stand.nl: 'We moeten accepteren dat de ouderenzorg minder wordt'",
+          "type": "MAIN"
+        }
+      ],
+      "description": [
+        {
+          "value": "'Niets doen is geen optie', dat is de niet mis te verstane titel van het onderzoeksrapport naar de toekomst van de ouderenzorg. Want met de vergrijzing stijgen ook de zorgkosten en zijn vergaande bezuinigingen onvermijdelijk, concluderen de ambtenaren in hun onderzoek. \n\nMocht er niets gedaan worden, dan verdubbelen de uitgaven aan ouderenzorg tot 37 miljard in 2040.\n\nVandaar de stelling: We moeten accepteren dat de ouderenzorg minder wordt",
+          "type": "MAIN"
+        }
+      ],
+      "tag": [
+        "source:liveclip.getprepr.com"
+      ],
+      "duration": "P0DT0H25M29.025S",
+      "prediction": [
+        {
+          "encryption": "NONE",
+          "platform": "INTERNETVOD"
+        }
+      ],
+      "relation": [
+        {
+          "type": "PREPR_CHANNEL_NAME",
+          "broadcaster": "NPO",
+          "urn": "urn:vpro:media:relation:20675",
+          "value": "Site & App"
+        },
+        {
+          "type": "PREPR_CHANNEL_TYPE",
+          "broadcaster": "NPO",
+          "urn": "urn:vpro:media:relation:20676",
+          "value": "site"
+        }
+      ],
+      "start": "P0DT0H0M3.000S",
+      "mid": "PREPR_RA1_17302648",
+      "urn": "urn:vpro:media:segment:20669",
+      "embeddable": true,
+      "midRef": "PREPR_KN_17280308",
+      "avType": "AUDIO"
+    },
+    {
+      "objectType": "segmentUpdate",
+      "crid": [
+        "crid://prepr.io/post/189eaae3-b61b-4f32-881c-9ce572b15463",
+        "crid://prepr.io/video/4c7c156d-78e9-4803-9130-be8992eb7cfb/post/189eaae3-b61b-4f32-881c-9ce572b15463"
+      ],
+      "broadcaster": [
+        "KRNC"
+      ],
+      "title": [
+        {
+          "value": "Stand.nl: 'We moeten accepteren dat de ouderenzorg minder wordt'",
+          "type": "MAIN"
+        }
+      ],
+      "description": [
+        {
+          "value": "'Niets doen is geen optie', dat is de niet mis te verstane titel van het onderzoeksrapport naar de toekomst van de ouderenzorg. Want met de vergrijzing stijgen ook de zorgkosten en zijn vergaande bezuinigingen onvermijdelijk, concluderen de ambtenaren in hun onderzoek. \n\nMocht er niets gedaan worden, dan verdubbelen de uitgaven aan ouderenzorg tot 37 miljard in 2040.\n\nVandaar de stelling: We moeten accepteren dat de ouderenzorg minder wordt",
+          "type": "MAIN"
+        }
+      ],
+      "tag": [
+        "source:liveclip.getprepr.com"
+      ],
+      "duration": "P0DT0H25M29.016S",
+      "prediction": [
+        {
+          "encryption": "NONE",
+          "platform": "INTERNETVOD"
+        }
+      ],
+      "relation": [
+        {
+          "type": "PREPR_CHANNEL_NAME",
+          "broadcaster": "NPO",
+          "urn": "urn:vpro:media:relation:20682",
+          "value": "Site & App"
+        },
+        {
+          "type": "PREPR_CHANNEL_TYPE",
+          "broadcaster": "NPO",
+          "urn": "urn:vpro:media:relation:20683",
+          "value": "site"
+        }
+      ],
+      "start": "P0DT0H0M3.000S",
+      "mid": "PREPR_RA1_17302647",
+      "urn": "urn:vpro:media:segment:20678",
+      "embeddable": true,
+      "type": "VISUALRADIOSEGMENT",
+      "midRef": "PREPR_KN_17280308",
+      "avType": "VIDEO"
+    },
+    {
+      "objectType": "segmentUpdate",
+      "crid": [
+        "crid://prepr.io/post/ee7faed8-e16d-4f18-8854-6bc01284a7a0",
+        "crid://prepr.io/audio/995e8668-5642-4300-82e2-60440cd6120c/post/ee7faed8-e16d-4f18-8854-6bc01284a7a0"
+      ],
+      "broadcaster": [
+        "KRNC"
+      ],
+      "title": [
+        {
+          "value": "Het Mediaforum met Roos Schlikker en Sjirk Kuijper",
+          "type": "MAIN"
+        }
+      ],
+      "description": [
+        {
+          "value": "Aan tafel zitten Roos Schlikker, Sjirk Kuijper en Spraakmaker is Sander Groen.\n\nSchlikker haar mediamoment gaat over dat je soms moet durven dromen en vooral niet alles moet willen ‘doodchecken’. Zangeres Naaz vroeg namelijk op twitter aan Lana del Rey of zij het voorprogramma mocht verzorgen, maar nu wordt haar actie als marketingtruc bestempeld. Schlikker: “Marketingtruc of niet, vraag wat je wil en dan kun je wat bereiken”. Als de suggestie mediastunt gewekt is, kan je dan nog steeds van dit nieuws genieten of is de droom dan weer voorbij?\n\nVoor Kuijper zijn mediamoment zat hij lekker de Telegraaf te lezen vanochtend en zijn oog viel op de volgende kop: '5 op een rij'? Vijf op een rij is een generatiefoto, dat kwam vroeger vaker voor, maar is tegenwoordig bijzonder. De ouders van de jongste telg aan de tak zijn 17 en 18 jaar. Dat is in deze tijd jong. Kuijper: “Het is een artikel dat vragen oproept, die niet gesteld worden”. Moet je als journalist bij zo’n onderwerp alsnog kritisch zijn?\n\nHet boek: Pieter Omtzigt functie elders is nog lang niet af. Sterker nog: gisteren kwam er weer een hoofdstuk bij. Jorritsma, Ollongren en Arib mochten vertellen wat ze nog wisten van hun gesprekken over Omtzigt. Dat was heel verhelderend, zo berichtte Nieuwsuur gisteren. Schlikker: “Wat een lulkoek, het zit een beetje in het straatje ‘ik heb er geen herinnering aan’.” Wat doet dit debat met het toch al lage vertrouwen in de politiek?\n\nNog 2 nachtjes slapen en dan kan je de nieuwe app Threads op je telefoon installeren. Threads van socialmedia-gigant Meta zou dé vervanger van Twitter moeten worden. Kuijper: “Het is meta. We zitten weer bij zo’n bedrijf, waar een idioot het kan kopen en proberen de wereld te overheersen.”\n\nHet kinderprogramma Klokhuis gaat moeilijke onderwerpen niet uit de weg. Zoals de aflevering over grooming. Waar kinderen uitgelegd wordt dat er mensen zijn die zich op internet anders voordoen dan wie ze werkelijk zijn. Een meisje van elf herkende zich in de aflevering. Laat dit zien hoe belangrijk dit soort programma’s zijn?",
+          "type": "MAIN"
+        }
+      ],
+      "tag": [
+        "source:liveclip.getprepr.com"
+      ],
+      "duration": "P0DT0H23M23.010S",
+      "prediction": [
+        {
+          "encryption": "NONE",
+          "platform": "INTERNETVOD"
+        }
+      ],
+      "relation": [
+        {
+          "type": "PREPR_CHANNEL_NAME",
+          "broadcaster": "NPO",
+          "urn": "urn:vpro:media:relation:20691",
+          "value": "Site & App"
+        },
+        {
+          "type": "PREPR_CHANNEL_TYPE",
+          "broadcaster": "NPO",
+          "urn": "urn:vpro:media:relation:20692",
+          "value": "site"
+        }
+      ],
+      "start": "P0DT0H35M6.000S",
+      "mid": "PREPR_RA1_17302662",
+      "urn": "urn:vpro:media:segment:20685",
+      "embeddable": true,
+      "midRef": "PREPR_KN_17280308",
+      "avType": "AUDIO"
+    },
+    {
+      "objectType": "segmentUpdate",
+      "crid": [
+        "crid://prepr.io/post/ee7faed8-e16d-4f18-8854-6bc01284a7a0/1",
+        "crid://prepr.io/video/1584d105-23e5-4ed1-9360-43f7504f1f47/post/ee7faed8-e16d-4f18-8854-6bc01284a7a0/1"
+      ],
+      "broadcaster": [
+        "KRNC"
+      ],
+      "title": [
+        {
+          "value": "Het Mediaforum met Roos Schlikker en Sjirk Kuijper",
+          "type": "MAIN"
+        }
+      ],
+      "description": [
+        {
+          "value": "Aan tafel zitten Roos Schlikker, Sjirk Kuijper en Spraakmaker is Sander Groen.\n\nSchlikker haar mediamoment gaat over dat je soms moet durven dromen en vooral niet alles moet willen ‘doodchecken’. Zangeres Naaz vroeg namelijk op twitter aan Lana del Rey of zij het voorprogramma mocht verzorgen, maar nu wordt haar actie als marketingtruc bestempeld. Schlikker: “Marketingtruc of niet, vraag wat je wil en dan kun je wat bereiken”. Als de suggestie mediastunt gewekt is, kan je dan nog steeds van dit nieuws genieten of is de droom dan weer voorbij?\n\nVoor Kuijper zijn mediamoment zat hij lekker de Telegraaf te lezen vanochtend en zijn oog viel op de volgende kop: '5 op een rij'? Vijf op een rij is een generatiefoto, dat kwam vroeger vaker voor, maar is tegenwoordig bijzonder. De ouders van de jongste telg aan de tak zijn 17 en 18 jaar. Dat is in deze tijd jong. Kuijper: “Het is een artikel dat vragen oproept, die niet gesteld worden”. Moet je als journalist bij zo’n onderwerp alsnog kritisch zijn?\n\nHet boek: Pieter Omtzigt functie elders is nog lang niet af. Sterker nog: gisteren kwam er weer een hoofdstuk bij. Jorritsma, Ollongren en Arib mochten vertellen wat ze nog wisten van hun gesprekken over Omtzigt. Dat was heel verhelderend, zo berichtte Nieuwsuur gisteren. Schlikker: “Wat een lulkoek, het zit een beetje in het straatje ‘ik heb er geen herinnering aan’.” Wat doet dit debat met het toch al lage vertrouwen in de politiek?\n\nNog 2 nachtjes slapen en dan kan je de nieuwe app Threads op je telefoon installeren. Threads van socialmedia-gigant Meta zou dé vervanger van Twitter moeten worden. Kuijper: “Het is meta. We zitten weer bij zo’n bedrijf, waar een idioot het kan kopen en proberen de wereld te overheersen.”\n\nHet kinderprogramma Klokhuis gaat moeilijke onderwerpen niet uit de weg. Zoals de aflevering over grooming. Waar kinderen uitgelegd wordt dat er mensen zijn die zich op internet anders voordoen dan wie ze werkelijk zijn. Een meisje van elf herkende zich in de aflevering. Laat dit zien hoe belangrijk dit soort programma’s zijn?",
+          "type": "MAIN"
+        }
+      ],
+      "tag": [
+        "source:liveclip.getprepr.com"
+      ],
+      "duration": "P0DT0H23M23.021S",
+      "prediction": [
+        {
+          "encryption": "NONE",
+          "platform": "INTERNETVOD"
+        }
+      ],
+      "relation": [
+        {
+          "type": "PREPR_CHANNEL_NAME",
+          "broadcaster": "NPO",
+          "urn": "urn:vpro:media:relation:20698",
+          "value": "Site & App"
+        },
+        {
+          "type": "PREPR_CHANNEL_TYPE",
+          "broadcaster": "NPO",
+          "urn": "urn:vpro:media:relation:20699",
+          "value": "site"
+        }
+      ],
+      "start": "P0DT0H35M6.000S",
+      "mid": "PREPR_RA1_17302661",
+      "urn": "urn:vpro:media:segment:20694",
+      "embeddable": true,
+      "type": "VISUALRADIOSEGMENT",
+      "midRef": "PREPR_KN_17280308",
+      "avType": "VIDEO"
+    },
+    {
+      "objectType": "segmentUpdate",
+      "crid": [
+        "crid://prepr.io/post/2187bc29-15a6-44a9-8606-67de2137c7b6/1",
+        "crid://prepr.io/audio/6c602c6c-930b-42bd-a9f6-0997bb32eb41/post/2187bc29-15a6-44a9-8606-67de2137c7b6/1"
+      ],
+      "broadcaster": [
+        "KRNC"
+      ],
+      "title": [
+        {
+          "value": "Katja Rusinovic over de opvang van Oekraïense vluchtelingen.",
+          "type": "MAIN"
+        }
+      ],
+      "description": [
+        {
+          "value": "De meeste gevluchte Oekraïners in Nederland willen het liefst naar huis. Maar nu dat nog even lijkt te gaan duren moeten er structurelere oplossingen worden gevonden voor de huisvesting van deze groep. In welke richting je dan moet gaan denken weet onze gast Katja Rusinovicis. ",
+          "type": "MAIN"
+        }
+      ],
+      "tag": [
+        "source:liveclip.getprepr.com"
+      ],
+      "duration": "P0DT0H18M36.029S",
+      "prediction": [
+        {
+          "encryption": "NONE",
+          "platform": "INTERNETVOD"
+        }
+      ],
+      "relation": [
+        {
+          "type": "PREPR_CHANNEL_NAME",
+          "broadcaster": "NPO",
+          "urn": "urn:vpro:media:relation:20707",
+          "value": "Site & App"
+        },
+        {
+          "type": "PREPR_CHANNEL_TYPE",
+          "broadcaster": "NPO",
+          "urn": "urn:vpro:media:relation:20708",
+          "value": "site"
+        }
+      ],
+      "start": "P0DT1H6M4.000S",
+      "mid": "PREPR_RA1_17302680",
+      "urn": "urn:vpro:media:segment:20701",
+      "embeddable": true,
+      "midRef": "PREPR_KN_17280308",
+      "avType": "AUDIO"
+    },
+    {
+      "objectType": "segmentUpdate",
+      "crid": [
+        "crid://prepr.io/post/2187bc29-15a6-44a9-8606-67de2137c7b6",
+        "crid://prepr.io/video/5d17fca9-1e0d-407d-b5c0-7ee1a04cd430/post/2187bc29-15a6-44a9-8606-67de2137c7b6"
+      ],
+      "broadcaster": [
+        "KRNC"
+      ],
+      "title": [
+        {
+          "value": "Katja Rusinovic over de opvang van Oekraïense vluchtelingen.",
+          "type": "MAIN"
+        }
+      ],
+      "description": [
+        {
+          "value": "De meeste gevluchte Oekraïners in Nederland willen het liefst naar huis. Maar nu dat nog even lijkt te gaan duren moeten er structurelere oplossingen worden gevonden voor de huisvesting van deze groep. In welke richting je dan moet gaan denken weet onze gast Katja Rusinovicis. ",
+          "type": "MAIN"
+        }
+      ],
+      "tag": [
+        "source:liveclip.getprepr.com"
+      ],
+      "duration": "P0DT0H18M36.027S",
+      "prediction": [
+        {
+          "encryption": "NONE",
+          "platform": "INTERNETVOD"
+        }
+      ],
+      "relation": [
+        {
+          "type": "PREPR_CHANNEL_NAME",
+          "broadcaster": "NPO",
+          "urn": "urn:vpro:media:relation:20714",
+          "value": "Site & App"
+        },
+        {
+          "type": "PREPR_CHANNEL_TYPE",
+          "broadcaster": "NPO",
+          "urn": "urn:vpro:media:relation:20715",
+          "value": "site"
+        }
+      ],
+      "start": "P0DT1H6M4.000S",
+      "mid": "PREPR_RA1_17302679",
+      "urn": "urn:vpro:media:segment:20710",
+      "embeddable": true,
+      "type": "VISUALRADIOSEGMENT",
+      "midRef": "PREPR_KN_17280308",
+      "avType": "VIDEO"
+    },
+    {
+      "objectType": "segmentUpdate",
+      "crid": [
+        "crid://prepr.io/post/54b23101-9ffa-47bc-8d68-e2873c90cb86/1",
+        "crid://prepr.io/audio/ff738854-1def-46e6-86c4-d0014bc3ea09/post/54b23101-9ffa-47bc-8d68-e2873c90cb86/1"
+      ],
+      "broadcaster": [
+        "KRNC"
+      ],
+      "title": [
+        {
+          "value": "De Nationale Nieuwsquiz met Wil Knol!",
+          "type": "MAIN"
+        }
+      ],
+      "description": [
+        {
+          "value": "Nieuwsjunks & -kenners kunnen iedere dag meespelen met De Nationale Nieuwsquiz. Wat is je bijgebleven van de afgelopen vierentwintig uur? Luister om kwart over elf naar NPO Radio1 en speel mee! Vandaag speelt Wil Knol.\n\nWe zijn nog op zoek naar kandidaten! Wil je ook als kandidaat meespelen met De Nationale Nieuwsquiz? Geef je dan nu op via NationaleNieuwsquiz@kro-ncrv.nl en wie weet zit jij binnenkort in de studio!",
+          "type": "MAIN"
+        }
+      ],
+      "tag": [
+        "source:liveclip.getprepr.com"
+      ],
+      "duration": "P0DT0H5M52.000S",
+      "prediction": [
+        {
+          "encryption": "NONE",
+          "platform": "INTERNETVOD"
+        }
+      ],
+      "relation": [
+        {
+          "type": "PREPR_CHANNEL_NAME",
+          "broadcaster": "NPO",
+          "urn": "urn:vpro:media:relation:20723",
+          "value": "Site & App"
+        },
+        {
+          "type": "PREPR_CHANNEL_TYPE",
+          "broadcaster": "NPO",
+          "urn": "urn:vpro:media:relation:20724",
+          "value": "site"
+        }
+      ],
+      "start": "P0DT1H28M6.000S",
+      "mid": "PREPR_RA1_17302692",
+      "urn": "urn:vpro:media:segment:20717",
+      "embeddable": true,
+      "midRef": "PREPR_KN_17280308",
+      "avType": "AUDIO"
+    },
+    {
+      "objectType": "segmentUpdate",
+      "crid": [
+        "crid://prepr.io/post/a72defc5-75f4-4fe2-ab70-555aa61a4003/1",
+        "crid://prepr.io/audio/4b8fac8b-b014-4a1a-8985-451a292e19ec/post/a72defc5-75f4-4fe2-ab70-555aa61a4003/1"
+      ],
+      "broadcaster": [
+        "KRNC"
+      ],
+      "title": [
+        {
+          "value": "Sander Groen over 'slow travel' per trein.",
+          "type": "MAIN"
+        }
+      ],
+      "description": [
+        {
+          "value": "Het klinkt misschien cliché: het gaat niet om de bestemming maar om de reis er naar toe. Onze Spraakmaker is reisjournalist Sander Groen en hij gaat er een warm pleidooi voor houden.",
+          "type": "MAIN"
+        }
+      ],
+      "tag": [
+        "source:liveclip.getprepr.com"
+      ],
+      "duration": "P0DT0H13M36.013S",
+      "prediction": [
+        {
+          "encryption": "NONE",
+          "platform": "INTERNETVOD"
+        }
+      ],
+      "relation": [
+        {
+          "type": "PREPR_CHANNEL_NAME",
+          "broadcaster": "NPO",
+          "urn": "urn:vpro:media:relation:20732",
+          "value": "Site & App"
+        },
+        {
+          "type": "PREPR_CHANNEL_TYPE",
+          "broadcaster": "NPO",
+          "urn": "urn:vpro:media:relation:20733",
+          "value": "site"
+        }
+      ],
+      "start": "P0DT1H28M6.000S",
+      "mediaType": "SEGMENT",
+      "mid": "PREPR_RA1_17302690",
+      "urn": "urn:vpro:media:segment:20726",
+      "embeddable": true,
+      "midRef": "PREPR_KN_17280308",
+      "avType": "AUDIO"
+    },
+    {
+      "objectType": "segmentUpdate",
+      "crid": [
+        "crid://prepr.io/post/54b23101-9ffa-47bc-8d68-e2873c90cb86",
+        "crid://prepr.io/video/75080bd7-2a60-455e-90fb-8271795c2fbe/post/54b23101-9ffa-47bc-8d68-e2873c90cb86"
+      ],
+      "broadcaster": [
+        "KRNC"
+      ],
+      "title": [
+        {
+          "value": "De Nationale Nieuwsquiz met Wil Knol!",
+          "type": "MAIN"
+        }
+      ],
+      "description": [
+        {
+          "value": "Nieuwsjunks & -kenners kunnen iedere dag meespelen met De Nationale Nieuwsquiz. Wat is je bijgebleven van de afgelopen vierentwintig uur? Luister om kwart over elf naar NPO Radio1 en speel mee! Vandaag speelt Wil Knol.\n\nWe zijn nog op zoek naar kandidaten! Wil je ook als kandidaat meespelen met De Nationale Nieuwsquiz? Geef je dan nu op via NationaleNieuwsquiz@kro-ncrv.nl en wie weet zit jij binnenkort in de studio!",
+          "type": "MAIN"
+        }
+      ],
+      "tag": [
+        "source:liveclip.getprepr.com"
+      ],
+      "duration": "P0DT0H5M52.016S",
+      "prediction": [
+        {
+          "encryption": "NONE",
+          "platform": "INTERNETVOD"
+        }
+      ],
+      "relation": [
+        {
+          "type": "PREPR_CHANNEL_NAME",
+          "broadcaster": "NPO",
+          "urn": "urn:vpro:media:relation:20739",
+          "value": "Site & App"
+        },
+        {
+          "type": "PREPR_CHANNEL_TYPE",
+          "broadcaster": "NPO",
+          "urn": "urn:vpro:media:relation:20740",
+          "value": "site"
+        }
+      ],
+      "start": "P0DT1H28M6.000S",
+      "mid": "PREPR_RA1_17302691",
+      "urn": "urn:vpro:media:segment:20735",
+      "embeddable": true,
+      "type": "VISUALRADIOSEGMENT",
+      "midRef": "PREPR_KN_17280308",
+      "avType": "VIDEO"
+    },
+    {
+      "objectType": "segmentUpdate",
+      "crid": [
+        "crid://prepr.io/post/a72defc5-75f4-4fe2-ab70-555aa61a4003",
+        "crid://prepr.io/video/aff28361-baf6-4656-87ff-eb5d907be686/post/a72defc5-75f4-4fe2-ab70-555aa61a4003"
+      ],
+      "broadcaster": [
+        "KRNC"
+      ],
+      "title": [
+        {
+          "value": "Sander Groen over 'slow travel' per trein.",
+          "type": "MAIN"
+        }
+      ],
+      "description": [
+        {
+          "value": "Het klinkt misschien cliché: het gaat niet om de bestemming maar om de reis er naar toe. Onze Spraakmaker is reisjournalist Sander Groen en hij gaat er een warm pleidooi voor houden.",
+          "type": "MAIN"
+        }
+      ],
+      "tag": [
+        "source:liveclip.getprepr.com"
+      ],
+      "duration": "P0DT0H13M36.025S",
+      "prediction": [
+        {
+          "encryption": "NONE",
+          "platform": "INTERNETVOD"
+        }
+      ],
+      "relation": [
+        {
+          "type": "PREPR_CHANNEL_NAME",
+          "broadcaster": "NPO",
+          "urn": "urn:vpro:media:relation:20746",
+          "value": "Site & App"
+        },
+        {
+          "type": "PREPR_CHANNEL_TYPE",
+          "broadcaster": "NPO",
+          "urn": "urn:vpro:media:relation:20747",
+          "value": "site"
+        }
+      ],
+      "start": "P0DT1H28M6.000S",
+      "mid": "PREPR_RA1_17302689",
+      "urn": "urn:vpro:media:segment:20742",
+      "embeddable": true,
+      "type": "VISUALRADIOSEGMENT",
+      "midRef": "PREPR_KN_17280308",
+      "avType": "VIDEO"
+    }
+  ],
+  "mid": "PREPR_KN_17280308",
+  "urn": "urn:vpro:media:program:20660",
+  "embeddable": true,
+  "type": "BROADCAST",
+  "version": "7.7",
+  "avType": "AUDIO"
+}
