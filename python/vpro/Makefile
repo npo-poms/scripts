@@ -3,7 +3,7 @@ env := prod
 
 ifeq ($(env), prod)
    magnolia1 := https://magnolia1-frontend1-prod.vpro.nl/
-   infix     := 
+   infix     :=
 else
    infix     := -$(env)
    magnolia1 := https://magnolia1-frontend1$(infix).vpro.nl/
@@ -75,7 +75,7 @@ plots: report $(target)/plots/plot-all.svg   ## After running the scripts, gener
 
 report:  ## Show an abstract of the reports
 	@mkdir -p $(reportdir)
-	@for f in `find $(target) -maxdepth 2 -type f '(' -iname 'report.*.txt' -or -iname 'done.*.txt' -or -iname 'todo.*.txt' ')'`; do wc -l  $$f ; done	
+	@for f in `find $(target) -maxdepth 2 -type f '(' -iname 'report.*.txt' -or -iname 'done.*.txt' -or -iname 'todo.*.txt' ')'`; do wc -l  $$f ; done
 	@cp $(target)/report.*.txt $(reportdir) || :
 
 vpro:    ## Perform checks for vpro.nl.
@@ -141,7 +141,7 @@ $(target)/plots/plot-all.svg: vpro-predictions-plot human-plot 3voor12-plot npod
 
 index.html: $(target)/index.html       ## Just re-generate index.html
 $(target)/index.html: index.mustache $(target)/data.json $(target)/index.css $(target)/.htaccess
-	chevron $< -d $(target)/data.json &> $@
+	chevron $< -d $(target)/data.json > $@
 
 $(target)/index.css: index.css
 	cp -f $< $@
