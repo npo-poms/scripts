@@ -114,7 +114,6 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
         self.log.debug("Associated with %s" % str(urls))
         return [e for e in not_in_api if e not in urls]
 
-
     def _call_jmx_operation(self, bean: str, operation: str, sub_list: list):
         p = Popen(self.jmxterm, stdin=PIPE, stdout=PIPE, encoding='utf-8')
         input = "bean " + bean  +"\nrun " + operation + " " + ",".join(sub_list)
@@ -143,6 +142,7 @@ class CheckWithSiteMapVpro(CheckWithSitemap):
                     self.log.info("Downloading %s -> %s" % (get_url, self.jmxterm_binary))
                     urllib.request.urlretrieve (get_url, self.jmxterm_binary)
 
+
 class SshTunnel(threading.Thread):
     def __init__(self, log, env):
         threading.Thread.__init__(self)
@@ -152,8 +152,7 @@ class SshTunnel(threading.Thread):
         self.env = env
         self.log.info("Env: %s"%self.env)
 
-    def run(self):
-        
+    def run(self):    
         self.log.info("Setting up tunnel ssh -L 5000:localhost:5000 os2-magnolia-backend-%s-01"%self.env)
         if subprocess.call([
             'ssh', '-N', '-4',
@@ -161,7 +160,6 @@ class SshTunnel(threading.Thread):
                    'os2-magnolia-backend-%s-01'%self.env
                 ], stderr=subprocess.PIPE):
             raise Exception ('ssh tunnel setup failed')
-
 
 
 if __name__ == "__main__":

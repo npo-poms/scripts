@@ -92,7 +92,6 @@ class CheckWithSitemap:
         api.add_argument('--target_directory', type=str, default=None, help='')
 
 
-
     def file_in_target(self, file: str) -> str:
         return os.path.join(self.target_directory, file)
 
