@@ -65,7 +65,7 @@ class Base:
     def get_video_info(record : dict):
         media_info = record['media_info']
         media = media_info['media']
-        video_infos = list(filter(lambda e: e['@type'] == 'Video', (media['track'] if 'track' in media else None)))
+        video_infos = list(filter(lambda e: e['@type'] == 'Video', (media['track'] if media else None)))
         if len(video_infos) == 0:
             record.update({"reason": "no video info found"})
             return None
