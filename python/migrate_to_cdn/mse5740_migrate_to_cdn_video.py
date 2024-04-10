@@ -55,13 +55,8 @@ class Process(Base):
                     self.logger.info("%s %s: %s. Successfully fixed. Processing video" % (mid, program_url, avtype))
 
         else:
-            if mo.avType == AvTypeEnum.AUDIO:
-                self.logger.info("%s %s: %s. Progressing as audio" % (mid, program_url, avtype))
-                avtype = 'audio'
-                ext = 'mp3'
-            else:
-                self.logger.info("NOT OK %s %s -> %s" % (mid, program_url, str(record['reasons'])))
-                return False
+            self.logger.info("%s %s: %s. Skipping as audio" % (mid, program_url, avtype))
+            return False
 
 
         success = self.upload(mid, record, mime_type=avtype + '/' + ext)
@@ -87,7 +82,7 @@ class Process(Base):
                 programurl = row['programurl']
                 if "PREPR" in mid:
                     continue
-                if overview != '{MP3}':
+                if overview != '{MP4}':
                     continue
                 self.logger.info("Considering %s %s" % (mid, overview))
                 record = self.progress.get(mid, None)
