@@ -102,7 +102,7 @@ class Process(Base):
 
 start_at = int(sys.argv[1]) if len(sys.argv) > 1 else 1
 
-process = Process(remove_files=True, start_at = start_at)
+process = Process(remove_files=True, start_at = start_at, progress="mse5740_progress.json")
 process.process_csv()
 
 #process = Process(remove_files=False)
