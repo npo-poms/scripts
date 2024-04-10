@@ -51,7 +51,8 @@ class Base:
         else:
             self.logger.info("Nothing to download %s %s -> %s" % (mid, program_url, record['dest']))
 
-    def probe(self, dest:str):
+    @staticmethod
+    def probe(dest:str):
         ffprobe = sorted(subprocess.run(["ffprobe", "-loglevel", "error", "-show_entries", "stream=codec_type", "-of", "default=nw=1", dest], stdout=subprocess.PIPE).stdout.decode('utf-8').strip().split("\n"), reverse=True)
         if ffprobe[0] == "":
             return "failed", ""
@@ -60,9 +61,11 @@ class Base:
         codec_type = split[1]
         return split[0], codec_type
 
-    def get_video_info(self, record : dict):
+    @staticmethod
+    def get_video_info(record : dict):
         media_info = record['media_info']
-        video_infos = list(filter(lambda e: e['@type'] == 'Video', media_info['media']['track']))
+        media = media_info['media']
+        video_infos = list(filter(lambda e: e['@type'] == 'Video', (media['track'] if 'track' in media else None)))
         if len(video_infos) == 0:
             record.update({"reason": "no video info found"})
             return None
