@@ -191,7 +191,7 @@ class Base:
         delta = datetime.now() - self.last_upload
         if delta < timedelta(minutes=1):
             sleep_time = 60 - delta.total_seconds()
-            self.logger("Sourcing service cannot endure over 1 req/min. Waiting %d seconds" % sleep_time)
+            self.logger.info("Sourcing service cannot endure over 1 req/min. Waiting %d seconds" % sleep_time)
             time.sleep(sleep_time)
         self.api = MediaBackend().env('prod').command_line_client()
         self.last_upload = datetime.now()
