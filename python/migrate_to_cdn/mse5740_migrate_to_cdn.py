@@ -44,7 +44,7 @@ class Process(Base):
                         self.logger.info("%s %s: %s. Progressing as audio" % (mid, program_url, avtype))
                         self.save()
                     else:
-                        self.logger.info("NOT OK %s %s -> %s" % (mid, program_url, str(record['reasons'])))
+                        self.logger.info("NOT OK %s %s" % (mid, program_url))
                         record.update({"skipped": "not ok"})
                         if self.remove_files:
                             os.remove(record['dest'])
@@ -60,7 +60,7 @@ class Process(Base):
                 avtype = 'audio'
                 ext = 'mp3'
             else:
-                self.logger.info("NOT OK %s %s -> %s" % (mid, program_url, str(record['reasons'])))
+                self.logger.info("NOT OK %s %s " % (mid, program_url))
                 return False
 
 
