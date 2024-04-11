@@ -61,11 +61,18 @@ class Base:
         codec_type = split[1]
         return split[0], codec_type
 
-    @staticmethod
-    def get_video_info(record : dict):
+
+    def get_video_info(self, record : dict):
         media_info = record['media_info']
         media = media_info['media']
-        video_infos = list(filter(lambda e: e['@type'] == 'Video', (media['track'] if media else None)))
+        if media is None:
+            self.logger.info("No media in %s" % record)
+            return None
+        track = media['track'] if 'track' in media else None
+        if track is None:
+            self.logger.info("No track in %s" % record)
+            return None
+        video_infos = list(filter(lambda e: e['@type'] == 'Video', track))
         if len(video_infos) == 0:
             record.update({"reason": "no video info found"})
             return None
