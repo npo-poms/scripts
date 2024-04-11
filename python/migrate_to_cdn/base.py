@@ -4,6 +4,9 @@ import json
 import math
 import os
 import subprocess
+import time
+from datetime import datetime, timedelta
+
 from dataclasses import asdict
 
 import requests
@@ -24,6 +27,7 @@ class Base:
         self.remove_files = remove_files
         self.start_at = start_at
         self.progress_file = progress
+        self.last_upload = datetime.fromtimestamp(0)
         if os.path.exists(self.progress_file):
             with open(self.progress_file, "r", encoding="utf8") as file:
                 self.progress = json.load(file)
@@ -184,6 +188,14 @@ class Base:
     def upload(self, mid: str, record:dict, mime_type:str):
         dest = record['dest']
         self.logger.info("Uploading for %s %s %s" % (mid, dest, mime_type))
+        delta = datetime.now() - self.last_upload
+        if delta < timedelta(minutes=1):
+            sleep_time = 60 - delta.total_seconds()
+            self.logger("Sourcing service cannot endure over 1 req/min. Waiting %d seconds" % sleep_time)
+            time.sleep(sleep_time)
+        self.api = MediaBackend().env('prod').command_line_client()
+        self.last_upload = datetime.now()
+
         result = self.api.upload(mid, dest, content_type=mime_type, log=False)
         if isinstance(result, str):
             # video
