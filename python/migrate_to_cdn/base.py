@@ -28,6 +28,7 @@ class Base:
         self.start_at = start_at
         self.progress_file = progress
         self.last_upload = datetime.fromtimestamp(0)
+        self.srcs_endure = timedelta(minutes=1)
         if os.path.exists(self.progress_file):
             with open(self.progress_file, "r", encoding="utf8") as file:
                 self.progress = json.load(file)
@@ -189,10 +190,10 @@ class Base:
         dest = record['dest']
         self.logger.info("Uploading for %s %s %s" % (mid, dest, mime_type))
         delta = datetime.now() - self.last_upload
-        if delta < timedelta(minutes=1):
-            sleep_time = 60 - delta.total_seconds()
-            self.logger.info("Sourcing service cannot endure over 1 req/min. Waiting %d seconds" % sleep_time)
-            time.sleep(sleep_time)
+        if delta < self.srcs_endure:
+            sleep_time = self.srcs_endure - delta
+            self.logger.info("Sourcing service cannot endure over 1 req/%s. Waiting %d seconds" % (self.srcs_endure, sleep_time.total_seconds()))
+            time.sleep(sleep_time.total_seconds())
         self.api = MediaBackend().env('prod').command_line_client()
         self.last_upload = datetime.now()
 
