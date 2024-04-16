@@ -90,7 +90,10 @@ class Process(Base):
                     record = dict()
                     self.progress[mid] = record
                 total += 1
-                self.do_one(mid, record, programurl)
+                try:
+                    self.do_one(mid, record, programurl)
+                except Exception as e:
+                    self.logger.error("Error %s %s %s" % (mid, programurl, str(e)))
         self.logger.info("Total %d skipped %d ok %d" % (total, skipped, ok))
 
 
