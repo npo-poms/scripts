@@ -17,6 +17,10 @@ stop_video ='2123-11-01T12:00:00Z'
 class Process(Base):
 
     def do_one(self, mid:str, record: dict, program_url:str):
+
+        if "skipped" in record:
+            self.logger.info("Already skipped %s (%s)" % (mid, record["skipped"]))
+            return False
         mo = self.api.get_full_object(mid, binding=Binding.XSDATA)
 
         if mo is None:
@@ -73,7 +77,7 @@ class Process(Base):
                 if os.path.exists(record['dest'] + ".orig"):
                    os.remove(record['dest'] + ".orig")
         else:
-            self.logger.warn("Could not upload")
+            self.logger.warning("Could not upload")
         return True
 
     def process_csv(self):
@@ -108,7 +112,7 @@ class Process(Base):
 start_at = int(sys.argv[1]) if len(sys.argv) > 1 else 1
 
 process = Process(remove_files=True, start_at = start_at, progress="mse5740_progress.json")
-process.srcs_endure = timedelta(seconds=30)
+process.srcs_endure = timedelta(seconds=20)
 process.process_csv()
 
 #process = Process(remove_files=False)
