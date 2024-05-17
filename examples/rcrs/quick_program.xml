@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?> <update:program xmlns:update="urn:vpro:media:update:2009" xmlns:media="urn:vpro:media:2009" xmlns:shared="urn:vpro:shared:2009" avType="AUDIO" embeddable="true" mid="RCRST1_1082335233500" type="BROADCAST">
+   <update:crid>crid://npo/rcrs/DEV/660e53bd0b921eb47074c538</update:crid>
+   <update:broadcaster>AVTR</update:broadcaster>
+   <update:title type="MAIN">quickprogramtest</update:title>
+   <update:genre>3.0.1.5</update:genre>
+   <update:genre>3.0.1.5.80</update:genre>
+   <update:duration>P0DT3H0M0.000S</update:duration>
+   <update:credits/>
+   <update:ageRating>ALL</update:ageRating>
+   <update:prediction>INTERNETVOD</update:prediction>
+   <update:locations/>
+   <update:scheduleEvents>
+       <update:scheduleEvent channel="FUNB">
+           <update:start>2024-04-06T00:00:00+02:00</update:start>
+           <update:guideDay>2024-04-05</update:guideDay>
+           <update:duration>P0DT3H0M0.000S</update:duration>
+       </update:scheduleEvent>
+   </update:scheduleEvents>
+   <update:images/>
+   <update:episodeOf highlighted="false">RCRST1_0361377510347</update:episodeOf>
+   <update:segments/>
+</update:program>
