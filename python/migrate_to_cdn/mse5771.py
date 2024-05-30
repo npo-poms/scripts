@@ -38,8 +38,12 @@ class Process:
             self.progress = dict()
         self.jsonserializer = JsonSerializer()
         self.jsonparser = JsonParser()
+        self.last_save = datetime.now()
 
-    def save(self):
+    def save(self, force = False):
+        if not force and datetime.now() - self.last_save < timedelta(seconds=100):
+            return
+        self.last_save = datetime.now()
         with open(self.progress_file + ".saving", "w", encoding="utf8") as file:
             json.dump(self.progress, file, indent=2)
         os.replace(self.progress_file + ".saving", self.progress_file)
@@ -175,7 +179,7 @@ class Process:
                     if self.needs_upload(mid):
                         self.upload(mid, original_url, record)
 
-
+        self.save(force=True)
 
         print(count)
 
