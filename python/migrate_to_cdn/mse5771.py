@@ -25,7 +25,7 @@ class Process:
         self.api = MediaBackend().env('prod').command_line_client()
         self.logger = self.api.logger
         self.index = 0
-        self.srcs_endure = timedelta(seconds=20)
+        self.srcs_endure = timedelta(seconds=30)
         self.last_upload = datetime.fromtimestamp(0)
         self.logger.info("Talking to %s" % (str(self.api)))
         self.remove_files = remove_files
