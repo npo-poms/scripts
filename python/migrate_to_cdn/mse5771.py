@@ -161,7 +161,7 @@ class Process:
         with(open('walter.csv', 'r')) as file:
             reader = csv.reader(file)
             for row in reader:
-                if 'VPRO' in row[2]:
+                if 'VPRO' in row[2] or 'HUMAN' in row[2]:
                     count +=1
                     original_url = row[13]
                     record = self.progress.get(original_url)
