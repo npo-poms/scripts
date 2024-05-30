@@ -132,6 +132,7 @@ class Process:
     def clean(self, mid, record):
         if 'dest' in record and os.path.exists('data/' + record['dest']):
             os.remove('data/' + record['dest'])
+            self.logger.info("Removed %s" % record['dest'])
             if os.path.exists('data/' + record['dest'] + ".orig"):
                 os.remove('data/' + record['dest'] + ".orig")
             del record['dest']
