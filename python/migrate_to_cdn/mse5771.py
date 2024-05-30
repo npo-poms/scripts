@@ -7,7 +7,7 @@ import time
 from dataclasses import asdict
 from datetime import datetime, timedelta
 
-from npoapi import  MediaBackend
+from npoapi import MediaBackend, Binding
 from npoapi.data.media import Program, Segment, StreamingStatus
 from xsdata.formats.dataclass.parsers import JsonParser
 from xsdata.formats.dataclass.serializers import JsonSerializer
