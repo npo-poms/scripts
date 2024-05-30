@@ -1,21 +1,16 @@
-
 #!/usr/bin/env python3
 
 import csv
 import json
 import os
-import sys
+import time
 from dataclasses import asdict
-from datetime import datetime, timedelta, time
-from urllib.parse import urlparse
+from datetime import datetime, timedelta
 
-from npoapi import Binding, MediaBackend
-from npoapi.data import ProgramTypeEnum, AvTypeEnum
+from npoapi import  MediaBackend
 from npoapi.data.media import Program, Segment, StreamingStatus
 from xsdata.formats.dataclass.parsers import JsonParser
 from xsdata.formats.dataclass.serializers import JsonSerializer
-
-from base import Base
 import requests
 
 stop = '2023-11-01T12:00:00Z'
