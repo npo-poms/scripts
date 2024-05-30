@@ -129,6 +129,15 @@ class Process:
         else:
             self.logger.info("Nothing to download %s %s -> %s" % (mid, record['fixed_url'], record['dest']))
 
+    def clean(self, mid, record):
+        if 'dest' in record and os.path.exists('data/' + record['dest']):
+            os.remove('data/' + record['dest'])
+            if os.path.exists('data/' + record['dest'] + ".orig"):
+                os.remove('data/' + record['dest'] + ".orig")
+            del record['dest']
+            self.save()
+
+
 
     def upload(self, mid, location, record):
         if 'upload_result' not in record:
@@ -178,6 +187,8 @@ class Process:
                     #self.get_media( mid)
                     if self.needs_upload(mid):
                         self.upload(mid, original_url, record)
+                    else:
+                        self.clean(mid)
 
         self.save(force=True)
 
