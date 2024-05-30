@@ -160,7 +160,7 @@ class Process:
                 self.last_upload = datetime.now()
 
                 result = self.api.upload(mid, 'data/' + dest, content_type="audio/mp3", log=False)
-                record['upload_result'] = asdict(result)
+                record['upload_result'] = result
                 success = result.status == "success"
                 self.logger.info(str(result))
                 self.save()
