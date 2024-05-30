@@ -117,9 +117,11 @@ class Process:
 
         return mo
 
-    def download_file(self, mid, record):
+    def download_file(self, mid, record: dict):
         if self.no_download:
-            return
+            if 'dest' in record and not not os.path.exists('data/' + record['dest']):
+                del record['dest']
+                self.save()
         if not 'dest' in record or not os.path.exists('data/' + record['dest']):
             dest = '%s.asset' % (mid)
             self.logger.info("Downloading %s %s -> %s" % (mid, record['fixed_url'], dest))
