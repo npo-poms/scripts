@@ -112,11 +112,11 @@ class Process:
         return mo
 
     def download_file(self, mid, record):
-        if not 'dest' in record or not os.path.exists(record['dest']):
+        if not 'dest' in record or not os.path.exists('data/' + record['dest']):
             dest = '%s.asset' % (mid)
             self.logger.info("Downloading %s %s -> %s" % (mid, record['fixed_url'], dest))
-            if os.path.exists(dest + ".orig"):
-                os.rename(dest + ".orig", dest)
+            if os.path.exists('data/' + dest + ".orig"):
+                os.rename('data/' + dest + ".orig", 'data/' + dest)
             else:
                 r = requests.get(record['fixed_url'], allow_redirects=True)
                 open(dest, 'wb').write(r.content)
@@ -139,7 +139,7 @@ class Process:
                     time.sleep(sleep_time.total_seconds())
                 self.last_upload = datetime.now()
 
-                result = self.api.upload(mid, dest, content_type="audio/mp3", log=False)
+                result = self.api.upload(mid, 'data/' + dest, content_type="audio/mp3", log=False)
                 record['upload_result'] = asdict(result)
                 success = result.status == "success"
                 self.logger.info(str(result))
