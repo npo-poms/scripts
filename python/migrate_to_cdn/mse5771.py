@@ -171,7 +171,7 @@ class Process:
 
                     self.fix_url(original_url, record)
                     mid = row[0]
-                    self.get_media( mid)
+                    #self.get_media( mid)
                     if self.needs_upload(mid):
                         self.upload(mid, original_url, record)
 
