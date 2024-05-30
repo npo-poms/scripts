@@ -163,6 +163,7 @@ class Process:
                 self.save()
 
                 self.remove_legacy(mid, location, record)
+                self.clean(mid, record)
         return record.get('upload_result')
 
 
@@ -192,7 +193,7 @@ class Process:
                     if self.needs_upload(mid):
                         self.upload(mid, original_url, record)
                     else:
-                        self.clean(mid)
+                        self.clean(mid, record)
 
         self.save(force=True)
 
