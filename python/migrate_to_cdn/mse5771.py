@@ -164,8 +164,7 @@ class Process:
                 if dataclasses.is_dataclass(result):
                     record['upload_result'] = asdict(result)
                 else:
-                    record['upload_result'] = str(result)
-                success = result.status == "success"
+                    record['upload_result'] = {"string": str(result)}
                 self.logger.info(str(result))
                 self.save()
 
