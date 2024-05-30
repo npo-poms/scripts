@@ -20,7 +20,7 @@ stop = '2023-11-01T12:00:00Z'
 class Process:
 
 
-    def __init__(self, remove_files = True, start_at = 1, progress="mse5771.json", dryrun=False):
+    def __init__(self, remove_files = True, start_at = 1, progress="mse5771.json", dry_run=False, no_download=False):
         self.api = MediaBackend().env('prod').command_line_client()
         self.logger = self.api.logger
         self.index = 0
@@ -29,6 +29,7 @@ class Process:
         self.logger.info("Talking to %s" % (str(self.api)))
         self.remove_files = remove_files
         self.start_at = start_at
+        self.no_download = no_download
         self.progress_file = progress
         self.dry_run = dryrun
         if os.path.exists(self.progress_file):
@@ -116,6 +117,8 @@ class Process:
         return mo
 
     def download_file(self, mid, record):
+        if self.no_download:
+            return
         if not 'dest' in record or not os.path.exists('data/' + record['dest']):
             dest = '%s.asset' % (mid)
             self.logger.info("Downloading %s %s -> %s" % (mid, record['fixed_url'], dest))
@@ -143,7 +146,7 @@ class Process:
     def upload(self, mid, location, record):
         if 'upload_result' not in record:
             self.download_file(mid, record)
-            if not self.dry_run:
+            if not self.dry_run and 'dest' in record:
                 dest = record['dest']
                 #self.logger.info("Uploading for %s %s %s" % (mid, dest, mime_type))
                 delta = datetime.now() - self.last_upload
@@ -196,5 +199,6 @@ class Process:
         print(count)
 
 dryrun = "dryrun" in sys.argv
+nodownload = "nodownload" in sys.argv
 
-Process(dryrun=dryrun).read_csv()
+Process(dry_run=dryrun, no_download=nodownload).read_csv()
