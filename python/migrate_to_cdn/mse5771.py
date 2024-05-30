@@ -3,6 +3,7 @@
 import csv
 import json
 import os
+import sys
 import time
 from dataclasses import asdict
 from datetime import datetime, timedelta
@@ -19,7 +20,7 @@ stop = '2023-11-01T12:00:00Z'
 class Process:
 
 
-    def __init__(self, remove_files = True, start_at = 1, progress="mse5771.json"):
+    def __init__(self, remove_files = True, start_at = 1, progress="mse5771.json", dryrun=False):
         self.api = MediaBackend().env('prod').command_line_client()
         self.logger = self.api.logger
         self.index = 0
@@ -29,6 +30,7 @@ class Process:
         self.remove_files = remove_files
         self.start_at = start_at
         self.progress_file = progress
+        self.dry_run = dryrun
         if os.path.exists(self.progress_file):
             with open(self.progress_file, "r", encoding="utf8") as file:
                 self.progress = json.load(file)
@@ -48,7 +50,11 @@ class Process:
         if "status_code" not in record:
             while url.__contains__("radiobox"):
                 r = requests.head(url, allow_redirects=False)
-                url = r.headers['Location']
+                headers = r.headers
+                if 'Location' not in headers:
+                    print("No location in " + url)
+                    break
+                url = headers['Location']
 
             fixed = url.replace("http://content.omroep.nl/", "https://mediastorage.omroep.nl/download/")
             fixed = fixed.replace("https://content.omroep.nl/", "https://mediastorage.omroep.nl/download/")
@@ -107,8 +113,8 @@ class Process:
 
     def download_file(self, mid, record):
         if not 'dest' in record or not os.path.exists(record['dest']):
-            self.logger.info("Downloading %s %s" % (mid, record['fixed_url']))
             dest = '%s.asset' % (mid)
+            self.logger.info("Downloading %s %s -> %s" % (mid, record['fixed_url'], dest))
             if os.path.exists(dest + ".orig"):
                 os.rename(dest + ".orig", dest)
             else:
@@ -123,23 +129,24 @@ class Process:
     def upload(self, mid, location, record):
         if 'upload_result' not in record:
             self.download_file(mid, record)
-            dest = record['dest']
-            #self.logger.info("Uploading for %s %s %s" % (mid, dest, mime_type))
-            delta = datetime.now() - self.last_upload
-            if delta < self.srcs_endure:
-                sleep_time = self.srcs_endure - delta
-                self.logger.info("Sourcing service cannot endure over 1 req/%s. Waiting %d seconds" % (self.srcs_endure, sleep_time.total_seconds()))
-                time.sleep(sleep_time.total_seconds())
-            self.last_upload = datetime.now()
+            if not self.dry_run:
+                dest = record['dest']
+                #self.logger.info("Uploading for %s %s %s" % (mid, dest, mime_type))
+                delta = datetime.now() - self.last_upload
+                if delta < self.srcs_endure:
+                    sleep_time = self.srcs_endure - delta
+                    self.logger.info("Sourcing service cannot endure over 1 req/%s. Waiting %d seconds" % (self.srcs_endure, sleep_time.total_seconds()))
+                    time.sleep(sleep_time.total_seconds())
+                self.last_upload = datetime.now()
 
-            result = self.api.upload(mid, dest, content_type="audio/mp3", log=False)
-            record['upload_result'] = asdict(result)
-            success = result.status == "success"
-            self.logger.info(str(result))
-            self.save()
+                result = self.api.upload(mid, dest, content_type="audio/mp3", log=False)
+                record['upload_result'] = asdict(result)
+                success = result.status == "success"
+                self.logger.info(str(result))
+                self.save()
 
-        self.remove_legacy(mid, location, record)
-        return record['upload_result']
+                self.remove_legacy(mid, location, record)
+        return record.get('upload_result')
 
 
     def remove_legacy(self, mid: str, location:str, record:dict, publishstop=stop):
@@ -172,6 +179,6 @@ class Process:
 
         print(count)
 
+dryrun = "dryrun" in sys.argv
 
-
-Process().read_csv()
+Process(dryrun=dryrun).read_csv()
