@@ -20,7 +20,7 @@ stop = '2023-11-01T12:00:00Z'
 class Process:
 
 
-    def __init__(self, remove_files = True, start_at = 1, progress="mse5771.json", dry_run=False, no_download=False):
+    def __init__(self, remove_files = True, start_at = 1, progress="mse5771.json", dry_run=False, no_download=False, force_ss=False):
         self.api = MediaBackend().env('prod').command_line_client()
         self.logger = self.api.logger
         self.index = 0
@@ -31,7 +31,8 @@ class Process:
         self.start_at = start_at
         self.no_download = no_download
         self.progress_file = progress
-        self.dry_run = dryrun
+        self.dry_run = dry_run
+        self.force_ss = force_ss
         if os.path.exists(self.progress_file):
             with open(self.progress_file, "r", encoding="utf8") as file:
                 self.progress = json.load(file)
@@ -75,7 +76,7 @@ class Process:
             record.update({"fixed_url": fixed})
             self.save()
         else:
-            print(record)
+            self.logger.debug(record)
 
     def get_media(self, mid):
         if "mediaobjects" not in self.progress:
@@ -91,7 +92,7 @@ class Process:
         if "streamingstati" not in self.progress:
             self.progress["streamingstati"] = dict()
         streaming_stati = self.progress["streamingstati"]
-        if mid not in streaming_stati:
+        if mid not in streaming_stati or self.force_ss:
             streaming_stati[mid] = self.jsonserializer.render(self.api.streaming_status(mid, binding=Binding.XSDATA))
             self.save()
         return self.jsonparser.decode(json.loads(streaming_stati[mid]), StreamingStatus)
@@ -201,5 +202,6 @@ class Process:
 
 dryrun = "dryrun" in sys.argv
 nodownload = "nodownload" in sys.argv
+forcess = "forcess" in sys.argv
 
-Process(dry_run=dryrun, no_download=nodownload).read_csv()
+Process(dry_run=dryrun, no_download=nodownload, force_ss=forcess).read_csv()
