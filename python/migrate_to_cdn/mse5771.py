@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import csv
+import dataclasses
 import json
 import os
 import sys
@@ -160,7 +161,10 @@ class Process:
                 self.last_upload = datetime.now()
 
                 result = self.api.upload(mid, 'data/' + dest, content_type="audio/mp3", log=False)
-                record['upload_result'] = result
+                if dataclasses.is_dataclass(result):
+                    record['upload_result'] = asdict(result)
+                else:
+                    record['upload_result'] = str(result)
                 success = result.status == "success"
                 self.logger.info(str(result))
                 self.save()
