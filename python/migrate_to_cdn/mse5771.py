@@ -119,7 +119,7 @@ class Process:
                 os.rename('data/' + dest + ".orig", 'data/' + dest)
             else:
                 r = requests.get(record['fixed_url'], allow_redirects=True)
-                open(dest, 'wb').write(r.content)
+                open('data/' + dest, 'wb').write(r.content)
             record.update({'dest': dest})
             self.save()
         else:
