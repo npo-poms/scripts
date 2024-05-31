@@ -19,7 +19,7 @@ stop_video ='2123-11-01T12:00:00Z'
 
 class Base:
 
-    def __init__(self, remove_files = True, start_at = 1, progress="progress.json"):
+    def __init__(self, remove_files = True, start_at = 1, progress="progress.json", socks=None, force_ss= False):
         self.api = MediaBackend().env('prod').command_line_client()
         self.logger = self.api.logger
         self.index = 0
@@ -29,6 +29,8 @@ class Base:
         self.progress_file = progress
         self.last_upload = datetime.fromtimestamp(0)
         self.srcs_endure = timedelta(minutes=1)
+        self.proxies = socks is None and None or {"http": socks, "https": socks}
+        self.force_ss = force_ss
         if os.path.exists(self.progress_file):
             with open(self.progress_file, "r", encoding="utf8") as file:
                 self.progress = json.load(file)
@@ -47,7 +49,7 @@ class Base:
         url = original_url
         if "status_code" not in record:
             while url.__contains__("radiobox"):
-                r = requests.head(url, allow_redirects=False)
+                r = requests.head(url, allow_redirects=False, proxies=self.proxies)
                 headers = r.headers
                 if 'Location' not in headers:
                     print("No location in " + url)
@@ -59,7 +61,7 @@ class Base:
             fixed = fixed.replace("https://content.omroep.nl/", "https://mediastorage.omroep.nl/download/")
             fixed = fixed.replace("http://download.omroep.nl/", "https://mediastorage.omroep.nl/download/")
             fixed = fixed.replace("https://download.omroep.nl/", "https://mediastorage.omroep.nl/download/")
-            r = requests.head(fixed)
+            r = requests.head(fixed, proxies=self.proxies)
             if r.status_code == 200:
                 print(original_url + ' -> ' + url + ' -> ' + fixed)
             else:
@@ -79,8 +81,9 @@ class Base:
                 os.rename(dest + ".orig", dest)
             else:
                 fixed = self.fix_url(program_url, record)
-                r = requests.get(fixed, allow_redirects=True)
+                r = requests.get(fixed, allow_redirects=True, proxies=self.proxies, timeout=10)
                 open(dest, 'wb').write(r.content)
+            self.logger.info("Dest %s with %d bytes" % (dest, os.path.getsize(dest)))
             record.update({'dest': dest})
             self.save()
         else:
@@ -224,7 +227,6 @@ class Base:
             sleep_time = self.srcs_endure - delta
             self.logger.info("Sourcing service cannot endure over 1 req/%s. Waiting %d seconds" % (self.srcs_endure, sleep_time.total_seconds()))
             time.sleep(sleep_time.total_seconds())
-        self.api = MediaBackend().env('prod').command_line_client()
         self.last_upload = datetime.now()
 
         result = self.api.upload(mid, dest, content_type=mime_type, log=False)
