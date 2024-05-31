@@ -26,8 +26,13 @@ class Process:
         logging.basicConfig(stream=sys.stderr, level=logging.INFO, format="%(asctime)-15s:%(levelname).3s:%(message)s")
         self.api = MediaBackend().env('prod').command_line_client()
 
-
         self.logger = self.api.logger
+        if dry_run:
+            self.logger.info("Dry run")
+        if no_download:
+            self.logger.info("No download")
+        if force_ss:
+            self.logger.info("Force streaming status")
         self.index = 0
         self.srcs_endure = timedelta(seconds=endure_seconds)
         self.last_upload = datetime.fromtimestamp(0)
@@ -257,6 +262,7 @@ class Process:
 dryrun = "dryrun" in sys.argv
 nodownload = "nodownload" in sys.argv
 forcess = "forcess" in sys.argv
+
 
 process = Process(dry_run=dryrun, no_download=nodownload, force_ss=forcess);
 process.read_podcast_csv()
