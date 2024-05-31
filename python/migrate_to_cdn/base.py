@@ -223,11 +223,12 @@ class Base:
         dest = record['dest']
         self.logger.info("Uploading for %s %s %s" % (mid, dest, mime_type))
         delta = datetime.now() - self.last_upload
-        if delta < self.srcs_endure:
-            sleep_time = self.srcs_endure - delta
-            self.logger.info("Sourcing service cannot endure over 1 req/%s. Waiting %d seconds" % (self.srcs_endure, sleep_time.total_seconds()))
-            time.sleep(sleep_time.total_seconds())
-        self.last_upload = datetime.now()
+        if mime_type.startswith('audio'):
+            if delta < self.srcs_endure:
+                sleep_time = self.srcs_endure - delta
+                self.logger.info("Sourcing service cannot endure over 1 req/%s. Waiting %d seconds" % (self.srcs_endure, sleep_time.total_seconds()))
+                time.sleep(sleep_time.total_seconds())
+            self.last_upload = datetime.now()
 
         result = self.api.upload(mid, dest, content_type=mime_type, log=False)
         if isinstance(result, str):
