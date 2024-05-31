@@ -3,6 +3,7 @@
 import csv
 import dataclasses
 import json
+import logging
 import os
 import sys
 import time
@@ -22,7 +23,10 @@ class Process:
 
 
     def __init__(self, remove_files = True, start_at = 1, progress="mse5771.json", dry_run=False, no_download=False, force_ss=False, endure_seconds=20):
+        logging.basicConfig(stream=sys.stderr, level=logging.INFO, format="%(asctime)-15s:%(levelname).3s:%(message)s")
         self.api = MediaBackend().env('prod').command_line_client()
+
+
         self.logger = self.api.logger
         self.index = 0
         self.srcs_endure = timedelta(seconds=endure_seconds)
@@ -224,7 +228,7 @@ class Process:
 
     def process_record(self, mid, original_url):
         if not original_url.endswith(".mp3"):
-            self.logger("Skipping %s" % original_url)
+            self.logger.info("Skipping %s" % original_url)
             return
         record = self.progress.get(original_url)
         if record is None:
