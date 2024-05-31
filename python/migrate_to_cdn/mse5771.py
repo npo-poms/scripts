@@ -223,6 +223,9 @@ class Process:
 
 
     def process_record(self, mid, original_url):
+        if not original_url.endswith(".mp3"):
+            self.logger("Skipping %s" % original_url)
+            return
         record = self.progress.get(original_url)
         if record is None:
             record = dict()
