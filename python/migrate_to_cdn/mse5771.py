@@ -182,7 +182,7 @@ class Process:
             record['publishstop'] = str(publishstop)
             self.save()
 
-    def read_csv(self, web_site = True):
+    def read_walter_csv(self, web_site = True):
         count = 0
         with(open('walter.csv', 'r')) as file:
             reader = csv.reader(file)
@@ -196,22 +196,46 @@ class Process:
                 if perform:
                     count +=1
                     original_url = row[13]
-                    record = self.progress.get(original_url)
-                    if record is None:
-                        record = dict()
-                        self.progress[original_url] = record
-
-                    self.fix_url(original_url, record)
-
-                    #self.get_media( mid)
-                    if self.needs_upload(mid):
-                        self.upload(mid, original_url, record)
-                    else:
-                        self.clean(mid, record)
+                    self.process_record(mid, original_url)
 
         self.save(force=True)
 
-        print(count)
+        self.logger.info("Ready with walter csv %s (%s)" %(str(count), str(web_site)))
+
+    def read_podcast_csv(self):
+        count = 0
+        with(open('podcastitems.csv', 'r')) as file:
+            reader = csv.reader(file)
+            for row in reader:
+                mid = row[0]
+                if mid == 'mid':
+                    continue
+                original_url = row[1].split(" ")[0]
+                if not original_url.startswith("http"):
+                    self.logger.info("Skipping %s" % original_url)
+                    continue
+                count +=1
+                self.process_record(mid, original_url)
+
+        self.save(force=True)
+
+        self.logger.info("Ready with podcast csv %s (%s)" %(str(count)))
+
+
+    def process_record(self, mid, original_url):
+        record = self.progress.get(original_url)
+        if record is None:
+            record = dict()
+            self.progress[original_url] = record
+
+        self.fix_url(original_url, record)
+
+        #self.get_media( mid)
+        if self.needs_upload(mid):
+            self.upload(mid, original_url, record)
+        else:
+            self.clean(mid, record)
+
 
     def read_mids(self):
          with(open('website_media.csv', 'r')) as file:
@@ -228,5 +252,7 @@ nodownload = "nodownload" in sys.argv
 forcess = "forcess" in sys.argv
 
 process = Process(dry_run=dryrun, no_download=nodownload, force_ss=forcess);
-process.read_csv(web_site=True)
-process.read_csv(web_site=False)
+process.read_podcast_csv()
+
+process.read_walter_csv(web_site=True)
+process.read_walter_csv(web_site=False)
