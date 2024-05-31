@@ -42,6 +42,8 @@ class Process:
         self.jsonserializer = JsonSerializer()
         self.jsonparser = JsonParser()
         self.last_save = datetime.now()
+        self.mids = []
+        self.read_mids()
 
     def save(self, force = False):
         if not force and datetime.now() - self.last_save < timedelta(seconds=100):
@@ -180,12 +182,18 @@ class Process:
             record['publishstop'] = str(publishstop)
             self.save()
 
-    def read_csv(self):
+    def read_csv(self, web_site = True):
         count = 0
         with(open('walter.csv', 'r')) as file:
             reader = csv.reader(file)
             for row in reader:
-                if 'VPRO' in row[2] or 'HUMAN' in row[2]:
+                mid = row[0]
+                if  web_site:
+                    perform =  mid in self.mids
+                else:
+                    perform = 'VPRO' in row[2] or 'HUMAN' in row[2]
+
+                if perform:
                     count +=1
                     original_url = row[13]
                     record = self.progress.get(original_url)
@@ -194,7 +202,7 @@ class Process:
                         self.progress[original_url] = record
 
                     self.fix_url(original_url, record)
-                    mid = row[0]
+
                     #self.get_media( mid)
                     if self.needs_upload(mid):
                         self.upload(mid, original_url, record)
@@ -205,8 +213,18 @@ class Process:
 
         print(count)
 
+    def read_mids(self):
+         with(open('website_media.csv', 'r')) as file:
+            reader = csv.reader(file)
+            for row in reader:
+                mid = row[0]
+                self.mids.append(mid)
+
+
 dryrun = "dryrun" in sys.argv
 nodownload = "nodownload" in sys.argv
 forcess = "forcess" in sys.argv
 
-Process(dry_run=dryrun, no_download=nodownload, force_ss=forcess).read_csv()
+process = Process(dry_run=dryrun, no_download=nodownload, force_ss=forcess);
+process.read_csv(web_site=True)
+process.read_csv(web_site=False)
