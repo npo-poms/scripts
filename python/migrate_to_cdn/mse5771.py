@@ -188,7 +188,7 @@ class Process:
             reader = csv.reader(file)
             for row in reader:
                 mid = row[0]
-                if  web_site:
+                if web_site:
                     perform =  mid in self.mids
                 else:
                     perform = 'VPRO' in row[2] or 'HUMAN' in row[2]
@@ -217,8 +217,10 @@ class Process:
          with(open('website_media.csv', 'r')) as file:
             reader = csv.reader(file)
             for row in reader:
-                mid = row[0]
-                self.mids.append(mid)
+                if len(row) > 0:
+                    mid = row[0]
+                    self.mids.append(mid)
+            self.logger.info("Read %d mids" % len(self.mids))
 
 
 dryrun = "dryrun" in sys.argv
