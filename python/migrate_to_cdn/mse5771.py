@@ -21,7 +21,7 @@ stop = '2023-11-01T12:00:00Z'
 class Process:
 
 
-    def __init__(self, remove_files = True, start_at = 1, progress="mse5771.json", dry_run=False, no_download=False, force_ss=False, endure_seconds=30):
+    def __init__(self, remove_files = True, start_at = 1, progress="mse5771.json", dry_run=False, no_download=False, force_ss=False, endure_seconds=20):
         self.api = MediaBackend().env('prod').command_line_client()
         self.logger = self.api.logger
         self.index = 0
