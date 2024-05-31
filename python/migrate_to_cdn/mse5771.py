@@ -223,7 +223,7 @@ class Process:
 
         self.save(force=True)
 
-        self.logger.info("Ready with podcast csv %s (%s)" %(str(count)))
+        self.logger.info("Ready with podcast csv (%s)" %(str(count)))
 
 
     def process_record(self, mid, original_url):
