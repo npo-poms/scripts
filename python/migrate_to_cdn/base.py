@@ -42,6 +42,35 @@ class Base:
         os.replace(self.progress_file + ".saving", self.progress_file)
         self.logger.info("Saved %d" % (len(self.progress)))
 
+
+    def fix_url(self, original_url, record):
+        url = original_url
+        if "status_code" not in record:
+            while url.__contains__("radiobox"):
+                r = requests.head(url, allow_redirects=False)
+                headers = r.headers
+                if 'Location' not in headers:
+                    print("No location in " + url)
+                    break
+                url = headers['Location']
+
+            fixed = url.replace("http://content.omroep.nl/", "https://mediastorage.omroep.nl/download/")
+            fixed = fixed.replace("https://content.omroep.nl/", "https://mediastorage.omroep.nl/download/")
+            fixed = fixed.replace("https://content.omroep.nl/", "https://mediastorage.omroep.nl/download/")
+            fixed = fixed.replace("http://download.omroep.nl/", "https://mediastorage.omroep.nl/download/")
+            fixed = fixed.replace("https://download.omroep.nl/", "https://mediastorage.omroep.nl/download/")
+            r = requests.head(fixed)
+            if r.status_code == 200:
+                print(original_url + ' -> ' + url + ' -> ' + fixed)
+            else:
+                print(original_url + ' -> ' + url + ' -> ' + fixed + ' -> ' + str(r.status_code))
+            record.update({"status_code": r.status_code})
+            record.update({"fixed_url": fixed})
+            self.save()
+        else:
+            self.logger.debug(record)
+        return record['fixed_url']
+
     def download_file(self, program_url:str, mid:str, record):
         if not 'dest' in record or not os.path.exists(record['dest']):
             self.logger.info("Downloading %s %s" % (mid, program_url))
@@ -49,7 +78,8 @@ class Base:
             if os.path.exists(dest + ".orig"):
                 os.rename(dest + ".orig", dest)
             else:
-                r = requests.get(program_url, allow_redirects=True)
+                fixed = self.fix_url(program_url, record)
+                r = requests.get(fixed, allow_redirects=True)
                 open(dest, 'wb').write(r.content)
             record.update({'dest': dest})
             self.save()
