@@ -200,7 +200,7 @@ class Process:
                 if web_site:
                     perform =  mid in self.mids
                 else:
-                    perform = 'VPRO' in row[2] or 'HUMAN' in row[2]
+                    perform = 'VPRO' in row[2] or 'HUMA' in row[2]
 
                 if perform:
                     count +=1
