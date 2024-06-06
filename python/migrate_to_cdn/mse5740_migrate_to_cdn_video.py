@@ -89,7 +89,7 @@ class Process(Base):
                 if record is None:
                     record = dict()
                     self.progress[mid] = record
-                total += 1
+                total +=  1
                 try:
                     self.do_one(mid, record, programurl)
                 except Exception as e:
@@ -100,10 +100,10 @@ class Process(Base):
 
 start_at = int(sys.argv[1]) if len(sys.argv) > 1 else 1
 
-process = Process(remove_files=True, start_at = start_at,  progress="mse5740_progress_video.json")
-process.process_csv()
+#process = Process(remove_files=True, start_at = start_at,  progress="mse5740_progress_video.json")
+#process.process_csv()
 
-#process = Process(remove_files=False, socks="socks5://localhost:10001")
-#record = dict()
-#process.do_one("PREPR_VPRO_16503961_1", record, "https://content.omroep.nl/nporadio/video/34a076b3-08b3-4c0c-ae2e-33b5a04faf68/ef367ffc-e04b-4b79-b5e5-7fe0678e2936.mp4")
+process = Process(remove_files=False, socks="socks5://localhost:10001")
+record = dict()
+process.do_one("PREPR_VPRO_16503961", record, "https://content.omroep.nl/nporadio/video/34a076b3-08b3-4c0c-ae2e-33b5a04faf68/ef367ffc-e04b-4b79-b5e5-7fe0678e2936.mp4")
 #process.logger.info(str(record))
