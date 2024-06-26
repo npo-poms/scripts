@@ -76,7 +76,6 @@ class Process:
 
             fixed = url.replace("http://content.omroep.nl/", "https://mediastorage.omroep.nl/download/")
             fixed = fixed.replace("https://content.omroep.nl/", "https://mediastorage.omroep.nl/download/")
-            fixed = fixed.replace("https://content.omroep.nl/", "https://mediastorage.omroep.nl/download/")
             fixed = fixed.replace("http://download.omroep.nl/", "https://mediastorage.omroep.nl/download/")
             fixed = fixed.replace("https://download.omroep.nl/", "https://mediastorage.omroep.nl/download/")
             r = requests.head(fixed)
@@ -228,9 +227,23 @@ class Process:
                 if count % 1000 == 0:
                     self.logger.info("Processed %s" % count)
 
-
-
         self.logger.info("Ready with walter csv %s (%s)" %(str(count)))
+
+    def set_onlinet(self):
+        count = 0
+        with(open('walter.csv', 'r')) as file:
+            reader = csv.reader(file)
+            for row in reader:
+                mid = row[0]
+                if mid == 'mid':
+                    mid = "RBX_VPRO_6226969"
+                entry_url = "https://entry.cdn.npoaudio.nl/handle/%s.mp3" %(mid)
+                response = requests.head(entry_url)
+                if response.status_code != 404:
+                    self.logger.info("HEAD %s %s %s" % (mid, entry_url, response.status_code))
+                count +=1
+                if count % 1000 == 0:
+                    self.logger.info("Processed %s" % count)
 
     def read_podcast_csv(self):
         count = 0
