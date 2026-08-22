@@ -24,21 +24,13 @@ import csv
 import json
 import logging
 import sys
+import time
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime, timezone
 
 from npoapi.media_s3 import MediaS3
 
 log = logging.getLogger(__name__)
 
-
-
-def normalise_ts(value: str | int | None, millis: bool = False) -> str | None:
-    if not value:
-        return None
-    if millis:
-        return datetime.fromtimestamp(int(value) / 1000, tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%S")
-    return datetime.fromisoformat(str(value).strip()).astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S")
 
 
 
@@ -47,16 +39,16 @@ def main():
     parser.add_argument("csv", default="mids.txt", help="Path to the CSV file exported from the database")
     parser.add_argument("-e", "--env", choices=["prod", "acc"], default="prod",
                         help="Environment (default: prod)")
-    parser.add_argument("--no-extra", action="store_true",
-                        help="Do not report MIDs present in S3 but absent from the CSV")
     parser.add_argument("--workers", type=int, default=16,
                         help="Number of parallel S3 fetch workers (default: 16)")
+    parser.add_argument("--partial", action="store_true",
+                        help="Use the CSV as leading: only check MIDs listed there (no EXTRA/MISSING reporting)")
     parser.add_argument("--output", "-o", help="Write report to this file instead of stdout")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 
-    client = MediaS3(env=args.env)
+    client = MediaS3(env=args.env, max_pool_connections=args.workers)
     out = open(args.output, "w", buffering=1) if args.output else sys.stdout
 
     # Read CSV; db_rows is also used to track what hasn't been seen in S3 yet
@@ -72,47 +64,58 @@ def main():
 
 
     log.info("Read %s rows from CSV", f"{len(db_rows):,}")
-    log.info("Iterating s3://%s/media/json/ …", client.bucket)
 
     n_extra = 0
-    n_diff = 0
+    n_diff = [0]
     done = 0
     checked = [0]
-    n_diff = [0]
+    total = len(db_rows)
+    start = time.monotonic()
 
     def check(mid: str, db: dict) -> None:
         content = client.get(mid, fmt="json")
         checked[0] += 1
+        if checked[0] % 1000 == 0:
+            elapsed = time.monotonic() - start
+            rate = checked[0] / elapsed if elapsed > 0 else 0
+            eta = (total - checked[0]) / rate if rate > 0 else float("inf")
+            eta_clock = time.strftime("%H:%M:%S", time.localtime(time.time() + eta))
+            log.info("S3 listed %s, checked %s/%s, differences %s, ETA %s",
+                     f"{done:,}", f"{checked[0]:,}", f"{total:,}", f"{n_diff[0]:,}",
+                     eta_clock)
         data = json.loads(content) if content else None
         if data is None:
             print(f"FETCH_FAILED  {mid}", file=out, flush=True)
             n_diff[0] += 1
             return
-        db_modified  = normalise_ts(db.get("lastmodified"))
-        db_published = normalise_ts(db.get("lastpublished"))
-        s3_modified  = normalise_ts(data.get("lastModified"), millis=True)
-        s3_published = normalise_ts(data.get("publishDate"), millis=True)
-        if db_modified != s3_modified or db_published != s3_published:
+        db_modified  = int(db.get("lastmodified"))
+        db_published = int(db.get("lastpublished"))
+        s3_modified  = data.get("lastModified")
+        s3_published = data.get("publishDate")
+        # allow a 1 ms rounding error
+        if abs(db_modified - s3_modified) > 1 or abs(db_published - s3_published) > 1:
             print(f"DIFF  {mid:<30}  {str(db_modified):<20}  {str(s3_modified):<20}  {str(db_published):<20}  {str(s3_published)}", file=out, flush=True)
             n_diff[0] += 1
 
     with ThreadPoolExecutor(max_workers=args.workers) as pool:
-        for mid in client.list_mids():
-            done += 1
-            if done % 1000 == 0:
-                log.info("S3 listed %s, checked %s, differences %s", f"{done:,}", f"{checked[0]:,}", f"{n_diff[0]:,}")
-
-            if mid not in db_rows:
-                if not args.no_extra:
+        if args.partial:
+            log.info("Partial just comparing %s mids from csv", len(db_rows))
+            for mid, db in db_rows.items():
+                done += 1
+                pool.submit(check, mid, db)
+        else:
+            log.info("Iterating s3://%s/media/json/ …", client.bucket)
+            for mid in client.list_mids():
+                done += 1
+                if mid not in db_rows:
                     print(f"EXTRA    {mid}", file=out, flush=True)
                     n_extra += 1
-                continue
+                    continue
+                pool.submit(check, mid, db_rows.pop(mid))
 
-            pool.submit(check, mid, db_rows.pop(mid))
-
-    # Whatever remains in db_rows was never seen in S3
-    for mid in db_rows:
-        print(f"MISSING  {mid}", file=out)
+    if not args.partial:
+        for mid in db_rows:
+            print(f"MISSING  {mid}", file=out)
 
     log.info("Done. %d issue(s) found (%d extra in S3).", n_diff[0] + len(db_rows), n_extra)
 
