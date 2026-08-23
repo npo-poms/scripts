@@ -37,7 +37,7 @@ log = logging.getLogger(__name__)
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("csv", default="mids.txt", help="Path to the CSV file exported from the database")
-    parser.add_argument("-e", "--env", choices=["prod", "acc"], default="prod",
+    parser.add_argument("-e", "--env", choices=["prod", "acc", "test"], default="prod",
                         help="Environment (default: prod)")
     parser.add_argument("--workers", type=int, default=16,
                         help="Number of parallel S3 fetch workers (default: 16)")
@@ -85,7 +85,7 @@ def main():
                      eta_clock)
         data = json.loads(content) if content else None
         if data is None:
-            print(f"FETCH_FAILED  {mid}", file=out, flush=True)
+            print(f"FETCH_FAILED\t{mid}", file=out, flush=True)
             n_diff[0] += 1
             return
         db_modified  = int(db.get("lastmodified"))
@@ -94,7 +94,7 @@ def main():
         s3_published = data.get("publishDate")
         # allow a 1 ms rounding error
         if abs(db_modified - s3_modified) > 1 or abs(db_published - s3_published) > 1:
-            print(f"DIFF  {mid:<30}  {str(db_modified):<20}  {str(s3_modified):<20}  {str(db_published):<20}  {str(s3_published)}", file=out, flush=True)
+            print(f"DIFF\t{mid}\t{str(db_modified)}\t{str(s3_modified)}\t{str(db_published)}\t{str(s3_published)}", file=out, flush=True)
             n_diff[0] += 1
 
     with ThreadPoolExecutor(max_workers=args.workers) as pool:
@@ -104,18 +104,18 @@ def main():
                 done += 1
                 pool.submit(check, mid, db)
         else:
-            log.info("Iterating s3://%s/media/json/ …", client.bucket)
+            log.info("Iterating s3://%s/media/json/", client.bucket)
             for mid in client.list_mids():
                 done += 1
                 if mid not in db_rows:
-                    print(f"EXTRA    {mid}", file=out, flush=True)
+                    print(f"EXTRA\t{mid}", file=out, flush=True)
                     n_extra += 1
                     continue
                 pool.submit(check, mid, db_rows.pop(mid))
 
     if not args.partial:
         for mid in db_rows:
-            print(f"MISSING  {mid}", file=out)
+            print(f"MISSING\t{mid}", file=out)
 
     log.info("Done. %d issue(s) found (%d extra in S3).", n_diff[0] + len(db_rows), n_extra)
 
