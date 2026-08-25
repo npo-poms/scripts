@@ -21,6 +21,7 @@ Usage:
 
 import argparse
 import csv
+import datetime
 import json
 import logging
 import sys
@@ -44,32 +45,50 @@ def main():
     parser.add_argument("--partial", action="store_true",
                         help="Use the CSV as leading: only check MIDs listed there (no EXTRA/MISSING reporting)")
     parser.add_argument("--output", "-o", help="Write report to this file instead of stdout")
+    parser.add_argument("--since", metavar="DATE",
+                        help="Only consider S3 objects (and CSV rows) modified after this date (YYYY-MM-DD or ISO-8601)")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 
-    client = MediaS3(env=args.env, max_pool_connections=args.workers)
+    since: datetime.datetime | None = None
+    since_ms = 0
+    if args.since:
+        since = datetime.datetime.fromisoformat(args.since)
+        if since.tzinfo is None:
+            since = since.replace(tzinfo=datetime.timezone.utc)
+        log.info("Filtering to objects modified after %s", since.isoformat())
+        since_ms = int(since.timestamp() * 1000)
+
+    client = MediaS3(env=args.env, max_pool_connections=args.workers * 2).configured_login()
     out = open(args.output, "w", buffering=1) if args.output else sys.stdout
 
     # Read CSV; db_rows is also used to track what hasn't been seen in S3 yet
     db_rows: dict[str, dict] = {}
+    db_count = 0
     with open(args.csv, newline="") as f:
         for row in csv.DictReader(f, fieldnames=["mid", "lastmodified", "lastpublished"], dialect="excel-tab"):
             row = {k.lower(): v for k, v in row.items()}
             mid = row.get("mid", "").strip()
-            if mid:
-                db_rows[mid] = row
+            if not mid:
+                continue
+            db_rows[mid] = row
+            lastmodified = int(row.get("lastmodified", 0))
+            if (lastmodified > since_ms):
+                db_count += 1
+
             if len(db_rows) % 100_000 == 0:
                 log.info("Read %s rows from CSV", f"{len(db_rows):,}")
 
 
-    log.info("Read %s rows from CSV", f"{len(db_rows):,}")
+    log.info("Read %s rows from CSV, estimated relevant %s", f"{len(db_rows):,}", f"{db_count:,}")
 
     n_extra = 0
     n_diff = [0]
-    done = 0
+    done = [0]
+    skip = [0]
     checked = [0]
-    total = len(db_rows)
+    total = db_count
     start = time.monotonic()
 
     def check(mid: str, db: dict) -> None:
@@ -99,14 +118,21 @@ def main():
 
     with ThreadPoolExecutor(max_workers=args.workers) as pool:
         if args.partial:
-            log.info("Partial just comparing %s mids from csv", len(db_rows))
+            log.info("Partial just comparing %s mids from csv", db_count)
             for mid, db in db_rows.items():
                 done += 1
                 pool.submit(check, mid, db)
         else:
+            def on_hit(mid, obj, yielded):
+                done[0] += 1
+                if not yielded:
+                    skip[0] += 1
+                if done[0] % 1000 == 0:
+                    log.info("Iterating s3://%s/media/json/ done %s, skipped %s", client.bucket, done[0], skip[0])
+
+
             log.info("Iterating s3://%s/media/json/", client.bucket)
-            for mid in client.list_mids():
-                done += 1
+            for mid in client.list_mids(modified_since=since, on_hit=on_hit):
                 if mid not in db_rows:
                     print(f"EXTRA\t{mid}", file=out, flush=True)
                     n_extra += 1
@@ -117,7 +143,7 @@ def main():
         for mid in db_rows:
             print(f"MISSING\t{mid}", file=out)
 
-    log.info("Done. %d issue(s) found (%d extra in S3).", n_diff[0] + len(db_rows), n_extra)
+    log.info("Done. %d issue(s) found (%d extra in S3).", n_diff[0] + db_count, n_extra)
 
     if args.output:
         out.close()
