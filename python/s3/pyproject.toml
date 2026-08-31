@@ -1,0 +1,24 @@
+# see https://peps.python.org/pep-0518/
+[project]
+name = "npo-compare-s3"
+version = "0.1.0"
+description = "Compare media objects in S3 against a database export"
+authors = [
+    {name = "Michiel Meeuwissen", email = "git@meeuw.org"},
+]
+dependencies = [
+    "npoapi @ git+https://github.com/npo-poms/pyapi.git@main",
+]
+requires-python = ">=3.12"
+readme = {file = "README.adoc", content-type = "text/asciidoc"}
+license = {text = "MIT"}
+
+[project.scripts]
+compare_s3 = "compare_s3:main"
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = ["compare_s3"]
