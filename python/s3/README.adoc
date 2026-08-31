@@ -17,9 +17,12 @@ create temp table missing_mids (mid text);
 ----
 
 
-ocprod rsync trans/ media-0:/tmp/trans/
 
-ocprod rsync  media-0:/tmp/trans/ trans/
+
+ocprod rsync prod/ media-0:/data/trans/
+ocprod rsync  media-0:/data/trans/ prod/
+./compare_s3.py -e prod prod/mids.txt -o prod/results.txt
+
 ocacc rsync  media-0:/data/trans/ acc/
 
 
