@@ -2,7 +2,7 @@
 
 
 \copy (select mid, (EXTRACT(EPOCH FROM lastmodified)  * 1000)::bigint,
-      (EXTRACT(EPOCH FROM lastpublished) * 1000)::bigint from mediaobject) to '/data/trans/mids.txt'
+      (EXTRACT(EPOCH FROM lastpublished) * 1000)::bigint from mediaobject) to '/data/trans/mids.tsv'
 
 
 [source, sql]
@@ -21,7 +21,9 @@ create temp table missing_mids (mid text);
 
 ocprod rsync prod/ media-0:/data/trans/
 ocprod rsync  media-0:/data/trans/ prod/
-./compare_s3.py -e prod prod/mids.txt -o prod/results.txt
+./compare_s3.py -e prod prod/mids.tsv -o prod/results.txt
+cat results.txt  | awk -F '\t' '{print $2}' > tocorrect.txt
+
 
 ocacc rsync  media-0:/data/trans/ acc/
 
@@ -31,4 +33,6 @@ octest rsync  test/ media-0:/tmp/trans/
 
 
 
-./compare_s3.py -e acc acc/mids.txt --since 2026-08-10
+./compare_s3.py -e acc acc/mids.txt --since 2026-09-05
+
+./compare_s3.py -e prod prod/mids.tsv --since 2026-09-05 -o prod/results-2026-09-09.txt

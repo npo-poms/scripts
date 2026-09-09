@@ -24,6 +24,7 @@ import csv
 import datetime
 import json
 import logging
+import os
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -50,6 +51,11 @@ def main():
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
+    csv_modified_ms = os.stat(args.csv).st_mtime_ns // 1_000_000
+    log.info("CSV export was last modified at %s",
+             datetime.datetime.fromtimestamp(
+                 csv_modified_ms / 1000, tz=datetime.timezone.utc
+             ).isoformat())
 
     since: datetime.datetime | None = None
     since_ms = 0
@@ -63,6 +69,8 @@ def main():
     client = MediaS3(env=args.env, max_pool_connections=args.workers * 2).configured_login()
     out = open(args.output, "w", buffering=1) if args.output else sys.stdout
 
+    print(f"#\tMID\tDB_MODIFIED\t\tS3_MODIFIED\tDB_PUBLISHED\t\tS3_PUBLISHED", file=out, flush=True)
+
     # Read CSV; db_rows is also used to track what hasn't been seen in S3 yet
     db_rows: dict[str, dict] = {}
     db_count = 0
@@ -73,8 +81,12 @@ def main():
             if not mid:
                 continue
             db_rows[mid] = row
-            lastmodified = int(row.get("lastmodified", 0))
-            if (lastmodified > since_ms):
+            db_lastmodified = int(row.get("lastmodified", 0))
+            db_lastpublished = 0
+            if row.get("lastpublished") != "\\N":
+                db_lastpublished = int(row.get("lastpublished", 0))
+
+            if (db_lastmodified > since_ms or db_lastpublished > since_ms):
                 db_count += 1
 
             if len(db_rows) % 100_000 == 0:
@@ -94,13 +106,13 @@ def main():
     def check(mid: str, db: dict) -> None:
         content = client.get(mid, fmt="json")
         checked[0] += 1
-        if checked[0] % 1000 == 0:
+        if checked[0] % 500 == 0:
             elapsed = time.monotonic() - start
             rate = checked[0] / elapsed if elapsed > 0 else 0
             eta = (total - checked[0]) / rate if rate > 0 else float("inf")
             eta_clock = time.strftime("%H:%M:%S", time.localtime(time.time() + eta))
             log.info("S3 listed %s, checked %s/%s, differences %s, ETA %s",
-                     f"{done:,}", f"{checked[0]:,}", f"{total:,}", f"{n_diff[0]:,}",
+                     f"{done[0]:,}", f"{checked[0]:,}", f"{total:,}", f"{n_diff[0]:,}",
                      eta_clock)
         data = json.loads(content) if content else None
         if data is None:
@@ -113,14 +125,19 @@ def main():
         s3_published = data.get("publishDate")
         # allow a 1 ms rounding error
         if abs(db_modified - s3_modified) > 1 or abs(db_published - s3_published) > 1:
-            print(f"DIFF\t{mid}\t{str(db_modified)}\t{str(s3_modified)}\t{str(db_published)}\t{str(s3_published)}", file=out, flush=True)
+            if s3_modified > csv_modified_ms or s3_published > csv_modified_ms:
+                log.debug("Ignoring %s: S3 document changed after the CSV export", mid)
+                return
+            modified_op = ">" if  db_modified > s3_modified else "<" if db_modified < s3_published else "="
+            lastpublished_op = ">" if  db_published > s3_published else  "<" if db_published > s3_published  else "="
+            print(f"DIFF\t{mid}\t{str(db_modified)}\t{modified_op}\t{str(s3_modified)}\t{str(db_published)}\t{lastpublished_op}\t{str(s3_published)}", file=out, flush=True)
             n_diff[0] += 1
 
     with ThreadPoolExecutor(max_workers=args.workers) as pool:
         if args.partial:
             log.info("Partial just comparing %s mids from csv", db_count)
             for mid, db in db_rows.items():
-                done += 1
+                done[0] += 1
                 pool.submit(check, mid, db)
         else:
             def on_hit(mid, obj, yielded):
